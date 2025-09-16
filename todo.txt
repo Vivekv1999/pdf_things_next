@@ -1,0 +1,9 @@
+merge
+crop
+remove page 
+split
+comprese
+pdf to excel
+pdf to jpg
+jpg to pdf
+crop pdf page name wise (perticular name wise)
