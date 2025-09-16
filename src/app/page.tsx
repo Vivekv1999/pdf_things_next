@@ -1,13 +1,8 @@
 "use client";
 
-import { addTodo } from "@/lib/features/todos/todosSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 
 export default function Home() {
-
-  const todos = useAppSelector((state) => state.todos.list);
-  const dispatch = useAppDispatch();
 
   return (
     <div className="justify-items-center items-center gap-16 grid grid-rows-[20px_1fr_20px] p-8 sm:p-20 pb-20 min-h-screen font-sans">
@@ -75,12 +70,6 @@ export default function Home() {
           />
           Learn
         </a>
-        <button
-          onClick={() => dispatch(addTodo("New Task"))}
-          className="bg-blue-600 px-4 py-2 rounded text-white"
-        >
-          Add Todo
-        </button>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
