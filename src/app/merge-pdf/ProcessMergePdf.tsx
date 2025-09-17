@@ -1,8 +1,8 @@
 // components/ProcessMergePdf.tsx
 "use client";
 
-import { ProgressUpdate } from "@/hooks/useFileHandler";
 import { FileProgress } from "@/src/components/FileProgress";
+import { ProgressUpdate } from "@/src/hooks/useFileHandler";
 
 interface ProcessMergePdfProps {
     progress: ProgressUpdate | null;

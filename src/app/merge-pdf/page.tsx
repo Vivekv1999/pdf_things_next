@@ -1,14 +1,12 @@
 // app/merge/page.tsx (Next.js App Router)
 "use client";
 
-// import DragAndDropInput from "@/components/DragAndDropInput";
-// import { MergeActionButton } from "@/components/MergeActionButton";
-// import { MergePdfList } from "@/components/MergePdfList";
-// import PdfPageHeader from "@/components/PdfPageHeader";
-import useFileHandler, { ProgressUpdate } from "@/hooks/useFileHandler";
 import DragAndDropInput from "@/src/components/DragAndDropInput";
+import useFileHandler, { ProgressUpdate } from "@/src/hooks/useFileHandler";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { useEffect, useState } from "react";
+import { MergeActionButton } from "./MergeActionButton";
+import { MergePdfList } from "./MergePdfList";
 import ProcessMergePdf from "./ProcessMergePdf";
 
 export interface PdfMeta {
