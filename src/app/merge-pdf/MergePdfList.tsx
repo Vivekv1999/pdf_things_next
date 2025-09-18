@@ -42,7 +42,7 @@ function SortableItem({ pdf, index, removePdf }: SortableItemProps) {
             style={style}
             {...attributes}
             {...listeners}
-            className="group relative bg-white hover:bg-gray-50 shadow p-2 border rounded-xl min-w-[100px] transition-colors"
+            className="group relative bg-white hover:bg-gray-50 shadow p-2 border border-gray-300 rounded-xl min-w-[100px] transition-colors"
         >
             <button
                 type="button"
@@ -68,7 +68,7 @@ function SortableItem({ pdf, index, removePdf }: SortableItemProps) {
 
             <div className="relative">
                 {pdf.previews && (
-                    <Image
+                    <img
                         src={pdf?.previews?.[0] || ""}
                         alt={`Preview ${index + 1}`}
                         className="mb-2 rounded w-full h-48 object-contain"
