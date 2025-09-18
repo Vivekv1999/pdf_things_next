@@ -1,7 +1,7 @@
 // hooks/useMergePdfs.ts
 import { PDFDocument } from "pdf-lib";
 import { useState } from "react";
-import { APP_NAME } from "../constants/appConstants";
+import { siteConfig } from "../constants/appConstants";
 
 export interface PdfFile {
     name: string;
@@ -45,7 +45,7 @@ export default function useMergePdfs() {
         const download = () => {
             const link = document.createElement("a");
             link.href = objectUrl;
-            link.download = `${APP_NAME}-merged.pdf`;
+            link.download = `${siteConfig.name}-merged.pdf`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

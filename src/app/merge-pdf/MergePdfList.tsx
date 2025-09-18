@@ -16,10 +16,9 @@ import {
     useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Image from "next/image";
 import DragAndDropInput from "../tools/DragAndDropInput";
+import { PdfMeta } from "./MergePdf";
 import ProcessMergePdf from "./ProcessMergePdf";
-import { PdfMeta } from "./page";
 
 interface SortableItemProps {
     pdf: PdfMeta;

@@ -1,81 +1,33 @@
-// app/merge/page.tsx (Next.js App Router)
-"use client";
+import ToolWrapper from "@/src/components/ToolWrapper";
+import { siteConfig } from "@/src/constants/appConstants";
+import type { Metadata } from "next";
+import MergePdf from "./MergePdf";
 
-import DragAndDropInput from "@/src/components/DragAndDropInput";
-import useFileHandler, { ProgressUpdate } from "@/src/hooks/useFileHandler";
-import PdfPageHeader from "@/src/layout/PdfPageHeader";
-import { useEffect, useState } from "react";
-import { MergeActionButton } from "./MergeActionButton";
-import { MergePdfList } from "./MergePdfList";
-import ProcessMergePdf from "./ProcessMergePdf";
-
-export interface PdfMeta {
-    id: string;
-    file: File;
-    pageCount: number;
-    bytes: ArrayBuffer;
-    previews: (string | null)[];
-}
-
-const MergePdf = () => {
-    const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
-    const [progress, setProgress] = useState<ProgressUpdate | null>(null);
-    const [alredyMergePdf, setAlredyMergePdf] = useState<Blob | null>(null);
-
-    // reset progress when pdf list becomes empty
-    useEffect(() => {
-        if (!pdfs.length) {
-            setProgress(null);
-        }
-    }, [pdfs]);
-
-    const handleFiles = useFileHandler(
-        (files: PdfMeta[]) => {
-            setPdfs((prev) => [...prev, ...files]);
-        },
-        (update: ProgressUpdate | null) => setProgress(update)
-    );
-
-    return (
-        <div className="mx-auto p-6 max-w-7xl">
-            {pdfs.length === 0 ? (
-                <>
-                    {progress ? (
-                        <div className="mt-48">
-                            <ProcessMergePdf progress={progress} />
-                        </div>
-                    ) : (
-                        <>
-                            <PdfPageHeader
-                                title="Merge PDFs"
-                                description="Combine multiple PDFs into a single file."
-                            />
-                            <DragAndDropInput handleFileChange={handleFiles} />
-                        </>
-                    )}
-                </>
-            ) : (
-                <>
-                    {!alredyMergePdf && (
-                        <MergePdfList
-                            pdfs={pdfs}
-                            setPdfs={setPdfs}
-                            handleFiles={handleFiles}
-                            progress={progress}
-                        />
-                    )}
-
-                    <MergeActionButton
-                        pdfs={pdfs}
-                        setPdfs={setPdfs}
-                        setProgress={setProgress}
-                        alredyMergePdf={alredyMergePdf}
-                        setAlredyMergePdf={setAlredyMergePdf}
-                    />
-                </>
-            )}
-        </div>
-    );
+export const metadata: Metadata = {
+    title: "Merge PDF Online | Free & Secure PDF Merger Tool",
+    description:
+        "Easily merge multiple PDF files into one document. 100% free, secure, and instant — no signup required.",
+    keywords: [
+        "merge pdf",
+        "pdf merger",
+        "combine pdf",
+        "merge pdf online",
+        "pdf tools",
+    ],
+    openGraph: {
+        title: "Merge PDF Online | Free & Secure PDF Merger Tool",
+        description:
+            "Combine multiple PDF files into a single document. Free, secure, and works instantly in your browser.",
+        url: `${siteConfig.url}/merge-pdf`,
+        siteName: siteConfig.name,
+        type: "website",
+    },
 };
 
-export default MergePdf;
+export default function Page() {
+    return (
+        <ToolWrapper>
+            <MergePdf />
+        </ToolWrapper>
+    );
+}
