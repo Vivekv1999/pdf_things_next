@@ -17,7 +17,7 @@ export const allTools: Tool[] = [
         icon: FileStack,
     },
     {
-        path: "/split",
+        path: "/split-pdf",
         name: "Split PDF",
         description: "Extract or split pages into separate PDFs.",
         color: "bg-emerald-600",
