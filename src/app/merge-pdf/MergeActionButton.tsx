@@ -60,7 +60,7 @@ export const MergeActionButton = ({
             {!loading && !alredyMergePdf && (
                 <button
                     onClick={handleMergePdfs}
-                    className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl w-full sm:w-auto font-semibold text-white transition-colors"
+                    className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl w-full sm:w-auto font-semibold text-white transition-colors cursor-pointer"
                 >
                     Merge & Download
                 </button>
@@ -79,7 +79,7 @@ export const MergeActionButton = ({
                     </p>
                     <button
                         onClick={handleMergePdfs}
-                        className="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-2xl w-full font-semibold text-white text-lg transition-colors"
+                        className="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-2xl w-full font-semibold text-white text-lg transition-colors cursor-pointer"
                     >
                         Download Merged PDF
                     </button>
@@ -92,7 +92,7 @@ export const MergeActionButton = ({
                     setProgress(null);
                     window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="flex justify-center items-center gap-2 hover:bg-red-100 px-6 py-3 border border-red-300 rounded-xl w-full sm:w-auto font-medium text-red-600 transition-colors"
+                className="flex justify-center items-center gap-2 hover:bg-red-100 px-6 py-3 border border-red-300 rounded-xl w-full sm:w-auto font-medium text-red-600 transition-colors cursor-pointer"
             >
                 <RotateCcw className="w-4 h-4" />
                 Reset
