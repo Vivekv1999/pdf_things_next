@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
+import { siteConfig } from "../constants/appConstants";
 
 const Footer = () => {
     return (
@@ -11,7 +12,7 @@ const Footer = () => {
                         <div className="col-span-1 md:col-span-2">
                             <div className="flex items-center space-x-2 mb-4">
                                 <FileText className="w-8 h-8 text-blue-400" />
-                                <span className="font-bold text-xl">PDFTools</span>
+                                <span className="font-bold text-xl">{siteConfig.name}</span>
                             </div>
                             <p className="mb-6 max-w-md text-gray-400">
                                 Professional PDF editing tools that work entirely in your browser. Fast, secure, and completely free to
@@ -63,7 +64,7 @@ const Footer = () => {
                     </div>
 
                     <div className="mt-4 pt-4 border-gray-800 border-t text-gray-400 text-center">
-                        <p>&copy; {moment().year()} PDFTools. All rights reserved. Built with ❤️ for better PDF editing.</p>
+                        <p>&copy; {moment().year()} {siteConfig.name}. All rights reserved. Built with ❤️ for better PDF editing.</p>
                     </div>
                 </div>
             </footer>

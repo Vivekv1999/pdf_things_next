@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { siteConfig } from "../constants/appConstants";
 import { allTools, Tool } from "../data/allTools";
 
 const Navbar: React.FC = () => {
@@ -17,7 +18,7 @@ const Navbar: React.FC = () => {
                     href="/"
                     className="font-bold text-indigo-600 text-2xl tracking-tight"
                 >
-                    PDFTools
+                    {siteConfig.name}
                 </Link>
 
                 {/* Desktop menu */}

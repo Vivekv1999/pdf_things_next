@@ -1,3 +1,4 @@
+import { siteConfig } from "@/src/constants/appConstants";
 import { motion } from "framer-motion";
 
 const page = () => {
@@ -10,9 +11,9 @@ const page = () => {
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="mb-6 font-bold text-gray-900 dark:text-gray-100 text-3xl sm:text-4xl">About PDFTools</h2>
+                    <h2 className="mb-6 font-bold text-gray-900 dark:text-gray-100 text-3xl sm:text-4xl">About {siteConfig.name}</h2>
                     <p className="mb-8 text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                        PDFTools is a lightweight, fast and privacy-focused toolkit built for eCommerce sellers, freelancers and
+                        {siteConfig.name} is a lightweight, fast and privacy-focused toolkit built for eCommerce sellers, freelancers and
                         students. Our mission is to provide professional-grade PDF processing tools that respect your privacy and
                         work seamlessly across all devices.
                     </p>
