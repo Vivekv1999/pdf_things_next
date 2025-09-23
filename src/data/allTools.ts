@@ -1,4 +1,4 @@
-import { FileStack, Scissors } from "lucide-react";
+import { Crop, FileMinus2, FileStack, Scissors } from "lucide-react";
 
 export interface Tool {
     path: string;
@@ -22,5 +22,26 @@ export const allTools: Tool[] = [
         description: "Extract or split pages into separate PDFs.",
         color: "bg-emerald-600",
         icon: Scissors,
+    },
+    {
+        path: "/compress-pdf",
+        name: "Compress PDF",
+        description: "Reduce file size without quality loss.",
+        color: "bg-cyan-600",
+        icon: FileMinus2,
+    },
+    {
+        path: "/crop",
+        name: "Crop PDF",
+        description: "Trim margins manually or automatically.",
+        color: "bg-fuchsia-600",
+        icon: Crop,
+    },
+    {
+        path: "/remove-pages",
+        name: "Remove Pages",
+        description: "Delete unwanted pages from your PDF.",
+        color: "bg-rose-600",
+        icon: FileMinus2,
     },
 ];

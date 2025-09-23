@@ -1,3 +1,4 @@
+import ToolWrapper from "@/src/components/ToolWrapper";
 import { siteConfig } from "@/src/constants/appConstants";
 import type { Metadata } from "next";
 import SplitPdf from "./SplitPdf";
@@ -33,7 +34,9 @@ export const metadata: Metadata = {
 export default function Page() {
     return (
         <>
-            <SplitPdf />
+            <ToolWrapper>
+                <SplitPdf />
+            </ToolWrapper>
         </>
     );
 }
