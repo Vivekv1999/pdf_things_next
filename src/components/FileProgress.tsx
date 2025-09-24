@@ -1,8 +1,8 @@
 // components/FileProgress.tsx
 "use client";
 
-import { ProgressUpdate } from "@/src/hooks/useFileHandler";
 import { motion as Motion } from "framer-motion";
+import { ProgressUpdate } from "../types/pdf";
 
 interface FileProgressProps {
     progress: ProgressUpdate | null;

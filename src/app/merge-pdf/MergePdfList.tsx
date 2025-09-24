@@ -17,8 +17,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import DragAndDropInput from "../tools/DragAndDropInput";
-import { PdfMeta } from "./MergePdf";
 import ProcessMergePdf from "./ProcessMergePdf";
+import { PdfMeta } from "@/src/types/pdf";
 
 interface SortableItemProps {
     pdf: PdfMeta;

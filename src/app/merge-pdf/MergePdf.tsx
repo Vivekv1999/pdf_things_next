@@ -2,20 +2,13 @@
 "use client";
 
 import DragAndDropInput from "@/src/components/DragAndDropInput";
-import useFileHandler, { ProgressUpdate } from "@/src/hooks/useFileHandler";
+import useFileHandler from "@/src/hooks/useFileHandler";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { useEffect, useState } from "react";
 import { MergeActionButton } from "./MergeActionButton";
 import { MergePdfList } from "./MergePdfList";
 import ProcessMergePdf from "./ProcessMergePdf";
-
-export interface PdfMeta {
-    id: string;
-    file: File;
-    pageCount: number;
-    bytes: ArrayBuffer;
-    previews: (string | null)[];
-}
+import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 
 const MergePdf = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);

@@ -3,29 +3,15 @@ import pdfjsLib from "@/src/lib/pdfWorker";
 import { PDFDocument } from "pdf-lib";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
-
-export interface ProgressUpdate {
-    fileName: string;
-    completed: number;
-    totalFiles: number;
-    stage: string;
-    percent: number;
-}
-
-export interface PdfMeta {
-    id: string;
-    file: File;
-    pageCount: number;
-    bytes: ArrayBuffer;
-    previews: (string | null)[];
-}
+import { PdfMeta, ProgressUpdate } from "../types/pdf";
 
 type OnLoadFn = (files: PdfMeta[]) => void;
 type OnProgressFn = (update: ProgressUpdate | null) => void;
 
 export default function useFileHandler(
     onLoad?: OnLoadFn,
-    onProgress?: OnProgressFn
+    onProgress?: OnProgressFn,
+    isMultiFile=true
 ) {
     const loadPdfMeta = async (file: File): Promise<Omit<PdfMeta, "id" | "file">> => {
         const bytes = await file.arrayBuffer();
@@ -104,7 +90,9 @@ export default function useFileHandler(
 
     return useCallback(
         async (e: React.ChangeEvent<HTMLInputElement>) => {
-            const fileList = Array.from(e.target.files || []).filter(
+          
+          const allFileArr=isMultiFile? Array.from(e.target.files || []) :  [e.target.files?.[0]]
+            const fileList =allFileArr.filter(
                 (f) => f.type === "application/pdf"
             );
 

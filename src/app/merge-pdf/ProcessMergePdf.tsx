@@ -2,7 +2,7 @@
 "use client";
 
 import { FileProgress } from "@/src/components/FileProgress";
-import { ProgressUpdate } from "@/src/hooks/useFileHandler";
+import { ProgressUpdate } from "@/src/types/pdf";
 
 interface ProcessMergePdfProps {
     progress: ProgressUpdate | null;
