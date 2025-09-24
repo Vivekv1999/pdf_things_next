@@ -11,13 +11,18 @@ type OnProgressFn = (update: ProgressUpdate | null) => void;
 export default function useFileHandler(
     onLoad?: OnLoadFn,
     onProgress?: OnProgressFn,
+    previeAllPages: boolean = false
 ) {
     const loadPdfMeta = async (file: File): Promise<Omit<PdfMeta, "id" | "file">> => {
         const bytes = await file.arrayBuffer();
         const doc = await PDFDocument.load(bytes);
         const pageCount = doc.getPageCount();
 
-        const previews = [await renderPdfPagePreview(file, 1)];
+        const previews = previeAllPages ?
+            await Promise.all(
+                Array.from({ length: pageCount }, (_, i) => renderPdfPagePreview(file, i + 1))
+            ) :
+            [await renderPdfPagePreview(file, 1)];
 
         return { pageCount, bytes, previews };
     };
