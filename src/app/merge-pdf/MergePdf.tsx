@@ -7,8 +7,8 @@ import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { useEffect, useState } from "react";
 import { MergeActionButton } from "./MergeActionButton";
 import { MergePdfList } from "./MergePdfList";
-import ProcessMergePdf from "./ProcessMergePdf";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
+import { ProcessPdf } from "@/src/components/ProcessPdf";
 
 const MergePdf = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
@@ -35,7 +35,7 @@ const MergePdf = () => {
                 <>
                     {progress ? (
                         <div className="mt-48">
-                            <ProcessMergePdf progress={progress} />
+                            <ProcessPdf progress={progress} />
                         </div>
                     ) : (
                         <>

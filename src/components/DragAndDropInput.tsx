@@ -3,9 +3,13 @@ import { ChangeEvent, FC, useState } from "react";
 
 interface DragAndDropInputProps {
     handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    multiFile?: boolean
 }
 
-const DragAndDropInput: FC<DragAndDropInputProps> = ({ handleFileChange }) => {
+const DragAndDropInput: FC<DragAndDropInputProps> = ({
+    handleFileChange,
+    multiFile = true
+}) => {
     const [isDragging, setIsDragging] = useState(false);
 
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -54,7 +58,7 @@ const DragAndDropInput: FC<DragAndDropInputProps> = ({ handleFileChange }) => {
             <input
                 id="pdf-upload"
                 type="file"
-                multiple
+                multiple={multiFile}
                 accept="application/pdf"
                 onChange={handleFileChange}
                 className="hidden"

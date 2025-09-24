@@ -16,9 +16,9 @@ import {
     useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import DragAndDropInput from "../tools/DragAndDropInput";
-import ProcessMergePdf from "./ProcessMergePdf";
 import { PdfMeta } from "@/src/types/pdf";
+import DragAndDropInput from "@/src/components/DragAndDropInput";
+import { ProcessPdf } from "@/src/components/ProcessPdf";
 
 interface SortableItemProps {
     pdf: PdfMeta;
@@ -137,7 +137,7 @@ export const MergePdfList = ({
 
             <div className="my-10">
                 {progress ? (
-                    <ProcessMergePdf progress={progress} />
+                    <ProcessPdf progress={progress} />
                 ) : (
                     <DragAndDropInput handleFileChange={handleFiles} />
                 )}

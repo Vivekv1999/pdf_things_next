@@ -11,7 +11,6 @@ type OnProgressFn = (update: ProgressUpdate | null) => void;
 export default function useFileHandler(
     onLoad?: OnLoadFn,
     onProgress?: OnProgressFn,
-    isMultiFile=true
 ) {
     const loadPdfMeta = async (file: File): Promise<Omit<PdfMeta, "id" | "file">> => {
         const bytes = await file.arrayBuffer();
@@ -90,9 +89,9 @@ export default function useFileHandler(
 
     return useCallback(
         async (e: React.ChangeEvent<HTMLInputElement>) => {
-          
-          const allFileArr=isMultiFile? Array.from(e.target.files || []) :  [e.target.files?.[0]]
-            const fileList =allFileArr.filter(
+
+            // const allFileArr = isMultiFile ? Array.from(e.target.files || []) : [e.target.files?.[0]]
+            const fileList = Array.from(e.target.files || []).filter(
                 (f) => f.type === "application/pdf"
             );
 

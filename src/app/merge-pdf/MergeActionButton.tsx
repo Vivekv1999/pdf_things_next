@@ -4,7 +4,8 @@ import LoadingDownload from "@/src/components/LoadingDownload";
 import useMergePdfs from "@/src/hooks/useMergePdfs";
 import { CheckCircle, RotateCcw } from "lucide-react";
 import { useEffect } from "react";
-import { PdfMeta } from "./page";
+import ProcessComplete from "@/src/components/ProcessComplete";
+import { PdfMeta } from "@/src/types/pdf";
 
 interface MergeActionButtonProps {
     pdfs: PdfMeta[];
@@ -69,21 +70,12 @@ export const MergeActionButton = ({
             {loading && <LoadingDownload progress={progress} messages={messages} />}
 
             {alredyMergePdf && !loading && (
-                <div className="p-6 rounded-2xl w-full max-w-md text-center">
-                    <CheckCircle className="mx-auto mb-3 w-12 h-12 text-green-600" />
-                    <h3 className="mb-2 font-semibold text-gray-800 text-xl">
-                        Merge Complete
-                    </h3>
-                    <p className="mb-4 text-gray-500">
-                        {pdfs.length} files merged successfully
-                    </p>
-                    <button
-                        onClick={handleMergePdfs}
-                        className="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-2xl w-full font-semibold text-white text-lg transition-colors cursor-pointer"
-                    >
-                        Download Merged PDF
-                    </button>
-                </div>
+                <ProcessComplete
+                    message="Merge Complete"
+                    title={`${pdfs.length} files merged successfully`}
+                    onDownload={handleMergePdfs}
+                    buttonLabel=" Download Merged PDF"
+                />
             )}
 
             <button
