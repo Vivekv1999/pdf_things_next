@@ -21,7 +21,7 @@ export const PdfPreview = ({ pdfs, showAllPages = false, handleRemove }: PdfPrev
             {pdfs?.map((pdf, idx) => (
                 <div
                     key={pdf.id}
-                    className="bg-white hover:bg-gray-50 shadow p-2 border border-gray-300 rounded-xl w-[18%] min-w-[11rem] sm:min-w-[12rem] md:min-w-[13rem] max-w-[14rem] sm:max-w-[15rem] md:max-w-[16rem]"
+                    className="bg-white hover:bg-gray-50 shadow p-2 border border-gray-300 rounded-xl w-[18%] min-w-[11rem] sm:min-w-[12rem] md:min-w-[13rem] max-w-[14rem] sm:max-w-[15rem] md:max-w-[16rem] h-60 md:h-64"
                 >
                     {handleRemove && (
                         <button
