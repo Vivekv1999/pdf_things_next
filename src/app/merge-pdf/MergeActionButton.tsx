@@ -1,11 +1,12 @@
 "use client";
 
 import LoadingDownload from "@/src/components/LoadingDownload";
-import useMergePdfs from "@/src/hooks/useMergePdfs";
-import { CheckCircle, RotateCcw } from "lucide-react";
-import { useEffect } from "react";
 import ProcessComplete from "@/src/components/ProcessComplete";
+import { Button } from "@/src/components/ui/button";
+import useMergePdfs from "@/src/hooks/useMergePdfs";
 import { PdfMeta } from "@/src/types/pdf";
+import { RotateCcw } from "lucide-react";
+import { useEffect } from "react";
 
 interface MergeActionButtonProps {
     pdfs: PdfMeta[];
@@ -59,12 +60,12 @@ export const MergeActionButton = ({
     return (
         <div className="flex sm:flex-row flex-col justify-center items-center gap-3 mt-28">
             {!loading && !alredyMergePdf && (
-                <button
+                <Button
                     onClick={handleMergePdfs}
-                    className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl w-full sm:w-auto font-semibold text-white transition-colors cursor-pointer"
+                    className="bg-[#4f3df7] hover:bg-[#4f3df7]/90 rounded-lg text-white"
                 >
                     Merge & Download
-                </button>
+                </Button>
             )}
 
             {loading && <LoadingDownload progress={progress} messages={messages} />}
@@ -78,17 +79,18 @@ export const MergeActionButton = ({
                 />
             )}
 
-            <button
+            <Button
+                variant="outline"
+                className="hover:bg-red-50 border-red-300 rounded-lg text-red-500 hover:text-red-600"
                 onClick={() => {
                     setPdfs([]);
                     setProgress(null);
                     window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="flex justify-center items-center gap-2 hover:bg-red-100 px-6 py-3 border border-red-300 rounded-xl w-full sm:w-auto font-medium text-red-600 transition-colors cursor-pointer"
             >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="size-4" />
                 Reset
-            </button>
+            </Button>
         </div>
     );
 };
