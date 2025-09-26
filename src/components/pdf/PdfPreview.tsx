@@ -8,7 +8,11 @@ interface PdfPreviewProps {
     handleRemove?: (id: string) => void;
 }
 
-export const PdfPreview = ({ pdfs, showAllPages = false, handleRemove }: PdfPreviewProps) => {
+export const PdfPreview = ({
+    pdfs,
+    showAllPages = false,
+    handleRemove
+}: PdfPreviewProps) => {
 
     function formatFileSize(bytes: number) {
         if (bytes < 1024) return `${bytes} B`;
