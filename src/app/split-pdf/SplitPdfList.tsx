@@ -2,6 +2,7 @@
 
 import PdfPagePreview from "@/src/components/pdf/PdfPagePreview";
 import { Button } from "@/src/components/ui/button";
+import useSort from "@/src/hooks/useSortPdf";
 import useSplitPdf from "@/src/hooks/useSplitPdf";
 import { PdfMeta } from "@/src/types/pdf";
 import { FileIcon } from "lucide-react";
@@ -24,6 +25,25 @@ const SplitPdfList = ({
 
 
     const { splitPdf, loading, result } = useSplitPdf(pdfs?.[0], removeOption, customPages)
+
+
+    const { sortedPages, reorderPdf } = useSort(pdfs?.[0]?.bytes);
+
+
+    const handleDownload = async () => {
+        const bytes = await reorderPdf();
+        if (!bytes) return;
+
+        const blob = new Blob([bytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "sorted.pdf";
+        a.click();
+
+        URL.revokeObjectURL(url);
+    };
 
 
     const parseParts = (input: string, total: number): Part[] => {
