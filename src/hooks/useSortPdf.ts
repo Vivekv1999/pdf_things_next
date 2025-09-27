@@ -12,6 +12,7 @@ function useSort(pdfBytes: ArrayBuffer | null) {
   const [sortedPages, setSortedPages] = useState<PageText[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const isPersonal = true
 
   useEffect(() => {
     if (!pdfBytes) return;
@@ -73,10 +74,17 @@ function useSort(pdfBytes: ArrayBuffer | null) {
     return "";
   };
 
+  const normalizeSKU = (sku: string): string => {
+    return sku
+      .replace(/^zz-/, "hh-")
+      .replace(/^gg-/, "hh-");
+  };
 
   const sortPagesBySKU = (pageTexts: PageText[]) =>
     pageTexts.sort((a, b) => {
-      return a.sku.localeCompare(b.sku); // Sort based on the SKU
+      return isPersonal ?
+        normalizeSKU(a.sku).localeCompare(normalizeSKU(b.sku)) //this is for me Only not for ALL USER
+        : a.sku.localeCompare(b.sku); // Sort based on the SKU
     });
 
   const reorderPdf = async () => {
