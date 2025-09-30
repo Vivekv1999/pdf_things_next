@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 
     return (
         <header className="top-0 z-50 sticky bg-white shadow">
-            <nav className="flex justify-between items-center mx-auto px-4 py-3 max-w-7xl">
+            <nav className="flex justify-between items-center mx-auto px-4 py-6 max-w-7xl">
                 <Link
                     href="/"
                     className="font-bold text-indigo-600 text-2xl tracking-tight"
@@ -23,16 +23,21 @@ const Navbar: React.FC = () => {
 
                 {/* Desktop menu */}
                 <div className="hidden md:flex items-center gap-6">
-                    {allTools.slice(0, 5).map(({ path, name }: Tool) => (
+                    {allTools.slice(0, 5).map(({ path, name, isNew }: Tool) => (
                         <Link
                             key={path}
                             href={path}
-                            className={`text-sm font-medium px-2 py-1 rounded transition-colors duration-200 ${pathname === path
+                            className={`text-sm font-medium px-2 py-1 rounded transition-colors duration-200 relative ${pathname === path
                                 ? "text-indigo-600 bg-indigo-50"
                                 : "text-gray-600 hover:text-indigo-600 hover:bg-gray-100"
                                 }`}
                         >
                             {name}
+                            {isNew && (
+                                <span className="top-[-15] right-[-10] absolute bg-green-100 ml-1 px-2 py-0.5 rounded-full font-semibold text-green-700 text-xs">
+                                    NEW
+                                </span>
+                            )}
                         </Link>
                     ))}
                 </div>

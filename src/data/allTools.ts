@@ -1,4 +1,4 @@
-import { Crop, FileMinus2, FileStack, Scissors } from "lucide-react";
+import { Crop, FileMinus2, FileStack, Scissors, ShoppingCart } from "lucide-react";
 
 export interface Tool {
     path: string;
@@ -6,9 +6,18 @@ export interface Tool {
     description: string;
     color: string;
     icon: React.ComponentType<{ className?: string }>;
+    isNew?: boolean
 }
 
 export const allTools: Tool[] = [
+    {
+        path: "/ecommerce",
+        name: "Ecommerce Tools",
+        description: "Optimize your product listings and sales quickly.",
+        color: "bg-green-500",
+        icon: ShoppingCart,
+        isNew: true,
+    },
     {
         path: "/merge-pdf",
         name: "Merge PDF",

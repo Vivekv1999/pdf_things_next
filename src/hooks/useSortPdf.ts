@@ -19,6 +19,8 @@ function useSort(pdfBytes: ArrayBuffer | null) {
 
     const loadAndSortPdf = async () => {
       try {
+        const start = performance.now();
+
         const typedarray = new Uint8Array(cloneArrayBuffer(pdfBytes));
         const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
 
@@ -27,10 +29,11 @@ function useSort(pdfBytes: ArrayBuffer | null) {
 
         // Sort pages by SKU
         const sorted = sortPagesBySKU(pageTexts);
-        console.log(sorted?.map((v) => v?.sku), "test---skuu");
 
         setSortedPages(sorted);
         setIsLoading(false);
+        const end = performance.now();
+        console.log(`sorting took ${(end - start).toFixed(2)} ms`);
       } catch (err) {
         setError(err as Error);
         setIsLoading(false);
@@ -53,7 +56,6 @@ function useSort(pdfBytes: ArrayBuffer | null) {
 
       // Attempt to extract SKU based on the layout of the PDF (no keyword matching)
       const sku = extractSKUFromText(pageText);  // Use full text, not based on specific keywords
-      console.log('sku', sku)
 
       pageTexts.push({ pageIndex: i, text: pageText, sku });
     }
