@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
                         <Link
                             key={path}
                             href={path}
-                            className={`text-sm font-medium px-2 py-1 rounded transition-colors duration-200 relative ${pathname === path
+                            className={`text-sm font-medium px-2 py-2 rounded transition-colors duration-200 relative ${pathname?.includes(path)
                                 ? "text-indigo-600 bg-indigo-50"
                                 : "text-gray-600 hover:text-indigo-600 hover:bg-gray-100"
                                 }`}
