@@ -7,6 +7,7 @@ export default function useSplitPdf(
     pdf: { bytes: Uint8Array; pageCount: number },
     removeOption: RemoveOption,
     customPages?: string,
+     setProgress?: (value: number) => void
 ) {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState<Blob | null>(null);
@@ -89,19 +90,21 @@ export default function useSplitPdf(
 
     const splitPdf = async () => {
         setLoading(true);
+        setProgress?.(0);
         try {
             const srcDoc = await PDFDocument.load(pdf.bytes);
 
             if (removeOption === "custom" && customPages) {
                 // Multiple PDFs
                 const groups = parseCustomRanges(customPages, pdf.pageCount);
+                const totalGroups = groups.length;
 
                 for (let idx = 0; idx < groups.length; idx++) {
                     const newDoc = await PDFDocument.create();
                     const copied = await newDoc.copyPages(srcDoc, groups[idx]);
                     copied.forEach((p) => newDoc.addPage(p));
 
-                    const newBytes = await newDoc.save();
+                    const newBytes = await newDoc.save() as Uint8Array<ArrayBuffer>;
                     const blob = new Blob([newBytes], { type: "application/pdf" });
 
                     // auto-download
@@ -111,6 +114,9 @@ export default function useSplitPdf(
                     link.download = `split_part_${idx + 1}.pdf`;
                     link.click();
                     URL.revokeObjectURL(url);
+
+                      const percent = Math.round(((idx + 1) / totalGroups) * 100);
+                    setProgress?.(percent);
                 }
             } else {
                 // Original remove-based splitting (odd/even/all)
@@ -123,7 +129,7 @@ export default function useSplitPdf(
                 const copied = await newDoc.copyPages(srcDoc, pagesToKeep);
                 copied.forEach((page) => newDoc.addPage(page));
 
-                const newBytes = await newDoc.save();
+                const newBytes = await newDoc.save() as Uint8Array<ArrayBuffer>
                 const blob = new Blob([newBytes], { type: "application/pdf" });
                 setResult(blob);
 

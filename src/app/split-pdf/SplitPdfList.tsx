@@ -7,12 +7,22 @@ import useSplitPdf from "@/src/hooks/useSplitPdf";
 import { PdfMeta } from "@/src/types/pdf";
 import { FileIcon } from "lucide-react";
 import { useState } from "react";
-import SplitActionButton from "./SplitActionButton";
+import { downloadPdf } from "@/src/utils/downloadFile";
+import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
 
 interface SplitPdfListProps {
     pdfs: PdfMeta[];
     setPdfs: React.Dispatch<React.SetStateAction<PdfMeta[]>>;
 }
+
+const messages = [
+    "Analyzing your PDF pages 🔍",
+    "Cutting your document into perfect parts ✂️",
+    "Sorting split files neatly 📑",
+    // "Optimizing and preparing download ⚡",
+    "Almost there… finishing touches 🚀",
+];
+
 
 const SplitPdfList = ({
     pdfs,
@@ -20,34 +30,15 @@ const SplitPdfList = ({
 }: SplitPdfListProps) => {
     const [removeOption, setRemoveOption] = useState("custom");
     const [customPages, setCustomPages] = useState("");
+    const [progress, setProgress] = useState(0)
 
     const totalPages = pdfs?.[0]?.pageCount
 
 
-    const { splitPdf, loading, result } = useSplitPdf(pdfs?.[0], removeOption, customPages)
+    const { splitPdf, loading, result } = useSplitPdf(pdfs?.[0], removeOption, customPages, setProgress)
 
-
-    const { sortedPages, reorderPdf } = useSort(pdfs?.[0]?.bytes);
-
-
-    const handleDownload = async () => {
-        const bytes = await reorderPdf();
-        if (!bytes) return;
-
-        const blob = new Blob([bytes], { type: "application/pdf" });
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "sorted.pdf";
-        a.click();
-
-        URL.revokeObjectURL(url);
-    };
-
-
-    const parseParts = (input: string, total: number): Part[] => {
-        const parts: Part[] = [];
+    const parseParts = (input: string, total: number): any => {
+        const parts: any = [];
         input.split(",").forEach((raw) => {
             let part = raw.trim();
             console.log(part, "part");
@@ -87,7 +78,9 @@ const SplitPdfList = ({
                 <div className="gap-5 grid grid-cols-2 sm:grid-cols-4">
                     <Button
                         variant="default"
-                        onClick={() => setRemoveOption("odd")}
+                        onClick={() =>
+                            setRemoveOption("odd")
+                        }
                         className={`rounded px-3 py-2 border text-sm font-medium ${removeOption === "odd" ? "bg-indigo-600 text-white" : "bg-white border-gray-300 text-black"}`}
                     >
                         Split Odd Pages
@@ -123,9 +116,10 @@ const SplitPdfList = ({
                 </div>
             </div>
 
-            {removeOption === "custom" && customPages?.length > 0 &&
+            {
+                removeOption === "custom" && customPages?.length > 0 &&
                 <div className="flex flex-wrap justify-center gap-6 p-4 border border-gray-300 rounded-lg">
-                    {parts.map((part, index) => (
+                    {parts.map((part: any, index: any) => (
                         <div
                             key={index}
                             className="flex flex-col items-center bg-white shadow-sm hover:shadow-md p-6 border rounded-xl w-56 text-center transition"
@@ -160,17 +154,24 @@ const SplitPdfList = ({
                 </div>
             }
 
-
-
             <PdfPagePreview
-                pagePreviews={pdfs?.[0]?.previews}
+                pdfPage={pdfs}
             />
 
-            <SplitActionButton
-                splitPdf={splitPdf}
+            <PdfActionButton
+                pdfs={pdfs}
                 setPdfs={setPdfs}
+                setProgress={setProgress}
+                handleButtonAction={splitPdf}
+                loading={loading}
+                progress={progress}
+                messages={messages}
+                beforActionButtonLable={"beforActionButtonLable"}
+                completeTitle={"completeTitle"}
+                completeButtonLable={"completeButtonLable"}
+                completedMessage={"completedMessage"}
             />
-        </div>
+        </div >
     )
 }
 

@@ -7,16 +7,22 @@ import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import SplitPdfList from "./SplitPdfList";
+import { resetGeneral, setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
+import { useAppDispatch } from "@/src/lib/hooks";
 
 const SplitPdf = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
     const [progress, setProgress] = useState<ProgressUpdate | null>(null);
+    const dispatch = useAppDispatch();
 
 
     useEffect(() => {
         if (!pdfs.length) {
             setProgress(null);
         }
+        dispatch(resetGeneral())
+
+
     }, [pdfs]);
 
     const handleFiles = useFileHandler(
@@ -26,7 +32,6 @@ const SplitPdf = () => {
         (update: ProgressUpdate | null) => setProgress(update),
         true
     );
-    console.log(pdfs, "pdfssssssss");
 
     return (
         <>
