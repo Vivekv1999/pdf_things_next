@@ -1,9 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
+import generalSlice from "./redux/generalSlice";
 
 export const makeStore = () => {
     return configureStore({
-        reducer: {},
-    })
+        reducer: {
+            general: generalSlice,
+        },
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware({
+                serializableCheck: false,
+            }),
+    })  
 }
 
 // Infer the type of makeStore

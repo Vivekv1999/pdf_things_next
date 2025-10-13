@@ -20,11 +20,9 @@ const LoadingDownload = ({ progress = 0, messages }: LoadingDownloadProps) => {
     return (
         <div className="flex flex-col justify-center items-center space-y-6 h-64">
             {/* Spinning loader */}
-            <Motion.div
-                className="border-4 border-indigo-600 border-t-transparent rounded-full w-16 h-16"
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-            />
+            <div className="animate-spin inline-block size-14 border-4 border-current border-t-transparent text-indigo-600 rounded-full mb-18" role="status" aria-label="loading">
+                <span className="sr-only">Loading...</span>
+            </div>
 
             {/* Progress bar */}
             <div className="bg-gray-200 rounded-full w-64 h-2 overflow-hidden">
