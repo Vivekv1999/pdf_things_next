@@ -1,47 +1,59 @@
 import { PDFDocument } from "pdf-lib";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import pdfjsLib from "../lib/pdfWorker";
 
 interface PageText {
   pageIndex: number;
   text: string;
-  sku: string; // Just to store the extracted SKU
+  sku: string;
 }
 
-function useSort(pdfBytes: ArrayBuffer | null) {
+function useSort() {
   const [sortedPages, setSortedPages] = useState<PageText[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const isPersonal = true
+  const isPersonal = true;
 
-  useEffect(() => {
-    if (!pdfBytes) return;
+  const reorderPdf = async (pdfBytes: ArrayBuffer | null) => {
+    if (!pdfBytes) return null;
 
-    const loadAndSortPdf = async () => {
-      try {
-        const start = performance.now();
+    try {
+      setIsLoading(true);
+      setError(null);
 
-        const typedarray = new Uint8Array(cloneArrayBuffer(pdfBytes));
-        const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
+      const start = performance.now();
 
-        // Extract text and SKU using position info
-        const pageTexts = await extractTextFromPdf(pdf);
+      const typedarray = new Uint8Array(cloneArrayBuffer(pdfBytes));
+      const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
 
-        // Sort pages by SKU
-        const sorted = sortPagesBySKU(pageTexts);
+      const pageTexts = await extractTextFromPdf(pdf);
 
-        setSortedPages(sorted);
-        setIsLoading(false);
-        const end = performance.now();
-        console.log(`sorting took ${(end - start).toFixed(2)} ms`);
-      } catch (err) {
-        setError(err as Error);
-        setIsLoading(false);
+      const sorted = sortPagesBySKU(pageTexts);
+      const removeEmptySKUPages=sorted?.filter((v)=>v?.sku!=="")
+      
+      setSortedPages(removeEmptySKUPages);
+
+      const srcDoc = await PDFDocument.load(cloneArrayBuffer(pdfBytes));
+      const pdfDoc = await PDFDocument.create();
+
+      for (const sortedPage of removeEmptySKUPages) {
+        const [copiedPage] = await pdfDoc.copyPages(srcDoc, [sortedPage.pageIndex]);
+        pdfDoc.addPage(copiedPage);
       }
-    };
 
-    loadAndSortPdf();
-  }, [pdfBytes]);
+      const bytes = await pdfDoc.save();
+
+      const end = performance.now();
+      console.log(`sorting took ${(end - start).toFixed(2)} ms`);
+
+      setIsLoading(false);
+      return bytes;
+    } catch (err) {
+      setError(err as Error);
+      setIsLoading(false);
+      return null;
+    }
+  };
 
   const extractTextFromPdf = async (pdf: any): Promise<PageText[]> => {
     const pageTexts: PageText[] = [];
@@ -49,27 +61,25 @@ function useSort(pdfBytes: ArrayBuffer | null) {
     for (let i = 0; i < pdf.numPages; i++) {
       const page = await pdf.getPage(i + 1);
       const textContent = await page.getTextContent();
-
-      // Extract text items along with their position (transform)
       const textItems = textContent.items;
       const pageText = textItems.map((item: any) => item.str).join(" ");
-
-      // Attempt to extract SKU based on the layout of the PDF (no keyword matching)
-      const sku = extractSKUFromText(pageText);  // Use full text, not based on specific keywords
-
+      console.log(pageText,"pageText",i);
+      
+      const sku = extractSKUFromTextMeesho(pageText);
       pageTexts.push({ pageIndex: i, text: pageText, sku });
     }
 
     return pageTexts;
   };
 
-  const extractSKUFromText = (text: string): string => {
-    const start = text.indexOf("Order No.");
-    const end = text.indexOf("Free Size");
 
+  const extractSKUFromTextMeesho = (text: string): string => {
+    const startFormString="Color   Order No."
+    const start = text.indexOf(startFormString);
+    const end = text.indexOf("Free Size");
+    
     if (start !== -1 && end !== -1 && start < end) {
-      // Extract everything between 'Order No.' and 'Free Size'
-      const between = text.substring(start + "Order No.".length, end).trim();
+      const between = text.substring(start + startFormString.length, end).trim();
       return between;
     }
 
@@ -83,31 +93,13 @@ function useSort(pdfBytes: ArrayBuffer | null) {
   };
 
   const sortPagesBySKU = (pageTexts: PageText[]) =>
-    pageTexts.sort((a, b) => {
-      return isPersonal ?
-        normalizeSKU(a.sku).localeCompare(normalizeSKU(b.sku)) //this is for me Only not for ALL USER
-        : a.sku.localeCompare(b.sku); // Sort based on the SKU
-    });
+    pageTexts.sort((a, b) =>
+      isPersonal
+        ? normalizeSKU(a.sku).localeCompare(normalizeSKU(b.sku))
+        : a.sku.localeCompare(b.sku)
+    );
 
-  const reorderPdf = async () => {
-    if (!pdfBytes) return null;
-
-    const cloned = cloneArrayBuffer(pdfBytes); // Make a fresh copy
-    const srcDoc = await PDFDocument.load(cloned);
-    const pdfDoc = await PDFDocument.create();
-
-    // Reorder pages based on the sorted order
-    for (let sortedPage of sortedPages) {
-      const [copiedPage] = await pdfDoc.copyPages(srcDoc, [sortedPage.pageIndex]);
-      pdfDoc.addPage(copiedPage);
-    }
-
-    return await pdfDoc.save(); // Return the new ordered PDF
-  };
-
-  function cloneArrayBuffer(buf: ArrayBuffer) {
-    return buf.slice(0); // Makes a fresh copy of the ArrayBuffer
-  }
+  const cloneArrayBuffer = (buf: ArrayBuffer) => buf.slice(0);
 
   return { sortedPages, isLoading, error, reorderPdf };
 }

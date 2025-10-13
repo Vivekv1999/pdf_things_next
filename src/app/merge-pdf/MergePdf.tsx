@@ -27,7 +27,6 @@ const MergePdf = () => {
             setPdfs((prev) => [...prev, ...files]);
         },
         (update: ProgressUpdate | null) => setProgress(update),
-        { needPreview: true }
     );
 
     return (

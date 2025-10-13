@@ -8,33 +8,21 @@ import { PdfMeta, ProgressUpdate } from "../types/pdf";
 type OnLoadFn = (files: PdfMeta[]) => void;
 type OnProgressFn = (update: ProgressUpdate | null) => void;
 
-interface FileHandlerOptions {
-    previewAllPages?: boolean; // generate previews for all pages?
-    needPreview?: boolean;     // generate any preview at all?
-}
-
 export default function useFileHandler(
     onLoad?: OnLoadFn,
     onProgress?: OnProgressFn,
-    options: FileHandlerOptions = { previewAllPages: false, needPreview: false }
+    previeAllPages: boolean = false
 ) {
-    const { previewAllPages, needPreview } = options;
-
     const loadPdfMeta = async (file: File): Promise<Omit<PdfMeta, "id" | "file">> => {
         const bytes = await file.arrayBuffer();
         const doc = await PDFDocument.load(bytes);
         const pageCount = doc.getPageCount();
-        let previews: (string | null)[] = [];
 
-        if (needPreview) {
-            previews = previewAllPages
-                ? await Promise.all(
-                    Array.from({ length: pageCount }, (_, i) =>
-                        renderPdfPagePreview(file, i + 1)
-                    )
-                )
-                : [await renderPdfPagePreview(file, 1)];
-        }
+        const previews = previeAllPages ?
+            await Promise.all(
+                Array.from({ length: pageCount }, (_, i) => renderPdfPagePreview(file, i + 1))
+            ) :
+            [await renderPdfPagePreview(file, 1)];
 
         return { pageCount, bytes, previews };
     };

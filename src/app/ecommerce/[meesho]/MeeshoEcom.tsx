@@ -7,17 +7,28 @@ import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import MeeshoEcomList from "./MeeshoEcomList";
+import MeeshoEcomWorkflowSteps from "./MeeshoEcomWorkflowSteps";
+import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
+import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 
 const MeeshoEcom = () => {
-
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
     const [progress, setProgress] = useState<ProgressUpdate | null>(null);
+    const dispatch = useAppDispatch();
+    const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
 
 
     useEffect(() => {
         if (!pdfs.length) {
             setProgress(null);
         }
+
+        return () => {
+            if (alredyMergePdf) {
+                dispatch(setAlredyMergePdf(null))
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pdfs]);
 
     const handleFiles = useFileHandler(
@@ -53,8 +64,9 @@ const MeeshoEcom = () => {
                         pdfs={pdfs}
                         setPdfs={setPdfs}
                     />
-                )}
-
+                )
+            }
+            {/* <MeeshoEcomWorkflowSteps /> */}
         </>
     )
 }

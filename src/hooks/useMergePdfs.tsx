@@ -38,7 +38,7 @@ export default function useMergePdfs() {
             setProgress(Math.round(((i + 0.8) / pdfs.length) * 100));
         }
 
-        const mergedBytes = await merged.save();
+        const mergedBytes = await merged.save() as Uint8Array<ArrayBuffer>
         const blob = new Blob([mergedBytes], { type: "application/pdf" });
         const objectUrl = URL.createObjectURL(blob);
 

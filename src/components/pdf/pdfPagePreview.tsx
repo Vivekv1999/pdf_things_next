@@ -2,23 +2,23 @@
 
 
 interface PdfPagePreviewProps {
-    pagePreviews: any;
+    pdfPage: any;
     handleRemove?: (id: string) => void;
     removedIndexes?: any,
     showRemovedIcon?: boolean
 }
 
-const PdfPagePreview = ({ pagePreviews, handleRemove, removedIndexes, showRemovedIcon = false }: PdfPagePreviewProps) => {
+const PdfPagePreview = ({ pdfPage, handleRemove, removedIndexes, showRemovedIcon = false }: PdfPagePreviewProps) => {
 
     return (
         <div className="flex flex-wrap justify-center gap-4 mx-auto p-4 max-w-7xl">
-            {pagePreviews?.map((pdfUrl, idx) => {
+            {pdfPage?.map((pdfUrl: any, idx: any) => {
                 const isRemoved = showRemovedIcon && removedIndexes?.includes(idx);
                 return (
                     <div
                         key={idx}
                         className="relative bg-white hover:bg-gray-50 shadow p-2 border rounded-xl w-[18%] min-w-[11rem] sm:min-w-[12rem] md:min-w-[13rem] max-w-[14rem] sm:max-w-[15rem] md:max-w-[16rem] h-60 md:h-64 transition"
-                        onClick={() => handleRemove(idx)}
+                        onClick={() => handleRemove && handleRemove(idx)}
                     >
                         {/* Remove / Undo button */}
                         <button
@@ -69,8 +69,8 @@ const PdfPagePreview = ({ pagePreviews, handleRemove, removedIndexes, showRemove
                         {/* Page content */}
                         <div className="relative mb-2 rounded-lg">
                             <img
-                                key={pdfUrl}
-                                src={pdfUrl || "/placeholder.png"}
+                                key={pdfUrl?.id}
+                                src={pdfUrl?.previews?.[0] || "/placeholder.png"}
                                 alt={`PDF ${idx + 1} page ${idx + 1}`}
                                 className={`mb-2 rounded w-full h-36 sm:h-40 md:h-44 object-contain transition ${isRemoved ? "opacity-40" : ""
                                     }`}
@@ -91,6 +91,10 @@ const PdfPagePreview = ({ pagePreviews, handleRemove, removedIndexes, showRemove
                                 </div>
                             )}
                         </div>
+                        <p className="mb-1 text-gray-800 text-xs truncate">{pdfUrl.file.name}</p>
+                        <p className="text-gray-500 text-xs">
+                            {pdfUrl.pageCount} page{pdfUrl.pageCount > 1 ? "s" : ""}
+                        </p>
                     </div>
                 );
             })}
