@@ -3,14 +3,11 @@
 import LoadingDownload from "@/src/components/LoadingDownload";
 import ProcessComplete from "@/src/components/ProcessComplete";
 import { Button } from "@/src/components/ui/button";
-import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
-import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
+import { useAppSelector } from "@/src/lib/hooks";
 import { PdfMeta } from "@/src/types/pdf";
 import { RotateCcw } from "lucide-react";
-import { useEffect } from "react";
 
 interface PdfActionButtonProps {
-    pdfs: PdfMeta[];
     setPdfs: React.Dispatch<React.SetStateAction<PdfMeta[]>>;
     setProgress: React.Dispatch<React.SetStateAction<any>>;
     handleButtonAction: () => void;
@@ -24,7 +21,6 @@ interface PdfActionButtonProps {
 }
 
 export const PdfActionButton = ({
-    pdfs,
     setPdfs,
     setProgress,
     handleButtonAction,

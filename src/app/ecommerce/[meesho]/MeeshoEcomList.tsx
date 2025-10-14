@@ -1,16 +1,13 @@
+import { PdfActionButton } from '@/src/components/pdf/PdfActionButton';
+import PdfPagePreview from '@/src/components/pdf/PdfPagePreview';
 import useMergePdfs from '@/src/hooks/useMergePdfs';
 import useSort from '@/src/hooks/useSortPdf';
-import { PdfMeta } from '@/src/types/pdf';
-import React, { useState } from 'react';
-import SplitActionButton from '../../split-pdf/SplitActionButton';
-import { downloadPdf } from '@/src/utils/downloadFile';
-import LoadingDownload from '@/src/components/LoadingDownload';
-import { randomIntBetween } from '@/src/utils/randomNumberBetween';
-import { MeeshoSortLabelActionButton } from './MeeshoSortLabelActionButton';
 import { useAppDispatch, useAppSelector } from '@/src/lib/hooks';
 import { setAlredyMergePdf } from '@/src/lib/redux/generalSlice';
-import PdfPagePreview from '@/src/components/pdf/PdfPagePreview';
-import MeeshoEcomWorkflowSteps from './MeeshoEcomWorkflowSteps';
+import { PdfMeta } from '@/src/types/pdf';
+import { downloadPdf } from '@/src/utils/downloadFile';
+import { randomIntBetween } from '@/src/utils/randomNumberBetween';
+import React, { useState } from 'react';
 
 
 interface MeeshoPdfListProps {
@@ -72,14 +69,21 @@ const MeeshoEcomList = ({
                 />
             }
 
-            <MeeshoSortLabelActionButton
-                pdfs={pdfs}
+            <PdfActionButton
                 setPdfs={setPdfs}
                 setProgress={setProgress}
                 handleButtonAction={meregeAndSortBySKU}
                 loading={loading}
                 progress={progress}
                 messages={messages}
+                beforActionButtonLable={
+                    pdfs.length > 1 ?
+                        "Merge & Sort by SKU label" :
+                        "Sort By SKU & Download"
+                }
+                completedMessage="Meesho lable sorting Complete"
+                completeTitle={`${pdfs.length} files sorted by SKU successfully`}
+                completeButtonLable="Download Sorted PDF"
             />
         </>
     )

@@ -1,14 +1,12 @@
 "use client"
 
+import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
 import PdfPagePreview from "@/src/components/pdf/PdfPagePreview";
 import { Button } from "@/src/components/ui/button";
-import useSort from "@/src/hooks/useSortPdf";
 import useSplitPdf from "@/src/hooks/useSplitPdf";
 import { PdfMeta } from "@/src/types/pdf";
 import { FileIcon } from "lucide-react";
 import { useState } from "react";
-import { downloadPdf } from "@/src/utils/downloadFile";
-import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
 
 interface SplitPdfListProps {
     pdfs: PdfMeta[];
@@ -35,13 +33,12 @@ const SplitPdfList = ({
     const totalPages = pdfs?.[0]?.pageCount
 
 
-    const { splitPdf, loading, result } = useSplitPdf(pdfs?.[0], removeOption, customPages, setProgress)
+    const { splitPdf, loading } = useSplitPdf(pdfs?.[0], removeOption, customPages, setProgress)
 
     const parseParts = (input: string, total: number): any => {
         const parts: any = [];
-        input.split(",").forEach((raw) => {
-            let part = raw.trim();
-            console.log(part, "part");
+        input.split(",").forEach((raw: any) => {
+            const part = raw.trim();
 
             if (!part) return;
 
@@ -159,7 +156,6 @@ const SplitPdfList = ({
             />
 
             <PdfActionButton
-                pdfs={pdfs}
                 setPdfs={setPdfs}
                 setProgress={setProgress}
                 handleButtonAction={splitPdf}
