@@ -9,7 +9,7 @@ import { RotateCcw } from "lucide-react";
 import { useEffect } from "react";
 
 interface MergeActionButtonProps {
-    pdfs: PdfMeta[];
+    pdfs: PdfMeta[] | any;
     setPdfs: React.Dispatch<React.SetStateAction<PdfMeta[]>>;
     setProgress: React.Dispatch<React.SetStateAction<any>>;
     alredyMergePdf: any;

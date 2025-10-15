@@ -5,13 +5,13 @@ import { ProcessPdf } from "@/src/components/ProcessPdf";
 import useFileHandler from "@/src/hooks/useFileHandler";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CompressPdfList } from "./CompressPdfList";
 
 export const CompressPdf = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
     const [progress, setProgress] = useState<ProgressUpdate | null>(null);
-    const [alredyMergePdf, setAlredyMergePdf] = useState<Blob | null>(null);
+    // const [alredyMergePdf, setAlredyMergePdf] = useState<Blob | null>(null);
 
     // reset progress when pdf list becomes empty
     useEffect(() => {
@@ -24,7 +24,7 @@ export const CompressPdf = () => {
         (files: PdfMeta[]) => {
             setPdfs((prev) => [...prev, ...files]);
         },
-        (update: ProgressUpdate | null) => setProgress(update)
+        (update: ProgressUpdate | null) => setProgress(update),
     );
 
     return (

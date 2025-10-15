@@ -4,11 +4,11 @@ import DragAndDropInput from "@/src/components/DragAndDropInput";
 import { ProcessPdf } from "@/src/components/ProcessPdf";
 import useFileHandler from "@/src/hooks/useFileHandler";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
+import { useAppDispatch } from "@/src/lib/hooks";
+import { resetGeneral } from "@/src/lib/redux/generalSlice";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import SplitPdfList from "./SplitPdfList";
-import { resetGeneral, setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
-import { useAppDispatch } from "@/src/lib/hooks";
 
 const SplitPdf = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
@@ -22,7 +22,7 @@ const SplitPdf = () => {
         }
         dispatch(resetGeneral())
 
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pdfs]);
 
     const handleFiles = useFileHandler(

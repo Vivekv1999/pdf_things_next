@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface generalState {
     alredyMergePdf: any;
@@ -15,9 +15,9 @@ const generalSlice = createSlice({
         setAlredyMergePdf: (state, action) => {
             state.alredyMergePdf = action.payload
         },
-       resetGeneral: () => initialState,
+        resetGeneral: () => initialState,
     },
 });
 
-export const { setAlredyMergePdf,resetGeneral } = generalSlice.actions;
+export const { setAlredyMergePdf, resetGeneral } = generalSlice.actions;
 export default generalSlice.reducer;

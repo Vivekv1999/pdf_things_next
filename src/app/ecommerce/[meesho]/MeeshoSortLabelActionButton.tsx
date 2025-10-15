@@ -3,7 +3,6 @@
 import LoadingDownload from "@/src/components/LoadingDownload";
 import ProcessComplete from "@/src/components/ProcessComplete";
 import { Button } from "@/src/components/ui/button";
-import useMergePdfs from "@/src/hooks/useMergePdfs";
 import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
 import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta } from "@/src/types/pdf";

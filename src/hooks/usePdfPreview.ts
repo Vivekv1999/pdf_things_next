@@ -1,5 +1,4 @@
 // hooks/usePdfPreview.ts
-import pdfjsLib from "@/src/lib/pdfWorker";
 import { PDFDocument } from "pdf-lib";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -23,31 +22,31 @@ export default function usePdfPreview(
         return { pageCount, bytes, previews };
     };
 
-    const renderPdfPagePreview = async (
-        file: File,
-        pageNumber: number,
-        scale = 1
-    ): Promise<string | null> => {
-        try {
-            const typedarray = new Uint8Array(await file.arrayBuffer());
-            const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
-            const page = await pdf.getPage(pageNumber);
-            const viewport = page.getViewport({ scale });
+    // const renderPdfPagePreview = async (
+    //     file: File,
+    //     pageNumber: number,
+    //     scale = 1
+    // ): Promise<string | null> => {
+    //     try {
+    //         const typedarray = new Uint8Array(await file.arrayBuffer());
+    //         const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
+    //         const page = await pdf.getPage(pageNumber);
+    //         const viewport = page.getViewport({ scale });
 
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            if (!context) return null;
+    //         const canvas = document.createElement("canvas");
+    //         const context = canvas.getContext("2d");
+    //         if (!context) return null;
 
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
+    //         canvas.height = viewport.height;
+    //         canvas.width = viewport.width;
 
-            await page.render({ canvasContext: context, viewport }).promise;
-            return canvas.toDataURL();
-        } catch (err) {
-            console.error("Preview error:", err);
-            return null;
-        }
-    };
+    //         await page.render({ canvasContext: context, viewport, canvas }).promise;
+    //         return canvas.toDataURL();
+    //     } catch (err) {
+    //         console.error("Preview error:", err);
+    //         return null;
+    //     }
+    // };
 
     const handleAllPdfAtOnce = async (
         fileList: File[],
@@ -105,6 +104,7 @@ export default function usePdfPreview(
             const end = performance.now();
             console.log(`Loading took ${(end - start).toFixed(2)} ms`);
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [onLoad, onProgress]
     );
 }

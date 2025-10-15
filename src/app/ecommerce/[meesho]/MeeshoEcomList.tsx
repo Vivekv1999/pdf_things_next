@@ -28,7 +28,7 @@ const MeeshoEcomList = ({
 }: MeeshoPdfListProps) => {
     const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
     const [progress, setProgress] = useState(0)
-    const { mergePdfs, result, loading, setLoading } = useMergePdfs();
+    const { mergePdfs, loading, setLoading } = useMergePdfs();
     const { reorderPdf } = useSort();
     const dispatch = useAppDispatch();
 

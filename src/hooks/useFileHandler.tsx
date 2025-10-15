@@ -48,7 +48,7 @@ export default function useFileHandler(
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
 
-                    await page.render({ canvasContext: context, viewport }).promise;
+                    await page.render({ canvasContext: context, viewport, canvas }).promise;
                     resolve(canvas.toDataURL());
                 } catch (error) {
                     console.error("Preview error:", error);

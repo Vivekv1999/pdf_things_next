@@ -3,13 +3,13 @@
 import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
 import PdfPagePreview from "@/src/components/pdf/PdfPagePreview";
 import { Button } from "@/src/components/ui/button";
-import useSplitPdf from "@/src/hooks/useSplitPdf";
+import useSplitPdf, { RemoveOption } from "@/src/hooks/useSplitPdf";
 import { PdfMeta } from "@/src/types/pdf";
 import { FileIcon } from "lucide-react";
 import { useState } from "react";
 
 interface SplitPdfListProps {
-    pdfs: PdfMeta[];
+    pdfs: PdfMeta[] | any;
     setPdfs: React.Dispatch<React.SetStateAction<PdfMeta[]>>;
 }
 
@@ -26,7 +26,7 @@ const SplitPdfList = ({
     pdfs,
     setPdfs
 }: SplitPdfListProps) => {
-    const [removeOption, setRemoveOption] = useState("custom");
+    const [removeOption, setRemoveOption] = useState<RemoveOption>("custom");
     const [customPages, setCustomPages] = useState("");
     const [progress, setProgress] = useState(0)
 
@@ -64,7 +64,6 @@ const SplitPdfList = ({
         });
         return parts;
     };
-
 
     const parts = parseParts(customPages, totalPages);
 

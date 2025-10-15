@@ -4,12 +4,11 @@ import DragAndDropInput from "@/src/components/DragAndDropInput";
 import { ProcessPdf } from "@/src/components/ProcessPdf";
 import useFileHandler from "@/src/hooks/useFileHandler";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
+import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
+import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import MeeshoEcomList from "./MeeshoEcomList";
-import MeeshoEcomWorkflowSteps from "./MeeshoEcomWorkflowSteps";
-import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
-import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 
 const MeeshoEcom = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
