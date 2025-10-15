@@ -40,7 +40,7 @@ export const allTools: Tool[] = [
         icon: FileMinus2,
     },
     {
-        path: "/crop",
+        path: "/crop-pdf",
         name: "Crop PDF",
         description: "Trim margins manually or automatically.",
         color: "bg-fuchsia-600",
