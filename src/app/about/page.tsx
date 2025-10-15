@@ -1,11 +1,13 @@
+"use client"
+
 import { siteConfig } from "@/src/constants/appConstants";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 
 const page = () => {
     return (
         <section id="about" className="px-4 py-16">
             <div className="mx-auto max-w-4xl text-center">
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
@@ -32,7 +34,7 @@ const page = () => {
                             <div className="text-gray-600 dark:text-gray-400">Free usage</div>
                         </div>
                     </div>
-                </motion.div>
+                </Motion.div>
             </div>
         </section>
     )

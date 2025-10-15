@@ -8,7 +8,7 @@ import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import { CompressPdfList } from "./CompressPdfList";
 
-export const CompressPdf = () => {
+const CompressPdf = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
     const [progress, setProgress] = useState<ProgressUpdate | null>(null);
     // const [alredyMergePdf, setAlredyMergePdf] = useState<Blob | null>(null);
@@ -57,3 +57,5 @@ export const CompressPdf = () => {
         </>
     );
 };
+
+export default CompressPdf;

@@ -1,7 +1,7 @@
 import ToolWrapper from "@/src/components/ToolWrapper";
 import { siteConfig } from "@/src/constants/appConstants";
 import type { Metadata } from "next";
-import SplitPdf from "./SplitPdf";
+import SplitPdfClient from "./SplitPdfClient";
 
 export const metadata: Metadata = {
     title: "Split PDF Online | Free & Fast",
@@ -30,13 +30,10 @@ export const metadata: Metadata = {
     },
 };
 
-
 export default function Page() {
     return (
-        <>
-            <ToolWrapper>
-                <SplitPdf />
-            </ToolWrapper>
-        </>
+        <ToolWrapper>
+            <SplitPdfClient />
+        </ToolWrapper>
     );
 }

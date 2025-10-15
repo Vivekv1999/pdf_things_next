@@ -1,7 +1,7 @@
 import ToolWrapper from "@/src/components/ToolWrapper";
 import { siteConfig } from "@/src/constants/appConstants";
 import type { Metadata } from "next";
-import MergePdf from "./MergePdf";
+import MergePdfClient from "./MergePdfClient";
 
 export const metadata: Metadata = {
     title: "Merge PDF Online | Free & Secure PDF Merger Tool",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export default function Page() {
     return (
         <ToolWrapper>
-            <MergePdf />
+            <MergePdfClient />
         </ToolWrapper>
     );
 }

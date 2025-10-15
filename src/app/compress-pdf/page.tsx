@@ -1,7 +1,7 @@
 import ToolWrapper from "@/src/components/ToolWrapper";
 import { siteConfig } from "@/src/constants/appConstants";
 import type { Metadata } from "next";
-import { CompressPdf } from "./CompressPdf";
+import CompressPdfClient from "./CompressPdfClient";
 
 export const metadata: Metadata = {
     title: "Compress PDF Online | Reduce PDF File Size Free",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default function Page() {
     return (
         <ToolWrapper>
-            <CompressPdf />
+            <CompressPdfClient />
         </ToolWrapper>
     );
 }

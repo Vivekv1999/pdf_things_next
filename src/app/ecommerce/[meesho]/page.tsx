@@ -1,7 +1,7 @@
 import ToolWrapper from "@/src/components/ToolWrapper";
 import { siteConfig } from "@/src/constants/appConstants";
 import { Metadata } from "next";
-import MeeshoEcom from "./MeeshoEcom";
+import MeeshoEcomClient from "./MeeshoEcomClient";
 
 export const metadata: Metadata = {
     title: "Meesho Seller Tools | Merge & Sort PDFs by SKU Labels",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 const page = () => {
     return (
         <ToolWrapper>
-            <MeeshoEcom />
+            <MeeshoEcomClient />
         </ToolWrapper>
     )
 }
