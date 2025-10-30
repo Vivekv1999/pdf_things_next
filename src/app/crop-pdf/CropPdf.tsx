@@ -29,6 +29,7 @@ const CropPdf = () => {
     const [pdfFile, setPdfFile] = useState(null);
     // const [pageNum, setPageNum] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [pdfBytes, setPdfBytes] = useState<Uint8Array | null>(null);
 
     const dispatch = useAppDispatch();
 
@@ -43,25 +44,38 @@ const CropPdf = () => {
 
     const handleFiles = async (e: any) => {
         const file = e.target.files[0];
-        console.log(file, "0000000");
-        setProgress((prev): any => ({ ...prev, fileName: file.name, stage: "processing", percent: 30 }))
         if (!file) return;
 
+        setProgress((prev): any => ({ ...prev, fileName: file.name, stage: "processing", percent: 30 }));
+
         try {
+            // ✅ Read file as array buffer
             const arrayBuffer = await file.arrayBuffer();
-            setProgress((prev): any => ({ ...prev, fileName: file.name, stage: "processing", percent: 50 }))
-            const pdfJsBuffer = arrayBuffer.slice(0);
-            setProgress((prev): any => ({ ...prev, fileName: file.name, stage: "processing", percent: 90 }))
-            const pdf = await pdfjsLib.getDocument(pdfJsBuffer).promise as any;
+
+            // ✅ Clone it safely (important)
+            const pdfBytes = new Uint8Array(arrayBuffer.slice(0));
+
+            setProgress((prev): any => ({ ...prev, percent: 50 }));
+
+            // ✅ Use a separate copy for PDF.js
+            const loadingTask = pdfjsLib.getDocument({ data: pdfBytes.slice(0) });
+            const pdf = await loadingTask.promise as any;
+
+            setProgress((prev): any => ({ ...prev, percent: 90 }));
+
+            // ✅ Keep your own pdfBytes copy for pdf-lib cropping
+            setPdfBytes(pdfBytes);
             setPdfDoc(pdf);
             setPdfFile(file);
             setTotalPages(pdf.numPages);
-            setProgress((prev): any => ({ ...prev, fileName: file.name, stage: "processing", percent: 100 }))
+
+            setProgress((prev): any => ({ ...prev, percent: 100 }));
         } catch (error) {
             console.error('Error loading PDF:', error);
             alert('Failed to load PDF. Please try another file.');
         }
     };
+
 
     console.log(progress, "pppppppp");
 
@@ -94,6 +108,7 @@ const CropPdf = () => {
                         pdfDoc={pdfDoc}
                         totalPages={totalPages}
                         pdfFile={pdfFile}
+                        pdfBytes={pdfBytes}
                     />
                 )}
 

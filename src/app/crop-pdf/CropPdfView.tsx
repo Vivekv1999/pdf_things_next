@@ -1,5 +1,6 @@
 "use client"
 
+import useCropPdf from "@/src/hooks/useCropPdf";
 import useDragSelectCrop from "@/src/hooks/useCropSelection";
 import { PDFPageProxy } from "pdfjs-dist";
 import { RenderParameters } from "pdfjs-dist/types/src/display/api";
@@ -19,7 +20,8 @@ interface CanvasSize {
 
 const CropPdfView = ({
     pdfDoc,
-    totalPages
+    totalPages,
+    pdfBytes
 }: any) => {
 
     const [pageNum, setPageNum] = useState<number>(1);
@@ -31,79 +33,17 @@ const CropPdfView = ({
     const {
         containerRef,
         cropBox,
-        setCropBox,
         handleMouseDown,
         handleMouseMove,
         handleMouseUp,
     } = useDragSelectCrop();
 
+    const { cropPdf } = useCropPdf();
+
     useEffect(() => {
         renderPage(pageNum);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pdfDoc, pageNum]);
-
-    // useEffect(() => {
-    //     const cropBoxElement = cropBoxRef.current;
-    //     const canvasElement = canvasRef.current;
-
-    //     if (!cropBoxElement || !canvasElement) return;
-
-    //     // Clean up any previous instance
-    //     interact(cropBoxElement).unset();
-
-    //     const { width: canvasWidth, height: canvasHeight } = canvasSize;
-
-    //     const instance = interact(cropBoxElement)
-    //         .draggable({
-    //             modifiers: [
-    //                 interact.modifiers.restrictRect({
-    //                     restriction: 'parent',
-    //                     endOnly: false,
-    //                 }),
-    //             ],
-    //             listeners: {
-    //                 move(event) {
-    //                     setCropBox((prev): any => {
-    //                         let newX = prev?.x + event.dx;
-    //                         let newY = prev?.y + event.dy;
-    //                         newX = Math.max(0, Math.min(newX, canvasWidth - (prev?.width || 0)));
-    //                         newY = Math.max(0, Math.min(newY, canvasHeight - (prev?.height || 0)));
-    //                         return { ...prev, x: newX, y: newY };
-    //                     });
-    //                 },
-    //             },
-    //         })
-    //         .resizable({
-    //             edges: { left: true, right: true, bottom: true, top: true },
-    //             modifiers: [
-    //                 interact.modifiers.restrictSize({
-    //                     min: { width: 20, height: 20 },
-    //                     max: { width: canvasWidth, height: canvasHeight },
-    //                 }),
-    //                 interact.modifiers.restrictRect({
-    //                     restriction: 'parent',
-    //                 }),
-    //             ],
-    //             listeners: {
-    //                 move(event) {
-    //                     const rect = event.rect;
-    //                     const canvasRect = canvasElement.getBoundingClientRect();
-    //                     setCropBox({
-    //                         x: rect.left - canvasRect.left,
-    //                         y: rect.top - canvasRect.top,
-    //                         width: rect.width,
-    //                         height: rect.height,
-    //                     });
-    //                 },
-    //             },
-    //         });
-
-    //     // Full cleanup (important)
-    //     return () => {
-    //         instance.unset();
-    //     };
-    // }, [canvasRef, cropBoxRef, canvasSize.width, canvasSize.height]);
-
 
     // Render PDF page
     const renderPage = async (num: number) => {
@@ -132,17 +72,29 @@ const CropPdfView = ({
     const goToPrevPage = () => setPageNum((prev) => Math.max(prev - 1, 1));
     const goToNextPage = () => setPageNum((prev) => Math.min(prev + 1, totalPages));
 
+    const handleCrop = async () => {
+        if (!pdfDoc || !cropBox) return;
+        console.log(pdfDoc, "pdfDoc");
+
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+            const croppedBytes = await cropPdf(pdfBytes, cropBox, i);
+            const blob = new Blob([croppedBytes] as any, { type: "application/pdf" });
+            const url = URL.createObjectURL(blob);
+            window.open(url, "_blank"); // Show result
+        }
+    };
+
     return (
         <>
             {pdfDoc && (
                 <div
                     ref={containerRef}
-                    className="inline-block relative select-none"
+                    className="relative flex justify-center select-none"
                     onMouseDown={handleMouseDown}
                     onMouseMove={handleMouseMove}
                     onMouseUp={handleMouseUp}
                 >
-                    <canvas ref={canvasRef} className="w-auto h-auto" />
+                    <canvas ref={canvasRef} className="border-2 w-auto h-auto" />
                     {cropBox && (
                         <div
                             ref={cropBoxRef}
@@ -184,7 +136,9 @@ const CropPdfView = ({
                             </span>
                         </div>
                         <button
-                            onClick={() => { }}
+                            onClick={() => {
+                                handleCrop()
+                            }}
                             className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white"
                         >
                             Crop PDF
