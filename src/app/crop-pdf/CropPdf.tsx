@@ -109,6 +109,7 @@ const CropPdf = () => {
                         totalPages={totalPages}
                         pdfFile={pdfFile}
                         pdfBytes={pdfBytes}
+                        setPdfDoc={setPdfDoc}
                     />
                 )}
 

@@ -3,9 +3,11 @@
 import LoadingDownload from "@/src/components/LoadingDownload";
 import ProcessComplete from "@/src/components/ProcessComplete";
 import { Button } from "@/src/components/ui/button";
-import { useAppSelector } from "@/src/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
+import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta } from "@/src/types/pdf";
 import { RotateCcw } from "lucide-react";
+import { useEffect } from "react";
 
 interface PdfActionButtonProps {
     setPdfs: React.Dispatch<React.SetStateAction<PdfMeta[]>>;
@@ -17,7 +19,8 @@ interface PdfActionButtonProps {
     beforActionButtonLable?: any
     completeButtonLable?: any
     completeTitle?: any
-    completedMessage?: any
+    completedMessage?: any,
+    pdfs?: any
 }
 
 export const PdfActionButton = ({
@@ -30,10 +33,22 @@ export const PdfActionButton = ({
     beforActionButtonLable,
     completeTitle,
     completeButtonLable,
-    completedMessage
+    completedMessage,
+    pdfs
 }: PdfActionButtonProps) => {
 
     const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (pdfs?.length && alredyMergePdf) {
+            dispatch(setAlredyMergePdf(null))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pdfs]);
+
+    console.log(!loading, !alredyMergePdf, "pppppppppppppkkkk");
+
 
     return (
         <div className="flex sm:flex-row flex-col justify-center items-center gap-3 mt-28">

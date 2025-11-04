@@ -1,5 +1,6 @@
 "use client"
 
+import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
 import useCropPdf from "@/src/hooks/useCropPdf";
 import useDragSelectCrop from "@/src/hooks/useCropSelection";
 import { PDFPageProxy } from "pdfjs-dist";
@@ -18,10 +19,19 @@ interface CanvasSize {
     height: number;
 }
 
+const messages = [
+    "Reading your PDF 📖",
+    "Finding edges to crop ✂️",
+    "Trimming unwanted areas 🧩",
+    "Almost done cropping 🚀",
+];
+
+
 const CropPdfView = ({
     pdfDoc,
     totalPages,
-    pdfBytes
+    pdfBytes,
+    setPdfDoc
 }: any) => {
 
     const [pageNum, setPageNum] = useState<number>(1);
@@ -29,6 +39,10 @@ const CropPdfView = ({
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const cropBoxRef = useRef<HTMLDivElement | null>(null);
+
+    const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
+
 
     const {
         containerRef,
@@ -74,15 +88,28 @@ const CropPdfView = ({
 
     const handleCrop = async () => {
         if (!pdfDoc || !cropBox) return;
-        console.log(pdfDoc, "pdfDoc");
 
-        for (let i = 1; i <= pdfDoc.numPages; i++) {
-            const croppedBytes = await cropPdf(pdfBytes, cropBox, i);
+        setLoading(true);
+        setProgress(0);
+
+        try {
+            const croppedBytes = await cropPdf(pdfBytes, cropBox, canvasSize, (p) => {
+                setProgress(p);
+            });
+
+            setProgress(100);
             const blob = new Blob([croppedBytes] as any, { type: "application/pdf" });
             const url = URL.createObjectURL(blob);
-            window.open(url, "_blank"); // Show result
+            window.open(url, "_blank");
+        } catch (err) {
+            console.error("Crop failed:", err);
+        } finally {
+            setLoading(false);
         }
     };
+
+
+
 
     return (
         <>
@@ -135,17 +162,22 @@ const CropPdfView = ({
                                 Page {pageNum} of {totalPages}
                             </span>
                         </div>
-                        <button
-                            onClick={() => {
-                                handleCrop()
-                            }}
-                            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white"
-                        >
-                            Crop PDF
-                        </button>
                     </div>
                 )
             }
+            <PdfActionButton
+                setPdfs={setPdfDoc}
+                setProgress={setProgress}
+                handleButtonAction={handleCrop}
+                loading={loading}
+                progress={progress}
+                messages={messages}
+                beforActionButtonLable={"Crop & Download"}
+                completedMessage="PDF cropping complete ✂️"
+                completeTitle="Your PDF pages were cropped successfully!"
+                completeButtonLable="Download Cropped PDF"
+                pdfs={pdfDoc}
+            />
 
         </>
     )
