@@ -86,6 +86,23 @@ function useSort() {
     return "";
   };
 
+   const extractSKUFromTextFlipkart = (text: string): string => {
+  const start = text.indexOf("QTY ");  // Find the position of "QTY"
+  if (start === -1) return "";  // If "QTY" isn't found, return an empty string
+  
+  // Skip the first word after "QTY", so we move to the next word
+  const afterQTYStart = start + "QTY ".length;
+  const afterQTYText = text.slice(afterQTYStart).trim();
+  
+  // Split the string into words
+  const words = afterQTYText.split(/\s+/); // Split by spaces
+  
+  // Skip the first word (which is the quantity) and join the next 70 words (if there are that many)
+  const sku = words.slice(1, 71).join(" ");
+  
+  return sku;
+};
+
   const normalizeSKU = (sku: string): string => {
     return sku
       .replace(/^zz-/, "hh-")
