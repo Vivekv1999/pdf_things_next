@@ -4,7 +4,7 @@ import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { useAppDispatch } from "@/src/lib/hooks";
 import pdfjsLib from "@/src/lib/pdfWorker";
 import { resetGeneral } from "@/src/lib/redux/generalSlice";
-import { ProgressUpdate } from "@/src/types/pdf";
+import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import CropPdfView from "./CropPdfView";
 
@@ -18,7 +18,7 @@ const ME1 = {
 const pdfProgress: ProgressUpdate = {
     fileName: "",
     completed: 0,
-    totalFiles: 0,
+    totalFiles: 1,
     stage: "init",
     percent: 10
 }
@@ -26,8 +26,7 @@ const pdfProgress: ProgressUpdate = {
 const CropPdf = () => {
     const [progress, setProgress] = useState<ProgressUpdate | null>(pdfProgress);
     const [pdfDoc, setPdfDoc] = useState(null);
-    const [pdfFile, setPdfFile] = useState(null);
-    // const [pageNum, setPageNum] = useState(1);
+    const [pdfs, setPdfs] = useState<PdfMeta[]>([]); //use foe only reset and view ing condition of cnavas onlcik rese apply same action accross all conpnoet sop add this
     const [totalPages, setTotalPages] = useState(0);
     const [pdfBytes, setPdfBytes] = useState<Uint8Array | null>(null);
 
@@ -45,6 +44,7 @@ const CropPdf = () => {
     const handleFiles = async (e: any) => {
         const file = e.target.files[0];
         if (!file) return;
+        setPdfs((prev) => [...prev, e]);
 
         setProgress((prev): any => ({ ...prev, fileName: file.name, stage: "processing", percent: 30 }));
 
@@ -66,7 +66,6 @@ const CropPdf = () => {
             // ✅ Keep your own pdfBytes copy for pdf-lib cropping
             setPdfBytes(pdfBytes);
             setPdfDoc(pdf);
-            setPdfFile(file);
             setTotalPages(pdf.numPages);
 
             setProgress((prev): any => ({ ...prev, percent: 100 }));
@@ -83,7 +82,7 @@ const CropPdf = () => {
     return (
         <>
             {
-                pdfDoc === null ? (
+                pdfs.length === 0 ? (
                     <>
                         {progress?.stage !== "init" ? (
                             <div className="mt-48">
@@ -107,9 +106,9 @@ const CropPdf = () => {
                     <CropPdfView
                         pdfDoc={pdfDoc}
                         totalPages={totalPages}
-                        pdfFile={pdfFile}
                         pdfBytes={pdfBytes}
-                        setPdfDoc={setPdfDoc}
+                        setPdfs={setPdfs}
+                        pdfs={pdfs}
                     />
                 )}
 

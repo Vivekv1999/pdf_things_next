@@ -3,6 +3,7 @@
 import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
 import useCropPdf from "@/src/hooks/useCropPdf";
 import useDragSelectCrop from "@/src/hooks/useCropSelection";
+import { downloadPdf } from "@/src/utils/downloadFile";
 import { PDFPageProxy } from "pdfjs-dist";
 import { RenderParameters } from "pdfjs-dist/types/src/display/api";
 import { useEffect, useRef, useState } from "react";
@@ -31,7 +32,8 @@ const CropPdfView = ({
     pdfDoc,
     totalPages,
     pdfBytes,
-    setPdfDoc
+    setPdfs,
+    pdfs
 }: any) => {
 
     const [pageNum, setPageNum] = useState<number>(1);
@@ -95,12 +97,10 @@ const CropPdfView = ({
         try {
             const croppedBytes = await cropPdf(pdfBytes, cropBox, canvasSize, (p) => {
                 setProgress(p);
-            });
+            }) as Uint8Array<ArrayBuffer>;
 
             setProgress(100);
-            const blob = new Blob([croppedBytes] as any, { type: "application/pdf" });
-            const url = URL.createObjectURL(blob);
-            window.open(url, "_blank");
+            downloadPdf(croppedBytes, "Crop pdf")
         } catch (err) {
             console.error("Crop failed:", err);
         } finally {
@@ -109,11 +109,12 @@ const CropPdfView = ({
     };
 
 
+    console.log(pdfDoc, "00000");
 
 
     return (
         <>
-            {pdfDoc && (
+            {pdfs?.length && (
                 <div
                     ref={containerRef}
                     className="relative flex justify-center select-none"
@@ -141,7 +142,7 @@ const CropPdfView = ({
             )}
 
             {
-                pdfDoc && (
+                pdfs?.length && (
                     <div className="flex flex-col justify-center items-center">
                         <div className="space-x-2">
                             <button
@@ -166,7 +167,7 @@ const CropPdfView = ({
                 )
             }
             <PdfActionButton
-                setPdfs={setPdfDoc}
+                setPdfs={setPdfs}
                 setProgress={setProgress}
                 handleButtonAction={handleCrop}
                 loading={loading}
@@ -176,7 +177,7 @@ const CropPdfView = ({
                 completedMessage="PDF cropping complete ✂️"
                 completeTitle="Your PDF pages were cropped successfully!"
                 completeButtonLable="Download Cropped PDF"
-                pdfs={pdfDoc}
+                pdfs={pdfs}
             />
 
         </>
