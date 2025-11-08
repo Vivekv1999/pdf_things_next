@@ -49,7 +49,7 @@ const MeeshoEcom = () => {
                             <>
                                 <PdfPageHeader
                                     title="Meesho Seller Tools"
-                                    description="Merge and sort your Meesho invoices by SKU or product labels, and generate account labels instantly — all free and online."
+                                    description="Merge and sort all your Meesho invoices by SKU and generate account labels instantly — all free and online."
                                 />
 
                                 <DragAndDropInput

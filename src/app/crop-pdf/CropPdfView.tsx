@@ -1,8 +1,11 @@
 "use client"
 
 import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
+import { Button } from "@/src/components/ui/button";
 import useCropPdf from "@/src/hooks/useCropPdf";
 import useDragSelectCrop from "@/src/hooks/useCropSelection";
+import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
+import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { downloadPdf } from "@/src/utils/downloadFile";
 import { PDFPageProxy } from "pdfjs-dist";
 import { RenderParameters } from "pdfjs-dist/types/src/display/api";
@@ -54,7 +57,9 @@ const CropPdfView = ({
         handleMouseUp,
     } = useDragSelectCrop();
 
+    const dispatch = useAppDispatch();
     const { cropPdf } = useCropPdf();
+    const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
 
     useEffect(() => {
         renderPage(pageNum);
@@ -100,6 +105,7 @@ const CropPdfView = ({
             }) as Uint8Array<ArrayBuffer>;
 
             setProgress(100);
+            dispatch(setAlredyMergePdf(croppedBytes))
             downloadPdf(croppedBytes, "Crop pdf")
         } catch (err) {
             console.error("Crop failed:", err);
@@ -114,7 +120,7 @@ const CropPdfView = ({
 
     return (
         <>
-            {pdfs?.length && (
+            {!alredyMergePdf && (
                 <div
                     ref={containerRef}
                     className="relative flex justify-center select-none"
@@ -141,30 +147,36 @@ const CropPdfView = ({
                 </div >
             )}
 
-            {
-                pdfs?.length && (
-                    <div className="flex flex-col justify-center items-center">
-                        <div className="space-x-2">
-                            <button
+            {!alredyMergePdf && (
+                <div className="flex flex-col justify-center items-center">
+                    <div className="space-x-2 flex justify-center">
+                        <div className="flex justify-center items-center gap-3 mt-6">
+                            <Button
+                                variant="outline"
                                 onClick={goToPrevPage}
                                 disabled={pageNum <= 1}
-                                className="bg-gray-200 disabled:opacity-50 px-4 py-2 rounded"
+                                className="px-5 py-2 text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                             >
-                                Previous
-                            </button>
-                            <button
+                                ← Previous
+                            </Button>
+
+                            <Button
+                                variant="outline"
                                 onClick={goToNextPage}
                                 disabled={pageNum >= totalPages}
-                                className="bg-gray-200 disabled:opacity-50 px-4 py-2 rounded"
+                                className="px-5 py-2 text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50 transition-all"
                             >
-                                Next
-                            </button>
-                            <span>
+                                Next →
+                            </Button>
+
+                            <div>
                                 Page {pageNum} of {totalPages}
-                            </span>
+                            </div>
                         </div>
+
                     </div>
-                )
+                </div>
+            )
             }
             <PdfActionButton
                 setPdfs={setPdfs}
@@ -177,7 +189,6 @@ const CropPdfView = ({
                 completedMessage="PDF cropping complete ✂️"
                 completeTitle="Your PDF pages were cropped successfully!"
                 completeButtonLable="Download Cropped PDF"
-                pdfs={pdfs}
             />
 
         </>

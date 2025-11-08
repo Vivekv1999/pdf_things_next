@@ -39,31 +39,35 @@ const DragAndDropInput: FC<DragAndDropInputProps> = ({
     };
 
     return (
-        <div
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => document.getElementById("pdf-upload")?.click()}
-            className={`flex items-center justify-center w-full h-32 px-4 transition border-2 border-dashed rounded-md cursor-pointer hover:border-indigo-500
+        <div className="flex justify-center items-center">
+
+            <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById("pdf-upload")?.click()}
+                className={`flex items-center justify-center sm:w-11/12 md:w-full h-32 px-4 transition border-2 border-dashed rounded-md cursor-pointer hover:border-indigo-500
         ${isDragging
-                    ? "bg-indigo-50 border-indigo-500 scale-105 shadow-lg"
-                    : "bg-white border-gray-300"
-                }`}
-        >
-            <span className="text-gray-600 text-sm md:text-base">
-                {isDragging
-                    ? "Drop your PDFs here 📄"
-                    : "Click or drop PDFs here to select"}
-            </span>
-            <input
-                id="pdf-upload"
-                type="file"
-                multiple={multiFile}
-                accept="application/pdf"
-                onChange={handleFileChange}
-                className="hidden"
-            />
+                        ? "bg-indigo-50 border-indigo-500 scale-105 shadow-lg"
+                        : "bg-white border-gray-300"
+                    }`}
+            >
+                <span className="text-gray-600 text-sm md:text-base">
+                    {isDragging
+                        ? "Drop your PDFs here 📄"
+                        : "Click or drop PDFs here to select"}
+                </span>
+                <input
+                    id="pdf-upload"
+                    type="file"
+                    multiple={multiFile}
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    className="hidden"
+                />
+            </div>
         </div>
+
     );
 };
 

@@ -7,12 +7,13 @@ interface PageText {
   text: string;
   sku: string;
 }
+type sortFor="MEESHO"|"FLIPKART"
 
-function useSort() {
+function useSort(sortFor:sortFor) {
   const [sortedPages, setSortedPages] = useState<PageText[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const isPersonal = true;
+  const isPersonal = true && sortFor === "MEESHO";
 
   const reorderPdf = async (pdfBytes: ArrayBuffer | null) => {
     if (!pdfBytes) return null;
@@ -65,7 +66,17 @@ function useSort() {
       const pageText = textItems.map((item: any) => item.str).join(" ");
       console.log(pageText,"pageText",i);
       
-      const sku = extractSKUFromTextMeesho(pageText);
+      let sku=""
+      switch (sortFor) {
+        case "MEESHO":
+      sku= extractSKUFromTextMeesho(pageText);
+          break;
+          case "FLIPKART":
+      sku= extractSKUFromTextFlipkart(pageText);
+          break;
+        default:
+          break;
+      }
       pageTexts.push({ pageIndex: i, text: pageText, sku });
     }
 
@@ -86,22 +97,22 @@ function useSort() {
     return "";
   };
 
-   const extractSKUFromTextFlipkart = (text: string): string => {
-  const start = text.indexOf("QTY ");  // Find the position of "QTY"
-  if (start === -1) return "";  // If "QTY" isn't found, return an empty string
-  
-  // Skip the first word after "QTY", so we move to the next word
-  const afterQTYStart = start + "QTY ".length;
-  const afterQTYText = text.slice(afterQTYStart).trim();
-  
-  // Split the string into words
-  const words = afterQTYText.split(/\s+/); // Split by spaces
-  
-  // Skip the first word (which is the quantity) and join the next 70 words (if there are that many)
-  const sku = words.slice(1, 71).join(" ");
-  
-  return sku;
-};
+  const extractSKUFromTextFlipkart = (text: string): string => {
+      const start = text.indexOf("QTY ");  // Find the position of "QTY"
+      if (start === -1) return "";  // If "QTY" isn't found, return an empty string
+      
+      // Skip the first word after "QTY", so we move to the next word
+      const afterQTYStart = start + "QTY ".length;
+      const afterQTYText = text.slice(afterQTYStart).trim();
+      
+      // Split the string into words
+      const words = afterQTYText.split(/\s+/); // Split by spaces
+      
+      // Skip the first word (which is the quantity) and join the next 70 words (if there are that many)
+      const sku = words.slice(1, 71).join(" ");
+      
+      return sku;
+  };
 
   const normalizeSKU = (sku: string): string => {
     return sku

@@ -18,7 +18,7 @@ interface MeeshoPdfListProps {
 const messages: string[] = [
     "Gathering all labels for sorting...📄",
     "Checking for unwanted pages to remove...🔎",
-    "Your label is sorted by SKU ✅",
+    "Your label is being sorted by SKU ✅",
     "Preparing your file for download... ⏳",
 ];
 
@@ -29,11 +29,11 @@ const MeeshoEcomList = ({
     const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
     const [progress, setProgress] = useState(0)
     const { mergePdfs, loading, setLoading } = useMergePdfs();
-    const { reorderPdf } = useSort();
+    const { reorderPdf } = useSort("MEESHO");
     const dispatch = useAppDispatch();
 
 
-    const meregeAndSortBySKU = async () => {
+    const mergeAndSortBySKU = async () => {
         const start = performance.now();
 
         if (alredyMergePdf) {
@@ -72,7 +72,7 @@ const MeeshoEcomList = ({
             <PdfActionButton
                 setPdfs={setPdfs}
                 setProgress={setProgress}
-                handleButtonAction={meregeAndSortBySKU}
+                handleButtonAction={mergeAndSortBySKU}
                 loading={loading}
                 progress={progress}
                 messages={messages}

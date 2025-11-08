@@ -1,9 +1,9 @@
 import DragAndDropInput from "@/src/components/DragAndDropInput";
 import { ProcessPdf } from "@/src/components/ProcessPdf";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
-import { useAppDispatch } from "@/src/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
 import pdfjsLib from "@/src/lib/pdfWorker";
-import { resetGeneral } from "@/src/lib/redux/generalSlice";
+import { resetGeneral, setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import CropPdfView from "./CropPdfView";
@@ -31,15 +31,21 @@ const CropPdf = () => {
     const [pdfBytes, setPdfBytes] = useState<Uint8Array | null>(null);
 
     const dispatch = useAppDispatch();
+    const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
 
     useEffect(() => {
-        if (!pdfDoc) {
+        if (!pdfs.length) {
             setProgress(pdfProgress);
         }
-        dispatch(resetGeneral())
+        // dispatch(resetGeneral())
 
+        return () => {
+            if (alredyMergePdf) {
+                dispatch(setAlredyMergePdf(null))
+            }
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pdfDoc]);
+    }, [pdfs]);
 
     const handleFiles = async (e: any) => {
         const file = e.target.files[0];
