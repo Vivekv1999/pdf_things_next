@@ -7,56 +7,72 @@ interface PageText {
   text: string;
   sku: string;
 }
-type sortFor="MEESHO"|"FLIPKART"
 
-function useSort(sortFor:sortFor) {
+type sortFor = "MEESHO" | "FLIPKART";
+
+function useSort(sortFor: sortFor) {
   const [sortedPages, setSortedPages] = useState<PageText[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const isPersonal = true && sortFor === "MEESHO";
+  const [progress, setProgress] = useState<number>(0);
+  const isPersonal =true && sortFor === "MEESHO";
 
-  const reorderPdf = async (pdfBytes: ArrayBuffer | null) => {
+  const reorderPdf = async (
+    pdfBytes: ArrayBuffer | null, 
+    onProgress?: (p: number) => void
+  ) => {
     if (!pdfBytes) return null;
 
     try {
       setIsLoading(true);
       setError(null);
+      setProgress(0);
 
       const start = performance.now();
-
       const typedarray = new Uint8Array(cloneArrayBuffer(pdfBytes));
       const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
 
-      const pageTexts = await extractTextFromPdf(pdf);
+      // extract and track progress
+      const pageTexts = await extractTextFromPdf(pdf,onProgress);
+
+      setProgress(70);
+      onProgress?.(70);
 
       const sorted = sortPagesBySKU(pageTexts);
-      const removeEmptySKUPages=sorted?.filter((v)=>v?.sku!=="")
-      
+      const removeEmptySKUPages = sorted?.filter((v) => v?.sku !== "");
       setSortedPages(removeEmptySKUPages);
 
       const srcDoc = await PDFDocument.load(cloneArrayBuffer(pdfBytes));
       const pdfDoc = await PDFDocument.create();
 
-      for (const sortedPage of removeEmptySKUPages) {
+      for (let i = 0; i < removeEmptySKUPages.length; i++) {
+        const sortedPage = removeEmptySKUPages[i];
         const [copiedPage] = await pdfDoc.copyPages(srcDoc, [sortedPage.pageIndex]);
         pdfDoc.addPage(copiedPage);
+
+        // update progress based on number of pages added
+        const pageProgress = 70 + (i / removeEmptySKUPages.length) * 30;
+        setProgress(Math.min(100, pageProgress));
+        onProgress?.(Math.min(100, pageProgress));
       }
 
       const bytes = await pdfDoc.save();
-
       const end = performance.now();
-      console.log(`sorting took ${(end - start).toFixed(2)} ms`);
+      console.log(`Sorting took ${(end - start).toFixed(2)} ms`);
 
       setIsLoading(false);
+      setProgress(100);
+      onProgress?.(100);
       return bytes;
     } catch (err) {
       setError(err as Error);
       setIsLoading(false);
+      setProgress(0);
       return null;
     }
   };
 
-  const extractTextFromPdf = async (pdf: any): Promise<PageText[]> => {
+  const extractTextFromPdf = async (pdf: any,onProgress?:any): Promise<PageText[]> => {
     const pageTexts: PageText[] = [];
 
     for (let i = 0; i < pdf.numPages; i++) {
@@ -64,31 +80,34 @@ function useSort(sortFor:sortFor) {
       const textContent = await page.getTextContent();
       const textItems = textContent.items;
       const pageText = textItems.map((item: any) => item.str).join(" ");
-      console.log(pageText,"pageText",i);
-      
-      let sku=""
+
+      let sku = "";
       switch (sortFor) {
         case "MEESHO":
-      sku= extractSKUFromTextMeesho(pageText);
+          sku = extractSKUFromTextMeesho(pageText);
           break;
-          case "FLIPKART":
-      sku= extractSKUFromTextFlipkart(pageText);
-          break;
-        default:
+        case "FLIPKART":
+          sku = extractSKUFromTextFlipkart(pageText);
           break;
       }
+
       pageTexts.push({ pageIndex: i, text: pageText, sku });
-    }
+
+      // 🔹 Update progress during text extraction (0–70%)
+        setProgress(Math.round(((i + 1) / pdf.numPages) * 70));
+        const extractProgress = Math.round(((i + 1) / pdf.numPages) * 70);
+        setProgress(extractProgress);
+        if (onProgress) onProgress(extractProgress);
+      }
 
     return pageTexts;
   };
 
-
   const extractSKUFromTextMeesho = (text: string): string => {
-    const startFormString="Color   Order No."
+    const startFormString = "Color   Order No.";
     const start = text.indexOf(startFormString);
     const end = text.indexOf("Free Size");
-    
+
     if (start !== -1 && end !== -1 && start < end) {
       const between = text.substring(start + startFormString.length, end).trim();
       return between;
@@ -98,26 +117,17 @@ function useSort(sortFor:sortFor) {
   };
 
   const extractSKUFromTextFlipkart = (text: string): string => {
-      const start = text.indexOf("QTY ");  // Find the position of "QTY"
-      if (start === -1) return "";  // If "QTY" isn't found, return an empty string
-      
-      // Skip the first word after "QTY", so we move to the next word
-      const afterQTYStart = start + "QTY ".length;
-      const afterQTYText = text.slice(afterQTYStart).trim();
-      
-      // Split the string into words
-      const words = afterQTYText.split(/\s+/); // Split by spaces
-      
-      // Skip the first word (which is the quantity) and join the next 70 words (if there are that many)
-      const sku = words.slice(1, 71).join(" ");
-      
-      return sku;
+    const start = text.indexOf("QTY ");
+    if (start === -1) return "";
+    const afterQTYStart = start + "QTY ".length;
+    const afterQTYText = text.slice(afterQTYStart).trim();
+    const words = afterQTYText.split(/\s+/);
+    const sku = words.slice(1, 71).join(" ");
+    return sku;
   };
 
   const normalizeSKU = (sku: string): string => {
-    return sku
-      .replace(/^zz-/, "hh-")
-      .replace(/^gg-/, "hh-");
+    return sku.replace(/^zz-/, "hh-").replace(/^gg-/, "hh-");
   };
 
   const sortPagesBySKU = (pageTexts: PageText[]) =>
@@ -129,7 +139,7 @@ function useSort(sortFor:sortFor) {
 
   const cloneArrayBuffer = (buf: ArrayBuffer) => buf.slice(0);
 
-  return { sortedPages, isLoading, error, reorderPdf };
+  return { sortedPages, isLoading, error, reorderPdf, progress };
 }
 
 export default useSort;

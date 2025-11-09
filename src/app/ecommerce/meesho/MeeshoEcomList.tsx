@@ -28,37 +28,75 @@ const MeeshoEcomList = ({
 }: MeeshoPdfListProps) => {
     const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
     const [progress, setProgress] = useState(0)
-    const { mergePdfs, loading, setLoading } = useMergePdfs();
-    const { reorderPdf } = useSort("MEESHO");
+    const { mergePdfs, loading, setLoading, progress: mergingProgress } = useMergePdfs();
+    const { reorderPdf, progress: sortingProgress } = useSort("MEESHO");
     const dispatch = useAppDispatch();
 
 
     const mergeAndSortBySKU = async () => {
-        const start = performance.now();
+        try {
+            setLoading(true);
+            setProgress(0);
 
-        if (alredyMergePdf) {
-            downloadPdf(alredyMergePdf, "Meesho sku sorted")
-        } else {
-            setProgress(randomIntBetween(10, 15))
+            const start = performance.now();
+
+            if (alredyMergePdf) {
+                downloadPdf(alredyMergePdf, "Meesho sku sorted");
+                setProgress(100);
+                setLoading(false);
+                return;
+            }
+
+            // --- STEP 1: Merging PDFs (0–50%)
+            setProgress(5);
+
+            const mergeInterval = setInterval(() => {
+                // merge progress smoothly between 5–50%
+                setProgress(prev => {
+                    const mergePercent = Math.min(50, (mergingProgress || prev + 1));
+                    return mergePercent;
+                });
+            }, 200);
+
             const mergeResult = await mergePdfs(pdfs);
-            if (!mergeResult) return;
+            clearInterval(mergeInterval);
+            if (!mergeResult) {
+                setLoading(false);
+                setProgress(0);
+                return;
+            }
 
-            setProgress(randomIntBetween(45, 55))
+            // setProgress(55);
+            setProgress(randomIntBetween(50, 55))
+
             const mergedArrayBuffer = await mergeResult.blob.arrayBuffer();
 
-            setProgress(randomIntBetween(58, 81))
-            const sortedBytes = await reorderPdf(mergedArrayBuffer) as Uint8Array<ArrayBuffer>
-            if (!sortedBytes) return;
-            dispatch(setAlredyMergePdf(sortedBytes))
+            const sortedBytes = await reorderPdf(mergedArrayBuffer, (p) => {
+                setProgress(Math.floor(55 + (p / 100) * 45));
+            }) as Uint8Array<ArrayBuffer>;
 
+            if (!sortedBytes) {
+                setLoading(false);
+                setProgress(0);
+                return;
+            }
 
-            setProgress(randomIntBetween(92, 99))
-            downloadPdf(sortedBytes, "Meesho sku sorted")
-            setLoading(false)
+            dispatch(setAlredyMergePdf(sortedBytes));
+
+            // --- STEP 3: Download + Finalize
+            setProgress(100);
+            downloadPdf(sortedBytes, "Meesho sku sorted");
+            setLoading(false);
+
+            const end = performance.now();
+            console.log(`Merge + Sort took ${(end - start).toFixed(2)} ms`);
+        } catch (err) {
+            console.error("Error during merge/sort:", err);
+            setLoading(false);
+            setProgress(0);
         }
-        const end = performance.now();
-        console.log(`SORTING took ${(end - start).toFixed(2)} ms`);
     };
+
 
     return (
         <>
