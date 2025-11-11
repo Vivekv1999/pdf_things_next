@@ -54,7 +54,7 @@ const CropPdfView = ({
         cropBox,
         handleMouseDown,
         handleMouseMove,
-        handleMouseUp,
+        handleMouseUp
     } = useDragSelectCrop();
 
     const dispatch = useAppDispatch();
@@ -117,45 +117,117 @@ const CropPdfView = ({
 
     console.log(pdfDoc, "00000");
 
-
     return (
         <>
             {!alredyMergePdf && (
                 <div
                     ref={containerRef}
-                    className="relative flex justify-center select-none"
-                    onMouseDown={handleMouseDown}
+                    className="inline-block relative select-none"
+                    onMouseDown={(e) => handleMouseDown(e)}
                     onMouseMove={handleMouseMove}
                     onMouseUp={handleMouseUp}
                 >
-                    <canvas ref={canvasRef} className="border-2 w-auto h-auto" />
+                    <canvas ref={canvasRef} />
+
                     {cropBox && (
-                        <div
-                            ref={cropBoxRef}
-                            className="absolute bg-[rgba(219,234,254,0.5)] border-2 border-blue-500 hover:border-blue-700 border-dashed cursor-move"
-                            style={{
-                                left: `${cropBox.x}px`,
-                                top: `${cropBox.y}px`,
-                                width: `${cropBox.width}px`,
-                                height: `${cropBox.height}px`,
-                            }}
-                        >
-                            {/* <div className="right-0 bottom-0 absolute bg-blue-500 hover:bg-blue-700 rounded-sm w-5 h-5 cursor-se-resize" />
-                            <div className="top-0 left-0 absolute bg-blue-500 hover:bg-blue-700 rounded-sm w-5 h-5 cursor-nw-resize" /> */}
-                        </div>
+                        <>
+                            {/* Crop area border */}
+                            <div
+                                className="absolute border-2 border-blue-500"
+                                style={{
+                                    left: cropBox.x,
+                                    top: cropBox.y,
+                                    width: cropBox.width,
+                                    height: cropBox.height,
+                                }}
+                            />
+
+                            {/* Resize handles */}
+                            {[
+                                "top-left",
+                                "top-right",
+                                "bottom-left",
+                                "bottom-right",
+                                "left",
+                                "right",
+                                "top",
+                                "bottom",
+                            ].map((handle) => {
+                                const size = 10;
+                                const style: React.CSSProperties = {
+                                    position: "absolute",
+                                    width: size,
+                                    height: size,
+                                    background: "white",
+                                    border: "2px solid #2563eb",
+                                    cursor:
+                                        handle.includes("left") || handle.includes("right")
+                                            ? "ew-resize"
+                                            : handle.includes("top") || handle.includes("bottom")
+                                                ? "ns-resize"
+                                                : "nwse-resize",
+                                };
+
+                                // Position handles
+                                switch (handle) {
+                                    case "top-left":
+                                        style.left = cropBox.x - size / 2;
+                                        style.top = cropBox.y - size / 2;
+                                        break;
+                                    case "top-right":
+                                        style.left = cropBox.x + cropBox.width - size / 2;
+                                        style.top = cropBox.y - size / 2;
+                                        break;
+                                    case "bottom-left":
+                                        style.left = cropBox.x - size / 2;
+                                        style.top = cropBox.y + cropBox.height - size / 2;
+                                        break;
+                                    case "bottom-right":
+                                        style.left = cropBox.x + cropBox.width - size / 2;
+                                        style.top = cropBox.y + cropBox.height - size / 2;
+                                        break;
+                                    case "left":
+                                        style.left = cropBox.x - size / 2;
+                                        style.top = cropBox.y + cropBox.height / 2 - size / 2;
+                                        break;
+                                    case "right":
+                                        style.left = cropBox.x + cropBox.width - size / 2;
+                                        style.top = cropBox.y + cropBox.height / 2 - size / 2;
+                                        break;
+                                    case "top":
+                                        style.left = cropBox.x + cropBox.width / 2 - size / 2;
+                                        style.top = cropBox.y - size / 2;
+                                        break;
+                                    case "bottom":
+                                        style.left = cropBox.x + cropBox.width / 2 - size / 2;
+                                        style.top = cropBox.y + cropBox.height - size / 2;
+                                        break;
+                                }
+
+                                return (
+                                    <div
+                                        key={handle}
+                                        style={style}
+                                        onMouseDown={(e) =>
+                                            handleMouseDown(e, handle as any)
+                                        }
+                                    />
+                                );
+                            })}
+                        </>
                     )}
-                </div >
+                </div>
             )}
 
             {!alredyMergePdf && (
                 <div className="flex flex-col justify-center items-center">
-                    <div className="space-x-2 flex justify-center">
+                    <div className="flex justify-center space-x-2">
                         <div className="flex justify-center items-center gap-3 mt-6">
                             <Button
                                 variant="outline"
                                 onClick={goToPrevPage}
                                 disabled={pageNum <= 1}
-                                className="px-5 py-2 text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all disabled:cursor-not-allowed"
                             >
                                 ← Previous
                             </Button>
@@ -164,7 +236,7 @@ const CropPdfView = ({
                                 variant="outline"
                                 onClick={goToNextPage}
                                 disabled={pageNum >= totalPages}
-                                className="px-5 py-2 text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50 transition-all"
+                                className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all"
                             >
                                 Next →
                             </Button>
