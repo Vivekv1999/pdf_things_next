@@ -84,7 +84,7 @@ function useSort(sortFor: sortFor) {
       let sku = "";
       switch (sortFor) {
         case "MEESHO":
-          sku = extractSKUFromTextMeesho(pageText);
+          sku = extractSKUFromTextMeesho(pageText);          
           break;
         case "FLIPKART":
           sku = extractSKUFromTextFlipkart(pageText);
@@ -104,16 +104,26 @@ function useSort(sortFor: sortFor) {
   };
 
   const extractSKUFromTextMeesho = (text: string): string => {
-    const startFormString = "Color   Order No.";
-    const start = text.indexOf(startFormString);
-    const end = text.indexOf("Free Size");
+    // const startFormString = "Color   Order No.";
+    // const start = text.indexOf(startFormString);
+    // const end = text.indexOf("Free Size");
 
-    if (start !== -1 && end !== -1 && start < end) {
-      const between = text.substring(start + startFormString.length, end).trim();
-      return between;
-    }
+    // if (start !== -1 && end !== -1 && start < end) {
+    //   const between = text.substring(start + startFormString.length, end).trim();
+    //   return between;
+    // }
 
-    return "";
+    // return "";
+
+    const start = text.indexOf("Color   Order No.")
+     if (start === -1) return "";
+    const afterQTYStart = start + "Color   Order No.".length;
+    const afterQTYText = text.slice(afterQTYStart).trim();
+    
+    // const words = afterQTYText.split(/\s+/);
+    // const sku = words.slice(0, 15).join(" ");
+    const sku = afterQTYText.slice(0, 45)
+    return sku;
   };
 
   const extractSKUFromTextFlipkart = (text: string): string => {
