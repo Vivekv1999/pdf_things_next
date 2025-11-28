@@ -115,154 +115,153 @@ const CropPdfView = ({
     };
 
 
-    console.log(pdfDoc, "00000");
-
     return (
         <>
-            {!alredyMergePdf && (
-                <div
-                    ref={containerRef}
-                    className="inline-block relative select-none"
-                    onMouseDown={(e) => handleMouseDown(e)}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                >
-                    <canvas ref={canvasRef} />
+            <div className={`flex items-center h-full ${alredyMergePdf ? "justify-center" : "justify-between"}`}>
 
-                    {cropBox && (
-                        <>
-                            {/* Crop area border */}
-                            <div
-                                className="absolute border-2 border-blue-500"
-                                style={{
-                                    left: cropBox.x,
-                                    top: cropBox.y,
-                                    width: cropBox.width,
-                                    height: cropBox.height,
-                                }}
-                            />
+                {!alredyMergePdf && (
+                    <div
+                        ref={containerRef}
+                        className="inline-block relative select-none"
+                        onMouseDown={(e) => handleMouseDown(e)}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}
+                    >
+                        <canvas ref={canvasRef} className="max-w-full h-auto" />
 
-                            {/* Resize handles */}
-                            {[
-                                "top-left",
-                                "top-right",
-                                "bottom-left",
-                                "bottom-right",
-                                "left",
-                                "right",
-                                "top",
-                                "bottom",
-                            ].map((handle) => {
-                                const size = 10;
-                                const style: React.CSSProperties = {
-                                    position: "absolute",
-                                    width: size,
-                                    height: size,
-                                    background: "white",
-                                    border: "2px solid #2563eb",
-                                    cursor:
-                                        handle.includes("left") || handle.includes("right")
-                                            ? "ew-resize"
-                                            : handle.includes("top") || handle.includes("bottom")
-                                                ? "ns-resize"
-                                                : "nwse-resize",
-                                };
+                        {cropBox && (
+                            <>
+                                {/* Crop area border */}
+                                <div
+                                    className="absolute border-2 border-blue-500"
+                                    style={{
+                                        left: cropBox.x,
+                                        top: cropBox.y,
+                                        width: cropBox.width,
+                                        height: cropBox.height,
+                                    }}
+                                />
 
-                                // Position handles
-                                switch (handle) {
-                                    case "top-left":
-                                        style.left = cropBox.x - size / 2;
-                                        style.top = cropBox.y - size / 2;
-                                        break;
-                                    case "top-right":
-                                        style.left = cropBox.x + cropBox.width - size / 2;
-                                        style.top = cropBox.y - size / 2;
-                                        break;
-                                    case "bottom-left":
-                                        style.left = cropBox.x - size / 2;
-                                        style.top = cropBox.y + cropBox.height - size / 2;
-                                        break;
-                                    case "bottom-right":
-                                        style.left = cropBox.x + cropBox.width - size / 2;
-                                        style.top = cropBox.y + cropBox.height - size / 2;
-                                        break;
-                                    case "left":
-                                        style.left = cropBox.x - size / 2;
-                                        style.top = cropBox.y + cropBox.height / 2 - size / 2;
-                                        break;
-                                    case "right":
-                                        style.left = cropBox.x + cropBox.width - size / 2;
-                                        style.top = cropBox.y + cropBox.height / 2 - size / 2;
-                                        break;
-                                    case "top":
-                                        style.left = cropBox.x + cropBox.width / 2 - size / 2;
-                                        style.top = cropBox.y - size / 2;
-                                        break;
-                                    case "bottom":
-                                        style.left = cropBox.x + cropBox.width / 2 - size / 2;
-                                        style.top = cropBox.y + cropBox.height - size / 2;
-                                        break;
-                                }
+                                {/* Resize handles */}
+                                {[
+                                    "top-left",
+                                    "top-right",
+                                    "bottom-left",
+                                    "bottom-right",
+                                    "left",
+                                    "right",
+                                    "top",
+                                    "bottom",
+                                ].map((handle) => {
+                                    const size = 10;
+                                    const style: React.CSSProperties = {
+                                        position: "absolute",
+                                        width: size,
+                                        height: size,
+                                        background: "white",
+                                        border: "2px solid #2563eb",
+                                        cursor:
+                                            handle.includes("left") || handle.includes("right")
+                                                ? "ew-resize"
+                                                : handle.includes("top") || handle.includes("bottom")
+                                                    ? "ns-resize"
+                                                    : "nwse-resize",
+                                    };
 
-                                return (
-                                    <div
-                                        key={handle}
-                                        style={style}
-                                        onMouseDown={(e) =>
-                                            handleMouseDown(e, handle as any)
-                                        }
-                                    />
-                                );
-                            })}
-                        </>
-                    )}
-                </div>
-            )}
+                                    // Position handles
+                                    switch (handle) {
+                                        case "top-left":
+                                            style.left = cropBox.x - size / 2;
+                                            style.top = cropBox.y - size / 2;
+                                            break;
+                                        case "top-right":
+                                            style.left = cropBox.x + cropBox.width - size / 2;
+                                            style.top = cropBox.y - size / 2;
+                                            break;
+                                        case "bottom-left":
+                                            style.left = cropBox.x - size / 2;
+                                            style.top = cropBox.y + cropBox.height - size / 2;
+                                            break;
+                                        case "bottom-right":
+                                            style.left = cropBox.x + cropBox.width - size / 2;
+                                            style.top = cropBox.y + cropBox.height - size / 2;
+                                            break;
+                                        case "left":
+                                            style.left = cropBox.x - size / 2;
+                                            style.top = cropBox.y + cropBox.height / 2 - size / 2;
+                                            break;
+                                        case "right":
+                                            style.left = cropBox.x + cropBox.width - size / 2;
+                                            style.top = cropBox.y + cropBox.height / 2 - size / 2;
+                                            break;
+                                        case "top":
+                                            style.left = cropBox.x + cropBox.width / 2 - size / 2;
+                                            style.top = cropBox.y - size / 2;
+                                            break;
+                                        case "bottom":
+                                            style.left = cropBox.x + cropBox.width / 2 - size / 2;
+                                            style.top = cropBox.y + cropBox.height - size / 2;
+                                            break;
+                                    }
 
-            {!alredyMergePdf && (
-                <div className="flex flex-col justify-center items-center">
-                    <div className="flex justify-center space-x-2">
-                        <div className="flex justify-center items-center gap-3 mt-6">
-                            <Button
-                                variant="outline"
-                                onClick={goToPrevPage}
-                                disabled={pageNum <= 1}
-                                className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all disabled:cursor-not-allowed"
-                            >
-                                ← Previous
-                            </Button>
+                                    return (
+                                        <div
+                                            key={handle}
+                                            style={style}
+                                            onMouseDown={(e) =>
+                                                handleMouseDown(e, handle as any)
+                                            }
+                                        />
+                                    );
+                                })}
+                            </>
+                        )}
 
-                            <Button
-                                variant="outline"
-                                onClick={goToNextPage}
-                                disabled={pageNum >= totalPages}
-                                className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all"
-                            >
-                                Next →
-                            </Button>
+                        <div className="flex justify-center space-x-2">
+                            <div className="flex justify-center items-center gap-3 mt-6">
+                                <Button
+                                    variant="outline"
+                                    onClick={goToPrevPage}
+                                    disabled={pageNum <= 1}
+                                    className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all disabled:cursor-not-allowed"
+                                >
+                                    ← Previous
+                                </Button>
 
-                            <div>
-                                Page {pageNum} of {totalPages}
+                                <Button
+                                    variant="outline"
+                                    onClick={goToNextPage}
+                                    disabled={pageNum >= totalPages}
+                                    className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all"
+                                >
+                                    Next →
+                                </Button>
+
+                                <div>
+                                    Page {pageNum} of {totalPages}
+                                </div>
                             </div>
+
                         </div>
-
                     </div>
-                </div>
-            )
-            }
-            <PdfActionButton
-                setPdfs={setPdfs}
-                setProgress={setProgress}
-                handleButtonAction={handleCrop}
-                loading={loading}
-                progress={progress}
-                messages={messages}
-                beforActionButtonLable={"Crop & Download"}
-                completedMessage="PDF cropping complete ✂️"
-                completeTitle="Your PDF pages were cropped successfully!"
-                completeButtonLable="Download Cropped PDF"
-            />
+                )
+                }
 
+                <div>
+                    <PdfActionButton
+                        setPdfs={setPdfs}
+                        setProgress={setProgress}
+                        handleButtonAction={handleCrop}
+                        loading={loading}
+                        progress={progress}
+                        messages={messages}
+                        beforActionButtonLable={"Crop & Download"}
+                        completedMessage="PDF cropping complete ✂️"
+                        completeTitle="Your PDF pages were cropped successfully!"
+                        completeButtonLable="Download Cropped PDF"
+                    />
+                </div>
+            </div>
         </>
     )
 }

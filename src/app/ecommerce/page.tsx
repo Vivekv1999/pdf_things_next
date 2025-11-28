@@ -70,7 +70,7 @@ export default function EcommercePage() {
                     {platforms.map((platform) => (
                         <motion.div
                             key={platform.id}
-                            className="bg-gradient-to-br from-purple-100 to-purple-50 text-purple-700"
+                            className="bg-gradient-to-br from-purple-100 to-purple-50 text-purple-700 rounded-xl"
                             variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
                         >
                             <Link href={`/ecommerce/${platform.id}`}>
