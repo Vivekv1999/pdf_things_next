@@ -47,11 +47,8 @@ export const PdfActionButton = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pdfs]);
 
-    console.log(!loading, !alredyMergePdf, "pppppppppppppkkkk");
-
-
     return (
-        <div className="flex sm:flex-row flex-col justify-center items-center gap-3 mt-28">
+        <div className="flex sm:flex-row flex-col justify-center items-center gap-3">
             {!loading && !alredyMergePdf && (
                 <Button
                     onClick={handleButtonAction}

@@ -58,7 +58,7 @@ export const MergeActionButton = ({
     };
 
     return (
-        <div className="flex sm:flex-row flex-col justify-center items-center gap-3 mt-28">
+        <div className="flex sm:flex-row flex-col justify-center items-center gap-3">
             {!loading && !alredyMergePdf && (
                 <Button
                     onClick={handleMergePdfs}
