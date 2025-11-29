@@ -93,7 +93,7 @@ export default function useSplitPdf(
         setProgress?.(0);
         try {
             const srcDoc = await PDFDocument.load(pdf.bytes);
-
+            let arr=[]
             if (removeOption === "custom" && customPages) {
                 // Multiple PDFs
                 const groups = parseCustomRanges(customPages, pdf.pageCount);
@@ -107,6 +107,8 @@ export default function useSplitPdf(
                     const newBytes = await newDoc.save() as Uint8Array<ArrayBuffer>;
                     const blob = new Blob([newBytes], { type: "application/pdf" });
 
+                    arr.push(newBytes) //use in laredy donlaod pdf  
+
                     // auto-download
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement("a");
@@ -118,6 +120,8 @@ export default function useSplitPdf(
                       const percent = Math.round(((idx + 1) / totalGroups) * 100);
                     setProgress?.(percent);
                 }
+
+                return arr
             } else {
                 // Original remove-based splitting (odd/even/all)
                 const indices = srcDoc.getPageIndices();
@@ -131,16 +135,21 @@ export default function useSplitPdf(
 
                 const newBytes = await newDoc.save() as Uint8Array<ArrayBuffer>
                 const blob = new Blob([newBytes], { type: "application/pdf" });
-                setResult(blob);
 
+                arr.push(newBytes) //use in laredy donlaod pdf  
+
+                setResult(blob);
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement("a");
                 link.href = url;
                 link.download = "split.pdf";
                 link.click();
                 URL.revokeObjectURL(url);
+                return arr
             }
-        } finally {
+     } catch (error) {
+        console.error(error)
+        }finally {
             setLoading(false);
         }
     };
