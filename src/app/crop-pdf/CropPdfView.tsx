@@ -117,12 +117,12 @@ const CropPdfView = ({
 
     return (
         <>
-            <div className={`flex items-center h-full ${alredyMergePdf ? "justify-center" : "justify-between"}`}>
+            <div className={`flex flex-col lg:flex-row items-center gap-6 lg:gap-8 w-full ${alredyMergePdf ? "justify-center" : "lg:justify-between"}`}>
 
                 {!alredyMergePdf && (
                     <div
                         ref={containerRef}
-                        className="inline-block relative select-none"
+                        className="inline-block relative select-none w-full max-w-3xl"
                         onMouseDown={(e) => handleMouseDown(e)}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
@@ -217,29 +217,29 @@ const CropPdfView = ({
                             </>
                         )}
 
-                        <div className="flex justify-center space-x-2">
-                            <div className="flex justify-center items-center gap-3 mt-6">
+                        <div className="flex justify-center mt-4 md:mt-6">
+                            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3 w-full">
                                 <Button
                                     variant="outline"
                                     onClick={goToPrevPage}
                                     disabled={pageNum <= 1}
-                                    className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all disabled:cursor-not-allowed"
+                                    className="hover:bg-gray-100 disabled:opacity-50 px-3 sm:px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-xs sm:text-sm transition-all disabled:cursor-not-allowed w-full sm:w-auto"
                                 >
                                     ← Previous
                                 </Button>
+
+                                <div className="text-sm sm:text-base font-medium text-gray-700 px-3 py-1">
+                                    Page {pageNum} of {totalPages}
+                                </div>
 
                                 <Button
                                     variant="outline"
                                     onClick={goToNextPage}
                                     disabled={pageNum >= totalPages}
-                                    className="hover:bg-gray-100 disabled:opacity-50 px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-sm transition-all"
+                                    className="hover:bg-gray-100 disabled:opacity-50 px-3 sm:px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-xs sm:text-sm transition-all w-full sm:w-auto"
                                 >
                                     Next →
                                 </Button>
-
-                                <div>
-                                    Page {pageNum} of {totalPages}
-                                </div>
                             </div>
 
                         </div>
@@ -247,7 +247,7 @@ const CropPdfView = ({
                 )
                 }
 
-                <div>
+                <div className="w-full lg:w-auto">
                     <PdfActionButton
                         setPdfs={setPdfs}
                         setProgress={setProgress}
