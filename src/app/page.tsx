@@ -33,27 +33,29 @@ export default function Home() {
 
       <section className="mx-auto mt-5 md:mt-4 px-4 pb-20 max-w-7xl">
         <div className="gap-6 grid sm:grid-cols-2 lg:grid-cols-3">
-          {allTools.map(({ path, name, description, color, icon: Icon }) => (
-            <motion.div
-              key={path}
-              whileHover={{ y: -4 }}
-              className="group bg-white/70 shadow-sm hover:shadow-lg p-6 border border-gray-200 rounded-2xl transition-all cursor-pointer"
-            >
-              <Link href={path}>
-                <div
-                  className={`w-12 h-12 flex items-center justify-center rounded-xl ${color} text-white mb-4 shadow-lg`}
-                >
-                  <Icon className="w-6 h-6" />
-                </div>
-                <h2 className="font-semibold text-gray-900 text-xl group-hover:underline">
-                  {name}
-                </h2>
-                <p className="mt-1 text-gray-600 text-sm line-clamp-2">
-                  {description}
-                </p>
-              </Link>
-            </motion.div>
-          ))}
+          {allTools
+            .filter((tool) => tool.showOnHomepage !== false)
+            .map(({ path, name, description, color, icon: Icon }) => (
+              <motion.div
+                key={path}
+                whileHover={{ y: -4 }}
+                className="group bg-white/70 shadow-sm hover:shadow-lg p-6 border border-gray-200 rounded-2xl transition-all cursor-pointer"
+              >
+                <Link href={path}>
+                  <div
+                    className={`w-12 h-12 flex items-center justify-center rounded-xl ${color} text-white mb-4 shadow-lg`}
+                  >
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h2 className="font-semibold text-gray-900 text-xl group-hover:underline">
+                    {name}
+                  </h2>
+                  <p className="mt-1 text-gray-600 text-sm line-clamp-2">
+                    {description}
+                  </p>
+                </Link>
+              </motion.div>
+            ))}
         </div>
       </section>
 

@@ -21,20 +21,20 @@ const platforms = [
         color: "bg-yellow-100 text-yellow-700",
         icon: "/icons/flipkart.png",
     },
-    {
-        id: "amazon",
-        title: "Amazon",
-        description: "Amazon FBA & FBM label cropping made easy.",
-        color: "bg-blue-100 text-blue-700",
-        icon: "/icons/amazon.png",
-    },
-    {
-        id: "sort-by-sku",
-        title: "Sort by SKU",
-        description: "Automatically reorder PDFs by SKU or order ID.",
-        color: "bg-green-100 text-green-700",
-        icon: "/icons/sku.png",
-    },
+    // {
+    //     id: "amazon",
+    //     title: "Amazon",
+    //     description: "Amazon FBA & FBM label cropping made easy.",
+    //     color: "bg-blue-100 text-blue-700",
+    //     icon: "/icons/amazon.png",
+    // },
+    // {
+    //     id: "sort-by-sku",
+    //     title: "Sort by SKU",
+    //     description: "Automatically reorder PDFs by SKU or order ID.",
+    //     color: "bg-green-100 text-green-700",
+    //     icon: "/icons/sku.png",
+    // },
 ];
 
 export default function EcommercePage() {
@@ -55,7 +55,7 @@ export default function EcommercePage() {
 
                 {/* Cards Section */}
                 <motion.div
-                    className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                    className={`gap-6 grid grid-cols-1 md:grid-cols-2  ${platforms?.length > 2 ? "lg:grid-cols-3" : "mx-5"}`}
                     initial="hidden"
                     animate="show"
                     variants={{
