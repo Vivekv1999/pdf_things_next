@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { siteConfig } from "../constants/appConstants";
 import { allTools, Tool } from "../data/allTools";
-import { useTheme } from "../components/ThemeProvider";
+// import { useTheme } from "../components/ThemeProvider";
 import SearchModal from "../components/SearchModal";
 
 const Navbar: React.FC = () => {
@@ -16,7 +16,8 @@ const Navbar: React.FC = () => {
     const [allToolsMenuOpen, setAllToolsMenuOpen] = useState<boolean>(false);
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [scrolled, setScrolled] = useState<boolean>(false);
-    const { theme, toggleTheme } = useTheme();
+    // const { theme, toggleTheme } = useTheme();
+    const theme = "light"
 
     // Handle scroll effect
     useEffect(() => {
@@ -230,24 +231,6 @@ const Navbar: React.FC = () => {
                             <Search className="w-4 h-4" />
                         </button>
 
-                        {/* Theme Toggle */}
-                        <button
-                            onClick={toggleTheme}
-                            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
-                            aria-label="Toggle theme"
-                        >
-                            <motion.div
-                                initial={false}
-                                animate={{ rotate: theme === "dark" ? 180 : 0 }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                {theme === "dark" ? (
-                                    <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                                ) : (
-                                    <Sun className="w-5 h-5 text-gray-600" />
-                                )}
-                            </motion.div>
-                        </button>
                     </div>
 
                     {/* Mobile buttons */}
@@ -257,16 +240,6 @@ const Navbar: React.FC = () => {
                             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
                         >
                             <Search className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                        </button>
-                        <button
-                            onClick={toggleTheme}
-                            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
-                        >
-                            {theme === "dark" ? (
-                                <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                            ) : (
-                                <Sun className="w-5 h-5 text-gray-600" />
-                            )}
                         </button>
                         <button
                             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
