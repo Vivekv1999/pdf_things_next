@@ -1,3 +1,5 @@
+"use client";
+
 import DragAndDropInput from "@/src/components/DragAndDropInput";
 import { ProcessPdf } from "@/src/components/ProcessPdf";
 import useFileHandler from "@/src/hooks/useFileHandler";
@@ -7,6 +9,10 @@ import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import React, { useEffect, useState } from "react";
 import FlipkartEcomList from "./FlipkartEcomList";
+import FlipkartProblemSolution from "./FlipkartProblemSolution";
+import FlipkartKeyFeatures from "./FlipkartKeyFeatures";
+import FlipkartStats from "./FlipkartStats";
+import FlipkartWorkflowSteps from "./FlipkartWorkflowSteps";
 
 const FlipkartEcom = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
@@ -45,15 +51,16 @@ const FlipkartEcom = () => {
                             </div>
                         ) : (
                             <>
-                                <PdfPageHeader
-                                    title="Flipkart Seller Tools"
-                                    description="Crop and sort your Flipkart shipping labels by SKU — free online tools built for Flipkart sellers."
-                                />
+                                <div className="h-screen">
+                                    <PdfPageHeader
+                                        title="Flipkart Seller Tools"
+                                        description="Upload Flipkart labels from all your accounts. We'll auto-crop to perfect size, sort by SKU, and merge everything — all in one click!"
+                                    />
 
-
-                                <DragAndDropInput
-                                    handleFileChange={handleFiles}
-                                />
+                                    <DragAndDropInput
+                                        handleFileChange={handleFiles}
+                                    />
+                                </div>
                             </>
                         )}
                     </>
@@ -64,9 +71,17 @@ const FlipkartEcom = () => {
                     />
                 )
             }
-            {/* <MeeshoEcomWorkflowSteps /> */}
+
+            {/* Showcase sections - always visible */}
+            <div className="mt-36">
+                <FlipkartProblemSolution />
+                <FlipkartKeyFeatures />
+                <FlipkartStats />
+                <FlipkartWorkflowSteps />
+            </div>
         </>
     );
 };
 
 export default FlipkartEcom
+
