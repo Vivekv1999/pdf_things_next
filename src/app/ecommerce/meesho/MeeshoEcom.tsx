@@ -9,6 +9,10 @@ import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import MeeshoEcomList from "./MeeshoEcomList";
+import MeeshoProblemSolution from "./MeeshoProblemSolution";
+import MeeshoKeyFeatures from "./MeeshoKeyFeatures";
+import MeeshoStats from "./MeeshoStats";
+import MeeshoEcomWorkflowSteps from "./MeeshoEcomWorkflowSteps";
 
 const MeeshoEcom = () => {
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
@@ -47,14 +51,17 @@ const MeeshoEcom = () => {
                             </div>
                         ) : (
                             <>
-                                <PdfPageHeader
-                                    title="Meesho Seller Tools"
-                                    description="Merge and sort all your Meesho invoices by SKU and generate account labels instantly — all free and online."
-                                />
+                                <div className="h-screen">
+                                    <PdfPageHeader
+                                        title="Meesho Seller Tools"
+                                        description="Upload labels from all your Meesho accounts. We'll automatically sort by SKU and merge them into one organized PDF — saving you hours of manual work."
+                                    />
 
-                                <DragAndDropInput
-                                    handleFileChange={handleFiles}
-                                />
+                                    <DragAndDropInput
+                                        handleFileChange={handleFiles}
+                                    />
+                                </div>
+
                             </>
                         )}
                     </>
@@ -65,9 +72,17 @@ const MeeshoEcom = () => {
                     />
                 )
             }
-            {/* <MeeshoEcomWorkflowSteps /> */}
+
+            {/* Showcase sections - always visible */}
+            <div className="mt-36">
+                <MeeshoProblemSolution />
+                <MeeshoKeyFeatures />
+                <MeeshoStats />
+                <MeeshoEcomWorkflowSteps />
+            </div>
         </>
     )
 }
 
 export default MeeshoEcom
+
