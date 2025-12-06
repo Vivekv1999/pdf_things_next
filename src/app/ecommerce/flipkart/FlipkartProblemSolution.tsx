@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle, Crop, SortAsc } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 
 export default function FlipkartProblemSolution() {
     return (

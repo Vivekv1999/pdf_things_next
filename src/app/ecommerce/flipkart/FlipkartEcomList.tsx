@@ -29,8 +29,8 @@ const FlipkartEcomList = ({
 }: FlipkartEcomListProps) => {
     const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
     const [progress, setProgress] = useState(0)
-    const { mergePdfs, loading, setLoading, progress: mergingProgress } = useMergePdfs();
-    const { reorderPdf, progress: sortingProgress } = useSort("FLIPKART");
+    const { mergePdfs, loading, setLoading } = useMergePdfs();
+    const { reorderPdf } = useSort("FLIPKART");
     const dispatch = useAppDispatch();
 
     const { cropPdf } = useCropPdf();

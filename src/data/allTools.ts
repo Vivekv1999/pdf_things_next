@@ -1,4 +1,4 @@
-import { Crop, FileMinus2, FileStack, Scissors, ShoppingCart, FileText, FileType, Image, Store } from "lucide-react";
+import { Crop, FileStack, Scissors, ShoppingCart, Store } from "lucide-react";
 
 export interface Tool {
     path: string;

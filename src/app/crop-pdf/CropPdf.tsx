@@ -3,17 +3,17 @@ import { ProcessPdf } from "@/src/components/ProcessPdf";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
 import pdfjsLib from "@/src/lib/pdfWorker";
-import { resetGeneral, setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
+import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta, ProgressUpdate } from "@/src/types/pdf";
 import { useEffect, useState } from "react";
 import CropPdfView from "./CropPdfView";
 
-const ME1 = {
-    height: 418,
-    width: 595,
-    x: 0,
-    y: 0
-}
+// const ME1 = {
+//     height: 418,
+//     width: 595,
+//     x: 0,
+//     y: 0
+// }
 
 const pdfProgress: ProgressUpdate = {
     fileName: "",

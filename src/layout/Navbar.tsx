@@ -1,12 +1,12 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, Moon, Sun, Search, ChevronDown, X } from "lucide-react";
+import { Menu, Search, ChevronDown, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { siteConfig } from "../constants/appConstants";
-import { allTools, Tool } from "../data/allTools";
+import { allTools } from "../data/allTools";
 // import { useTheme } from "../components/ThemeProvider";
 import SearchModal from "../components/SearchModal";
 
@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [scrolled, setScrolled] = useState<boolean>(false);
     // const { theme, toggleTheme } = useTheme();
-    const theme = "light"
+    // const theme = "light"
 
     // Handle scroll effect
     useEffect(() => {

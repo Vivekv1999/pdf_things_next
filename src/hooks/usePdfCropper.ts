@@ -45,6 +45,7 @@ export const usePdfCropper = () => {
 
     useEffect(() => {
         renderPage(pageNum);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pdfDoc, pageNum]);
 
     // Crop PDF

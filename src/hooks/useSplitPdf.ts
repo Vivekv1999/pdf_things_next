@@ -93,7 +93,7 @@ export default function useSplitPdf(
         setProgress?.(0);
         try {
             const srcDoc = await PDFDocument.load(pdf.bytes);
-            let arr=[]
+            const arr=[]
             if (removeOption === "custom" && customPages) {
                 // Multiple PDFs
                 const groups = parseCustomRanges(customPages, pdf.pageCount);

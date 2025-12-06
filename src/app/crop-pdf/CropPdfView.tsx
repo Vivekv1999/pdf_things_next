@@ -11,13 +11,6 @@ import { PDFPageProxy } from "pdfjs-dist";
 import { RenderParameters } from "pdfjs-dist/types/src/display/api";
 import { useEffect, useRef, useState } from "react";
 
-interface CropBox {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}
-
 interface CanvasSize {
     width: number;
     height: number;
@@ -43,7 +36,7 @@ const CropPdfView = ({
     const [canvasSize, setCanvasSize] = useState<CanvasSize>({ width: 0, height: 0 });
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const cropBoxRef = useRef<HTMLDivElement | null>(null);
+    // const cropBoxRef = useRef<HTMLDivElement | null>(null);
 
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
