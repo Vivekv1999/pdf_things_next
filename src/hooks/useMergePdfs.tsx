@@ -12,6 +12,7 @@ export interface MergeResult {
     blob: Blob;
     url: string;
     download: () => void;
+    mergedBytes: Uint8Array<ArrayBuffer>
 }
 
 export default function useMergePdfs() {
@@ -54,7 +55,7 @@ export default function useMergePdfs() {
             setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
         };
 
-        const resultObj: MergeResult = { blob, url: objectUrl, download };
+        const resultObj: MergeResult = { blob, url: objectUrl, download, mergedBytes };
         setResult(resultObj);
 
         return resultObj;

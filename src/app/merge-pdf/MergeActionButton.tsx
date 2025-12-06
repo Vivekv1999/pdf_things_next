@@ -5,6 +5,7 @@ import ProcessComplete from "@/src/components/ProcessComplete";
 import { Button } from "@/src/components/ui/button";
 import useMergePdfs from "@/src/hooks/useMergePdfs";
 import { PdfMeta } from "@/src/types/pdf";
+import { downloadPdf } from "@/src/utils/downloadFile";
 import { RotateCcw } from "lucide-react";
 import { useEffect } from "react";
 
@@ -43,7 +44,7 @@ export const MergeActionButton = ({
         const start = performance.now();
 
         if (alredyMergePdf) {
-            alredyMergePdf.download();
+            downloadPdf(alredyMergePdf.mergedBytes, "merged");
         } else {
             const result = await mergePdfs(pdfs);
             setAlredyMergePdf(result);
