@@ -1,6 +1,3 @@
-"use client";
-
-
 interface PdfPagePreviewProps {
     pdfPage: any;
     handleRemove?: (id: string) => void;
