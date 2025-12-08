@@ -1,7 +1,7 @@
 "use client"
 
 import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
-import PdfPagePreview from "@/src/components/pdf/PdfPagePreview";
+import PdfPagePreview from "@/src/components/PdfPagePreview";
 import { Button } from "@/src/components/ui/button";
 import useSplitPdf, { RemoveOption } from "@/src/hooks/useSplitPdf";
 import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";

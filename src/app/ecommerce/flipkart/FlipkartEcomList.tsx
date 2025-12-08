@@ -1,5 +1,5 @@
 import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
-import PdfPagePreview from "@/src/components/pdf/PdfPagePreview";
+import PdfPagePreview from "@/src/components/PdfPagePreview";
 import useCropPdf from "@/src/hooks/useCropPdf";
 import useMergePdfs from "@/src/hooks/useMergePdfs";
 import useSort from "@/src/hooks/useSortPdf";
