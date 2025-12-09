@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Applayout from "../layout/Applayout";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,65 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* JSON-LD Structured Data for SEO */}
+        <Script
+          id="schema-org"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": "https://pdfthings.com/#website",
+                  "url": "https://pdfthings.com",
+                  "name": "PDF Things",
+                  "description": "Free online PDF tools for merging, splitting, cropping PDFs and ecommerce label tools for Flipkart & Meesho sellers",
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://pdfthings.com/?s={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                  }
+                },
+                {
+                  "@type": "Organization",
+                  "@id": "https://pdfthings.com/#organization",
+                  "name": "PDF Things",
+                  "url": "https://pdfthings.com",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://pdfthings.com/og-image.png"
+                  },
+                  "sameAs": []
+                },
+                {
+                  "@type": "WebApplication",
+                  "@id": "https://pdfthings.com/#webapp",
+                  "name": "PDF Things - Free PDF Tools",
+                  "url": "https://pdfthings.com",
+                  "applicationCategory": "Utility",
+                  "operatingSystem": "Any",
+                  "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                  },
+                  "featureList": [
+                    "Merge PDF files",
+                    "Split PDF documents",
+                    "Crop PDF pages",
+                    "Flipkart label sorter",
+                    "Meesho label tool",
+                    "SKU-based label sorting",
+                    "Multi-account label processing"
+                  ],
+                  "screenshot": "https://pdfthings.com/og-image.png"
+                }
+              ]
+            })
+          }}
+        />
+
         <StoreProvider>
           <Applayout>
             {children}
