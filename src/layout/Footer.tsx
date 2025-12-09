@@ -72,6 +72,22 @@ const Footer = () => {
                                     Contact
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href="/privacy-policy"
+                                    className="text-gray-400 hover:text-blue-400 transition-colors duration-200 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.55)]"
+                                >
+                                    Privacy Policy
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/terms-and-conditions"
+                                    className="text-gray-400 hover:text-blue-400 transition-colors duration-200 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.55)]"
+                                >
+                                    Terms & Conditions
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
