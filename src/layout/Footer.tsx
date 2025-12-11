@@ -5,100 +5,97 @@ import { siteConfig } from "../constants/appConstants";
 
 const Footer = () => {
     return (
-        <footer className="relative mt-16 bg-[#0B0F19] border-t border-white/10 rounded-t-[4rem]">
-            {/* Glowing top border */}
-            <div className="absolute -top-[1px] left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500/0 via-blue-400 to-blue-500/0 blur-[2px]" />
+        <footer className="relative mt-20 bg-gray-950 border-t border-white/5 overflow-hidden">
+            {/* Background Effects */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent opacity-50" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-fuchsia-500/10 via-transparent to-transparent opacity-50" />
 
-            <div className="mx-auto max-w-7xl px-6 py-12">
+            <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12">
 
-                {/* Main Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-
-                    {/* Brand Section */}
-                    <div className="col-span-1 md:col-span-2 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 shadow-xl shadow-blue-900/5">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <div className="relative">
-                                <FileText className="w-10 h-10 text-blue-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
+                    {/* Brand Section - Takes up 4 columns on large screens */}
+                    <div className="col-span-2 md:col-span-4 lg:col-span-4 space-y-6">
+                        <div className="flex items-center space-x-3">
+                            <div className="p-2 bg-gradient-to-tr from-indigo-500 to-fuchsia-500 rounded-xl shadow-lg shadow-indigo-500/20">
+                                <FileText className="w-6 h-6 text-white" />
                             </div>
-                            <span className="font-semibold text-2xl tracking-wide text-white">
+                            <span className="font-bold text-2xl text-white tracking-tight">
                                 {siteConfig.name}
                             </span>
                         </div>
-                        <p className="text-gray-400 leading-relaxed">
-                            The future of PDF editing — fast, secure, and fully browser-based.
-                            Built for eCommerce sellers, professionals, and everyday users.
+                        <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
+                            The ultimate browser-based PDF toolkit. Secure, fast, and completely free.
+                            Built to empower sellers and professionals with next-gen tools.
                         </p>
+                        <div className="flex gap-4">
+                            {/* Social placeholders or badges could go here */}
+                        </div>
                     </div>
 
-                    {/* Tools */}
-                    <div>
-                        <h3 className="mb-4 text-lg font-semibold text-white">PDF Tools</h3>
-                        <ul className="space-y-3">
+                    {/* Navigation Columns */}
+                    <div className="col-span-1 md:col-span-2 lg:col-span-3">
+                        <h3 className="font-semibold text-white tracking-wide mb-6">PDF Tools</h3>
+                        <ul className="space-y-4">
                             {[
-                                { name: "PDF Merge", href: "/merge" },
-                                { name: "PDF Split", href: "/split" },
-                                { name: "PDF Compress", href: "/compress" },
-                                { name: "PDF Crop", href: "/crop" }
-                            ].map((tool) => (
-                                <li key={tool.name}>
-                                    <Link
-                                        href={tool.href}
-                                        className="text-gray-400 hover:text-blue-400 transition-colors duration-200 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.55)]"
-                                    >
-                                        {tool.name}
+                                { name: "Merge PDF", href: "/merge-pdf" },
+                                { name: "Split PDF", href: "/split-pdf" },
+                                { name: "Crop PDF", href: "/crop-pdf" },
+                                // { name: "Compress PDF", href: "/compress-pdf" },
+                            ].map((item) => (
+                                <li key={item.name}>
+                                    <Link href={item.href} className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}
                         </ul>
                     </div>
 
-                    {/* Company */}
-                    <div>
-                        <h3 className="mb-4 text-lg font-semibold text-white">Company</h3>
-                        <ul className="space-y-3">
-                            <li>
-                                <Link
-                                    href="/about"
-                                    className="text-gray-400 hover:text-blue-400 transition-colors duration-200 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.55)]"
-                                >
-                                    About Us
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href="/contact-us"
-                                    className="text-gray-400 hover:text-blue-400 transition-colors duration-200 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.55)]"
-                                >
-                                    Contact
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href="/privacy-policy"
-                                    className="text-gray-400 hover:text-blue-400 transition-colors duration-200 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.55)]"
-                                >
-                                    Privacy Policy
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href="/terms-and-conditions"
-                                    className="text-gray-400 hover:text-blue-400 transition-colors duration-200 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.55)]"
-                                >
-                                    Terms & Conditions
-                                </Link>
-                            </li>
+                    <div className="col-span-1 md:col-span-2 lg:col-span-3">
+                        <h3 className="font-semibold text-white tracking-wide mb-6">Ecommerce</h3>
+                        <ul className="space-y-4">
+                            {[
+                                { name: "All Tools", href: "/ecommerce" },
+                                { name: "Meesho Label Sort", href: "/ecommerce/meesho" },
+                                { name: "Flipkart Label Crop", href: "/ecommerce/flipkart" },
+                            ].map((item) => (
+                                <li key={item.name}>
+                                    <Link href={item.href} className="text-gray-400 hover:text-fuchsia-400 transition-colors text-sm">
+                                        {item.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="col-span-2 md:col-span-2 lg:col-span-2">
+                        <h3 className="font-semibold text-white tracking-wide mb-6">Company</h3>
+                        <ul className="space-y-4">
+                            {[
+                                { name: "About Us", href: "/about" },
+                                { name: "Contact", href: "/contact-us" },
+                                { name: "Privacy Policy", href: "/privacy-policy" },
+                                { name: "Terms", href: "/terms-and-conditions" },
+                            ].map((item) => (
+                                <li key={item.name}>
+                                    <Link href={item.href} className="text-gray-400 hover:text-white transition-colors text-sm">
+                                        {item.name}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
 
-                {/* Bottom note */}
-                <div className="mt-12 border-t border-white/10 pt-6 text-center text-gray-500">
-                    <p>
-                        © {moment().year()} {siteConfig.name}. Built with ❤️ for the next generation of PDF tools.
+                <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-gray-500 text-sm">
+                        © {moment().year()} {siteConfig.name}. All rights reserved.
                     </p>
+                    <div className="flex items-center gap-6">
+                        <span className="text-gray-600 text-xs">Secure SSL Encryption</span>
+                        {/* Add status indicator or other trust badges here if needed */}
+                    </div>
                 </div>
-
             </div>
         </footer>
     );
