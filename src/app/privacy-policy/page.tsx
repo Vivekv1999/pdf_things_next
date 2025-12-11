@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
                 <section>
                     <h2 className="mb-3 font-semibold text-2xl text-gray-900">2. Data Processing and Storage</h2>
                     <p className="mb-3">
-                        <strong className="text-gray-900">Important:</strong> All PDF processing happens directly in your browser using your device's processing power.
+                        <strong className="text-gray-900">Important:</strong> All PDF processing happens directly in your browser using your device&apos;s processing power.
                     </p>
                     <ul className="space-y-2 pl-6 list-disc">
                         <li>We do NOT upload your files to our servers</li>
@@ -27,7 +27,7 @@ const PrivacyPolicy = () => {
                         <li>All operations are performed locally on your device</li>
                     </ul>
                     <p className="mt-3 text-sm italic">
-                        Note: Because processing happens in your browser, the app's performance depends on your device's capabilities.
+                        Note: Because processing happens in your browser, the app&apos;s performance depends on your device&apos;s capabilities.
                         Heavy operations may not be possible on less powerful devices.
                     </p>
                 </section>
@@ -72,7 +72,7 @@ const PrivacyPolicy = () => {
                 <section>
                     <h2 className="mb-3 font-semibold text-2xl text-gray-900">7. Data Security</h2>
                     <p>
-                        Since all file processing happens in your browser and we don't store your files, your documents
+                        Since all file processing happens in your browser and we don&apos;t store your files, your documents
                         remain completely private and secure on your device. We implement industry-standard security measures
                         to protect any information we do collect.
                     </p>
@@ -90,7 +90,7 @@ const PrivacyPolicy = () => {
                 </section>
 
                 <section>
-                    <h2 className="mb-3 font-semibold text-2xl text-gray-900">9. Children's Privacy</h2>
+                    <h2 className="mb-3 font-semibold text-2xl text-gray-900">9. Children&apos;s Privacy</h2>
                     <p>
                         Our services are not intended for children under 13. We do not knowingly collect information from children.
                     </p>

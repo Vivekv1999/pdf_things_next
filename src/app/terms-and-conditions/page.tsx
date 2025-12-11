@@ -22,12 +22,12 @@ const TermsAndConditions = () => {
                         cropping, compression, and e-commerce label processing.
                     </p>
                     <p className="mb-3">
-                        <strong className="text-gray-900">Important:</strong> All processing is performed in your browser using your device's resources.
+                        <strong className="text-gray-900">Important:</strong> All processing is performed in your browser using your device&apos;s resources.
                     </p>
                     <ul className="space-y-2 pl-6 list-disc">
                         <li>Your files are NOT uploaded to our servers</li>
                         <li>All operations happen locally on your device</li>
-                        <li>Performance depends on your device's capabilities</li>
+                        <li>Performance depends on your device&apos;s capabilities</li>
                         <li>Heavy operations may not work on less powerful devices</li>
                     </ul>
                 </section>
@@ -68,7 +68,7 @@ const TermsAndConditions = () => {
                     <ul className="space-y-2 pl-6 list-disc">
                         <li>You need a modern browser with JavaScript enabled</li>
                         <li>Large files or complex operations require adequate device resources</li>
-                        <li>Processing speed depends on your device's CPU and memory</li>
+                        <li>Processing speed depends on your device&apos;s CPU and memory</li>
                         <li>We are not responsible for performance issues related to device limitations</li>
                     </ul>
                 </section>
@@ -87,7 +87,7 @@ const TermsAndConditions = () => {
                 <section>
                     <h2 className="mb-3 font-semibold text-2xl text-gray-900">7. Disclaimer of Warranties</h2>
                     <p className="mb-3">
-                        Our service is provided "AS IS" and "AS AVAILABLE" without warranties of any kind, either express or implied.
+                        Our service is provided &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; without warranties of any kind, either express or implied.
                     </p>
                     <ul className="space-y-2 pl-6 list-disc">
                         <li>We do not guarantee uninterrupted or error-free service</li>

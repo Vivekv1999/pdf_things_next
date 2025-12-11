@@ -28,8 +28,7 @@ const CropPdfView = ({
     pdfDoc,
     totalPages,
     pdfBytes,
-    setPdfs,
-    pdfs
+    setPdfs
 }: any) => {
 
     const [pageNum, setPageNum] = useState<number>(1);
