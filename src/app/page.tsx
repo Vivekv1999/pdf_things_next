@@ -3,9 +3,22 @@
 import { motion } from "framer-motion";
 import { CheckCircle, Globe, Lock, Shield, Users, Zap, ZapIcon } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { allTools } from "../data/allTools";
 
-export default function Home() {
+function SearchResults() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("s")?.toLowerCase() || "";
+
+  const filteredTools = allTools.filter((tool) => {
+    if (!query) return tool.showOnHomepage !== false;
+    return (
+      tool.name.toLowerCase().includes(query) ||
+      tool.description.toLowerCase().includes(query) ||
+      tool.category?.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <>
@@ -18,7 +31,9 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600 font-extrabold text-transparent text-3xl sm:text-4xl lg:text-5xl tracking-tight"
           >
-            Free Online PDF Tools - Merge, Split & Crop PDF
+            {query
+              ? `Search Results for "${query}"`
+              : "Free Online PDF Tools - Merge, Split & Crop PDF"}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -26,16 +41,17 @@ export default function Home() {
             transition={{ delay: 0.15, duration: 0.6 }}
             className="mx-auto mt-6 max-w-2xl text-gray-600 text-base sm:text-lg"
           >
-            Fast, secure PDF tools for merging, splitting, cropping & more. Includes specialized tools for Flipkart & Meesho sellers. 100% free, no sign-up required.
+            {query
+              ? `Found ${filteredTools.length} tool${filteredTools.length === 1 ? "" : "s"} matching your search.`
+              : "Fast, secure PDF tools for merging, splitting, cropping & more. Includes specialized tools for Flipkart & Meesho sellers. 100% free, no sign-up required."}
           </motion.p>
         </div>
       </section>
 
       <section className="mx-auto mt-5 md:mt-4 px-4 pb-20 max-w-7xl">
-        <div className="gap-6 grid sm:grid-cols-2 lg:grid-cols-3">
-          {allTools
-            .filter((tool) => tool.showOnHomepage !== false)
-            .map(({ path, name, description, color, icon: Icon }) => (
+        {filteredTools.length > 0 ? (
+          <div className="gap-6 grid sm:grid-cols-2 lg:grid-cols-3">
+            {filteredTools.map(({ path, name, description, color, icon: Icon }) => (
               <motion.div
                 key={path}
                 whileHover={{ y: -4 }}
@@ -56,7 +72,16 @@ export default function Home() {
                 </Link>
               </motion.div>
             ))}
-        </div>
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No tools found</h3>
+            <p className="text-gray-600">Try searching for something else, like "merge" or "split".</p>
+            <Link href="/" className="inline-block mt-4 text-indigo-600 font-medium hover:underline">
+              View all tools
+            </Link>
+          </div>
+        )}
       </section>
 
       {/* SEO Content Section - Hidden from users but visible to search engines */}
@@ -298,5 +323,13 @@ export default function Home() {
         </div>
       </section>
     </>
-  )
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen"></div>}>
+      <SearchResults />
+    </Suspense>
+  );
 }

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import Applayout from "../layout/Applayout";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
-import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -115,6 +115,36 @@ export default function RootLayout({
                     "Multi-account label processing"
                   ],
                   "screenshot": "https://pdfthings.com/og-image.png"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "name": "Meesho Label Sort",
+                  "url": "https://pdfthings.com/ecommerce/meesho",
+                  "description": "Sort Meesho labels by SKU for all accounts"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "name": "Flipkart Label Crop",
+                  "url": "https://pdfthings.com/ecommerce/flipkart",
+                  "description": "Crop and Sort Flipkart labels by SKU"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "name": "Merge PDF",
+                  "url": "https://pdfthings.com/merge-pdf",
+                  "description": "Combine multiple PDFs into one file"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "name": "Split PDF",
+                  "url": "https://pdfthings.com/split-pdf",
+                  "description": "Extract pages from your PDF"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "name": "Crop PDF",
+                  "url": "https://pdfthings.com/crop-pdf",
+                  "description": "Trim PDF margins"
                 }
               ]
             })
