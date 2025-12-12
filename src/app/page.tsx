@@ -327,6 +327,9 @@ function SearchResults() {
 }
 
 export default function Home() {
+  console.log(process.env.TEST_PRIVATE, "test_private");
+  console.log(process.env.NEXT_PUBLIC_SITE_URL, "Url");
+
   return (
     <Suspense fallback={<div className="min-h-screen"></div>}>
       <SearchResults />
