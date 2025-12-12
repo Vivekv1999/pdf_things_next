@@ -1,4 +1,4 @@
-import { Crop, FileStack, Scissors, ShoppingCart, Store } from "lucide-react";
+import { Crop, FileStack, FileText, Image as ImageIcon, Scissors, ShoppingCart, Store } from "lucide-react";
 
 export interface Tool {
     path: string;
@@ -91,6 +91,26 @@ export const allTools: Tool[] = [
         icon: Crop,
         category: "manipulation",
         showOnHomepage: true,
+    },
+    {
+        path: "/pdf-to-jpg",
+        name: "PDF to JPG",
+        description: "Convert PDF pages to high-quality JPG images.",
+        color: "bg-orange-600",
+        icon: ImageIcon,
+        category: "conversion",
+        showOnHomepage: true,
+        isNew: true,
+    },
+    {
+        path: "/jpg-to-pdf",
+        name: "JPG to PDF",
+        description: "Convert images to a single PDF document.",
+        color: "bg-red-600",
+        icon: FileText,
+        category: "conversion",
+        showOnHomepage: true,
+        isNew: true,
     },
     {
         path: "/ecommerce/meesho",
