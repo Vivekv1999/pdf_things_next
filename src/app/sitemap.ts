@@ -1,7 +1,9 @@
 import { MetadataRoute } from 'next'
  
+import { siteConfig } from '../constants/appConstants'
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://pdfthings.com'
+  const baseUrl = siteConfig.url
   
   return [
     {
