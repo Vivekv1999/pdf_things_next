@@ -3,10 +3,8 @@
 import DragAndDropInput from "@/src/components/DragAndDropInput";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { ChangeEvent, useCallback, useState } from "react";
-import { Button } from "@/src/components/ui/button";
 import { SimpleToast } from "@/src/components/ui/simple-toast";
 import { downloadPdf } from "@/src/utils/downloadFile";
-import { Download, RotateCcw } from "lucide-react";
 import { JpgToPdfActionButton } from "./JpgToPdfActionButton";
 import { JpgToPdfList } from "./JpgToPdfList";
 
@@ -24,20 +22,6 @@ const JpgToPdf = () => {
             setImages((prev) => [...prev, ...newFiles]);
         }
     }, []);
-
-    const handleDownload = () => {
-        if (convertedPdf) {
-            convertedPdf.arrayBuffer().then((buffer) => {
-                downloadPdf(buffer as any, "converted-images");
-            });
-        }
-    };
-
-    const handleReset = () => {
-        setImages([]);
-        setConvertedPdf(null);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
 
     return (
         <>

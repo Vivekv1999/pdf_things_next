@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import DragAndDropInput from "@/src/components/DragAndDropInput";
-import { Image as ImageIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface SortableImageItemProps {
     file: File;
