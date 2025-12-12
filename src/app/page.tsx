@@ -76,7 +76,7 @@ function SearchResults() {
         ) : (
           <div className="text-center py-20">
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No tools found</h3>
-            <p className="text-gray-600">Try searching for something else, like "merge" or "split".</p>
+            <p className="text-gray-600">Try searching for something else, like &quot;merge&quot; or &quot;split&quot;.</p>
             <Link href="/" className="inline-block mt-4 text-indigo-600 font-medium hover:underline">
               View all tools
             </Link>

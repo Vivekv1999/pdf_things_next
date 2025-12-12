@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import SplitPdfList from "./SplitPdfList";
 
 const SplitPdf = () => {
+    console.log("split pdf");
+
     const [pdfs, setPdfs] = useState<PdfMeta[]>([]);
     const [progress, setProgress] = useState<ProgressUpdate | null>(null);
     const dispatch = useAppDispatch();
