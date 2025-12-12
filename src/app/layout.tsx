@@ -59,20 +59,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="ltr">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-
+      <head>
         {/* Google Analytics */}
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_MEASUREMENT_ID}`}></script>
         <script dangerouslySetInnerHTML={{
           __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', ${process.env.GA_MEASUREMENT_ID});
-              `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', ${process.env.GA_MEASUREMENT_ID});
+          `
         }} />
+      </head>
+
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
 
 
         {/* JSON-LD Structured Data for SEO */}
