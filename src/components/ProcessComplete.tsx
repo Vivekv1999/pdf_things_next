@@ -1,12 +1,13 @@
 "use client";
 
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 
 interface ProcessCompleteProps {
-    title: string;              // e.g. "Merge Complete"
-    message: string;            // e.g. "3 files merged successfully"
-    buttonLabel: string;        // e.g. "Download Merged PDF"
-    onDownload: () => void;     // callback for action
+    title: string;
+    message: string;
+    buttonLabel: string;
+    onDownload: () => void;
+    loading?: boolean;
 }
 
 const ProcessComplete = ({
@@ -14,6 +15,7 @@ const ProcessComplete = ({
     message,
     buttonLabel,
     onDownload,
+    loading = false,
 }: ProcessCompleteProps) => {
     return (
         <div className="p-6 rounded-2xl w-full max-w-md text-center">
@@ -24,9 +26,11 @@ const ProcessComplete = ({
             <p className="mb-4 text-gray-500">{message}</p>
             <button
                 onClick={onDownload}
-                className="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-2xl w-full font-semibold text-white text-lg transition-colors cursor-pointer"
+                disabled={loading}
+                className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 px-8 py-3 rounded-2xl w-full font-semibold text-white text-lg transition-colors cursor-pointer flex items-center justify-center gap-2"
             >
-                {buttonLabel}
+                {loading && <Loader2 className="w-5 h-5 animate-spin" />}
+                {loading ? "Downloading..." : buttonLabel}
             </button>
         </div>
     );
