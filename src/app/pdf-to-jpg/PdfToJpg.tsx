@@ -46,7 +46,10 @@ const PdfToJpg = () => {
             />
 
             {!file ? (
-                <DragAndDropInput handleFileChange={handleFileChange} />
+                <DragAndDropInput
+                    handleFileChange={handleFileChange}
+                    multiFile={false}
+                />
             ) : (
                 <>
                     {convertedImages.length === 0 && (
