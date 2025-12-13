@@ -1,6 +1,7 @@
 "use client";
 
 import ToolWrapper from "@/src/components/ToolWrapper";
+import ContentSection from "@/src/components/ContentSection";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -96,16 +97,73 @@ export default function EcommercePage() {
 
                 <EcommerceSteps />
 
-                {/* SEO Content Section */}
-                <section className="mt-16 text-gray-700 text-center">
-                    <h2 className="mb-3 font-bold text-2xl">Why Use Our Seller Tools?</h2>
-                    <p className="mx-auto mb-6 max-w-3xl">
-                        Preparing eCommerce shipments can be time-consuming. Our free online
-                        tools let you crop labels, resize them to platform requirements, and
-                        even sort PDFs by SKU — all in seconds. No software installs, no
-                        hidden fees, just simple tools that work.
-                    </p>
-                </section>
+                <ContentSection
+                    title="Free One-Click PDF Tools for E-Commerce Sellers"
+                    description="Essential PDF tools for Flipkart, Meesho, and Amazon sellers. Crop labels, sort by SKU, and manage shipping documents effortlessly."
+                    toolName="Ecommerce PDF Tools"
+                    toolPath="/ecommerce"
+                    content={
+                        <>
+                            <p>
+                                Running an e-commerce business on platforms like Flipkart, Meesho, or Amazon involves handling a mountain of shipping labels and invoices. Our <strong>E-Commerce PDF Tools</strong> are specifically designed to streamline this process. Save hours of manual work by automating the cropping, resizing, and sorting of your shipping documents with just a few clicks.
+                            </p>
+
+                            <h3>Boost Your Shipping Efficiency</h3>
+                            <p>
+                                Why waste time cutting labels with scissors or manually organizing files? Our suite of tools offers:
+                            </p>
+                            <ul>
+                                <li><strong>Platform-Specific Presets:</strong> We have tailored solutions for major marketplaces. Instantly crop standard A4 label sheets into perfectly sized 4x6 or 6x4 thermal printer formats for Flipkart and Meesho.</li>
+                                <li><strong>Smart Sorting:</strong> managing multi-account orders? Our tools can sort your label PDFs based on SKU or Order ID, making packing and dispatching significantly faster and error-free.</li>
+                                <li><strong>Bulk Processing:</strong> Upload huge batches of label files at once. Our tool processes them in seconds, getting your shipments ready for pickup in record time.</li>
+                            </ul>
+
+                            <h3>Tools We Offer</h3>
+                            <ul>
+                                <li><strong>Reference Label Cropper:</strong> Automatically extract and resize shipping labels from mixed layout PDFs.</li>
+                                <li><strong>Invoice Separator:</strong> Split bulk invoice files into individual documents for easier record-keeping.</li>
+                                <li><strong>Manifest Generator:</strong> (Coming Soon) Create swift dispatch manifests based on your processed labels.</li>
+                            </ul>
+
+                            <h3>Why Choose Our Seller Tools?</h3>
+                            <ul>
+                                <li><strong>100% Free:</strong> Boost your business profit margins. We don't charge a subscription fee or take a commission.</li>
+                                <li><strong>Secure Client-Side Processing:</strong> Your customer data and order details remain confidential. All processing happens locally on your machine.</li>
+                                <li><strong>No Installation Needed:</strong> Access our tools from any computer with a browser. Perfect for warehouse operations.</li>
+                            </ul>
+
+                            <p>
+                                Join thousands of smart online sellers who have optimized their dispatch workflow. Try our free E-Commerce PDF Tools today and ship faster!
+                            </p>
+                        </>
+                    }
+                    faqs={[
+                        {
+                            question: "Which marketplaces do you support?",
+                            answer: "Our tools are optimized for the most popular Indian e-commerce platforms, including Flipkart, Meesho, and Amazon, with specific presets for their standard label formats."
+                        },
+                        {
+                            question: "Is this tool free for commercial use?",
+                            answer: "Yes! Our tools are completely free for all sellers, whether you process 10 orders a day or 10,000."
+                        },
+                        {
+                            question: "Can I crop labels for thermal printers?",
+                            answer: "Absolutely. One of our key features is converting standard A4 PDF labels into thermal-printer-friendly sizes (like 4x6 inches) instantly."
+                        },
+                        {
+                            question: "Is my customer data safe?",
+                            answer: "Your data security is guaranteed. We use client-side processing, meaning your PDF files containing customer addresses and order details never leave your computer."
+                        },
+                        {
+                            question: "How many labels can I process at once?",
+                            answer: "You can upload and process bulk files. Our optimized engine handles large documents smoothly, saving you significant time during peak sales seasons."
+                        },
+                        {
+                            question: "Do you offer tools for sorting orders?",
+                            answer: "Yes, our 'Sort by SKU' feature (check availability) allows you to reorder your PDF labels based on the product SKU, streamlining your packing process."
+                        }
+                    ]}
+                />
             </main>
         </ToolWrapper >
     );

@@ -29,47 +29,76 @@ export default function Page() {
         <ToolWrapper>
             <JpgToPdfClient />
             <ContentSection
-                title="Convert Images to PDF Online"
-                description="Easily combine multiple JPG, PNG, or WEBP images into a single, organized PDF file. Fast, free, and secure."
+                title="Convert JPG to PDF Online for Free"
+                description="Easily combine multiple JPG, PNG, or WEBP images into a single, organized PDF file. Fast, free, and secure client-side conversion."
                 toolName="JPG to PDF Converter"
                 toolPath="/jpg-to-pdf"
                 content={
                     <>
                         <p>
-                            Our <strong>JPG to PDF</strong> tool offers a quick and easy way to compile your images into a professional PDF document. Whether you are archiving receipts, organizing photos, or creating a portfolio, our converter helps you get the job done efficiently.
+                            Managing scattered image files can be a hassle, especially when you need to share them as a single collection. Our <strong>JPG to PDF converter</strong> offers the perfect solution by allowing you to merge multiple images into one professional, easy-to-share PDF document. Whether you're a student compiling lecture notes, a professional organizing receipts for an expense report, or an artist creating a digital portfolio, our tool streamlines the process securely in your browser.
                         </p>
-                        <h3>Key Features</h3>
+
+                        <h3>Why Convert Images to PDF?</h3>
+                        <p>
+                            PDFs are the global standard for document sharing. Converting your images to PDF provides numerous benefits:
+                        </p>
                         <ul>
-                            <li><strong>Multi-Format Support:</strong> Convert JPG, PNG, and WEBP images seamlessly. mixing different formats in a single PDF is fully supported.</li>
-                            <li><strong>Drag & Drop Interface:</strong> Easily arrange your images in the desired order before conversion details.</li>
-                            <li><strong>Privacy First:</strong> Your personal photos and documents are processed entirely in your browser. We never access or store your files.</li>
-                            <li><strong>No Limits:</strong> Combine as many images as you need into a single PDF file without hitting paywalls or file size caps.</li>
+                            <li><strong>Unified Organization:</strong> Instead of sending a dozen separate image attachments, combine them into a single, orderly file.</li>
+                            <li><strong>Universal Compatibility:</strong> PDFs look the same on every device, ensuring your recipient sees exactly what you intended.</li>
+                            <li><strong>Reduced Clutter:</strong> Keep your digital workspace tidy by consolidating related images into one accessible document.</li>
+                            <li><strong>Professional Presentation:</strong> A multi-page PDF looks much more polished and professional than a zipped folder of random image files.</li>
                         </ul>
+
+                        <h3>Key Features of Our Tool</h3>
+                        <ul>
+                            <li><strong>Multi-Format Support:</strong> We don't just stop at JPGs. You can upload and combine PNG, WEBP, and JPEG files seamlessly into a single PDF.</li>
+                            <li><strong>Smart Ordering:</strong> Our intuitive drag-and-drop interface lets you arrange your images in the exact order you want them to appear in the final document.</li>
+                            <li><strong>100% Secure & Private:</strong> Security is paramount. Our tool processes your files client-side, meaning your personal photos and sensitive documents never leave your device.</li>
+                            <li><strong>High-Quality Output:</strong> We maintain the visual quality of your original images, ensuring your PDF looks crisp and clear.</li>
+                            <li><strong>Instant Processing:</strong> Without the need to upload files to a server, the conversion happens almost instantly, saving you valuable time.</li>
+                        </ul>
+
                         <h3>How to Convert JPG to PDF</h3>
                         <p>
-                            Start by selecting or dragging and dropping your images into the tool. You can reorder them by simply dragging the thumbnails. Once you&apos;re happy with the arrangement, click &quot;Convert to PDF&quot; and your document will be ready for download instantly.
+                            Creating a PDF from your images is a breeze with our user-friendly tool:
                         </p>
+                        <ol>
+                            <li><strong>Upload Images:</strong> Click "Select Images" or drag and drop your photos directly into the tool. You can select multiple files at once.</li>
+                            <li><strong>Arrange Order:</strong> Drag the image thumbnails to reorder them. The first image will be page one, and so on.</li>
+                            <li><strong>Convert:</strong> Once satisfied with the arrangement, click the "Convert to PDF" button.</li>
+                            <li><strong>Download:</strong> Your new PDF file will be generated instantly and ready for download to your device.</li>
+                        </ol>
+
                         <p>
-                            This tool is perfect for students, professionals, and anyone needing to present multiple images in a single, universally compatible file format.
+                            Simplify your digital life today. Try our robust, secure, and free JPG to PDF converter and experience the convenience of organized document management.
                         </p>
                     </>
                 }
                 faqs={[
                     {
                         question: "Can I convert other formats besides JPG?",
-                        answer: "Yes! Our tool supports JPG, JPEG, PNG, and WEBP images. You can even mix different formats in the same PDF document."
+                        answer: "Yes! Our tool is versatile and supports JPG, JPEG, PNG, and WEBP images. You can even mix and match these different formats in the same PDF document without any issues."
                     },
                     {
                         question: "Is there a limit to how many images I can upload?",
-                        answer: "We strive to offer unlimited usage. While browser performance may vary with extremely large batches, you can typically combine dozens of images without issue."
+                        answer: "We aim to provide unlimited flexibility. While extreme numbers might depend on your browser's memory, you can typically combine dozens of images into a single PDF without any problems."
                     },
                     {
                         question: "Can I rearrange the images before converting?",
-                        answer: "Absolutely. Our interactive list view allows you to drag and drop images to set the perfect page order for your PDF."
+                        answer: "Absolutely. We understand that order matters. Our interactive interface allows you to simply drag and drop image thumbnails to set the perfect page sequence before you finalize the conversion."
                     },
                     {
                         question: "Is this tool safe to use with private photos?",
-                        answer: "Yes, security is our top priority. Since the conversion happens locally on your device (client-side), your photos are never sent to a remote server."
+                        answer: "Yes, your privacy is our top priority. Since we use client-side processing technology, your photos are never uploaded to a server. The conversion happens entirely on your own device."
+                    },
+                    {
+                        question: "Does the tool add watermarks to the PDF?",
+                        answer: "No. We believe in providing a clean, professional tool. Your converted PDFs will be completely free of any watermarks or branding."
+                    },
+                    {
+                        question: "Do I need an internet connection to use this?",
+                        answer: "While you need internet to load the page initially, the actual conversion process runs in your browser. This means it's fast and efficient, utilizing your device's power rather than relying on server speeds."
                     }
                 ]}
             />
