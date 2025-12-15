@@ -36,12 +36,12 @@ export default function Page() {
                 content={
                     <>
                         <p>
-                            In the digital age, flexibility with document formats is increasing in demand. Our <strong>PDF to JPG converter</strong> provides an efficient, seamless, and secure way to transform your PDF documents into high-quality image files. Whether you need to extract specific pages for a presentation, share a document on social media where PDFs aren't supported, or simply archive pages as images, our tool handles it all directly in your browser without the need for cumbersome software installations.
+                            In the digital age, flexibility with document formats is increasing in demand. Our <strong>PDF to JPG converter</strong> provides an efficient, seamless, and secure way to transform your PDF documents into high-quality image files. Whether you need to extract specific pages for a presentation, share a document on social media where PDFs aren&apos;t supported, or simply archive pages as images, our tool handles it all directly in your browser without the need for cumbersome software installations.
                         </p>
 
                         <h3>Why Convert PDF to JPG?</h3>
                         <p>
-                            PDFs are great for maintaining formatting, but they aren't always the best choice for sharing or editing visual content. Converting your PDF to JPG offers several advantages:
+                            PDFs are great for maintaining formatting, but they aren&apos;t always the best choice for sharing or editing visual content. Converting your PDF to JPG offers several advantages:
                         </p>
                         <ul>
                             <li><strong>Easy Sharing:</strong> Images are universally visible on all devices and platforms, including those that might struggle with PDF viewers.</li>
@@ -54,24 +54,24 @@ export default function Page() {
                         <ul>
                             <li><strong>High-Resolution Output:</strong> We prioritize quality. Your resulting JPG images will retain clarity and detail, making them perfect for professional use.</li>
                             <li><strong>100% Secure & Private:</strong> Security is our top priority. Unlike other online converters that upload your sensitive documents to a server, our tool processes files locally on your device. Your data never leaves your computer.</li>
-                            <li><strong>Lightning Fast:</strong> By leveraging your browser's processing power, we eliminate upload and download times for a near-instant conversion experience.</li>
-                            <li><strong>No Limits:</strong> Convert as many files as you need. We don't impose daily limits, file size restrictions (within browser memory limits), or watermarks.</li>
-                            <li><strong>Cross-Platform Compatibility:</strong> Whether you're on Windows, macOS, Linux, Android, or iOS, our tool works flawlessly across all modern browsers.</li>
+                            <li><strong>Lightning Fast:</strong> By leveraging your browser&apos;s processing power, we eliminate upload and download times for a near-instant conversion experience.</li>
+                            <li><strong>No Limits:</strong> Convert as many files as you need. We don&apos;t impose daily limits, file size restrictions (within browser memory limits), or watermarks.</li>
+                            <li><strong>Cross-Platform Compatibility:</strong> Whether you&apos;re on Windows, macOS, Linux, Android, or iOS, our tool works flawlessly across all modern browsers.</li>
                         </ul>
 
                         <h3>How to Convert PDF to JPG Online</h3>
                         <p>
-                            We've designed our interface to be intuitive and user-friendly. Follow these simple steps:
+                            We&apos;ve designed our interface to be intuitive and user-friendly. Follow these simple steps:
                         </p>
                         <ol>
-                            <li><strong>Upload Your PDF:</strong> Click the "Choose File" button or drag and drop your PDF directly into the designated area.</li>
-                            <li><strong>Preview Pages:</strong> Once loaded, you'll see a preview of all the pages in your document.</li>
+                            <li><strong>Upload Your PDF:</strong> Click the &quot;Choose File&quot; button or drag and drop your PDF directly into the designated area.</li>
+                            <li><strong>Preview Pages:</strong> Once loaded, you&apos;ll see a preview of all the pages in your document.</li>
                             <li><strong>Convert:</strong> Our tool processes the file instantly. You can then choose to download specific pages or grab them all at once as a ZIP file.</li>
                             <li><strong>Save:</strong> The high-quality images are saved directly to your device, ready for use.</li>
                         </ol>
 
                         <p>
-                            Experience the freedom of versatile document management today with our free PDF to JPG converter. It's the smart, secure, and fast solution for all your conversion needs.
+                            Experience the freedom of versatile document management today with our free PDF to JPG converter. It&apos;s the smart, secure, and fast solution for all your conversion needs.
                         </p>
                     </>
                 }

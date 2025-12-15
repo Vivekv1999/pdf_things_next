@@ -37,15 +37,15 @@ export default function Page() {
                 content={
                     <>
                         <p>
-                            Organizing digital documents can quickly become chaotic when dealing with multiple separate files. Our <strong>Merge PDF tool</strong> offers a simple, efficient solution to combine your PDF documents into a single, cohesive file. Whether you're consolidating monthly reports, merging chapters of an ebook, or putting together a job application with various certificates, our tool streamlines your workflow instantly in your browser.
+                            Organizing digital documents can quickly become chaotic when dealing with multiple separate files. Our <strong>Merge PDF tool</strong> offers a simple, efficient solution to combine your PDF documents into a single, cohesive file. Whether you&apos;re consolidating monthly reports, merging chapters of an ebook, or putting together a job application with various certificates, our tool streamlines your workflow instantly in your browser.
                         </p>
 
                         <h3>Why Merge PDF Files?</h3>
                         <p>
-                            Merging PDFs is essential for better document management and sharing. Here's why you should use our tool:
+                            Merging PDFs is essential for better document management and sharing. Here&apos;s why you should use our tool:
                         </p>
                         <ul>
-                            <li><strong>Unified Sharing:</strong> Send one professional file instead of cluttering your recipient's inbox with multiple attachments.</li>
+                            <li><strong>Unified Sharing:</strong> Send one professional file instead of cluttering your recipient&apos;s inbox with multiple attachments.</li>
                             <li><strong>Better Organization:</strong> Keep related documents together. Combine invoices, receipts, or project files into one master document for easier archiving.</li>
                             <li><strong>Enhanced Readability:</strong> Create a seamless reading experience by merging different sections or chapters into a continuous flow.</li>
                             <li><strong>Print Ready:</strong> Simplify the printing process by sending a single file to the printer, ensuring all pages are in the correct order.</li>
@@ -55,16 +55,16 @@ export default function Page() {
                         <ul>
                             <li><strong>Simple Drag & Drop:</strong> Our interface is designed for ease of use. Just drag your files into the tool, rearrange them as needed, and merge.</li>
                             <li><strong>Client-Side Security:</strong> Your privacy matters. We process files locally on your device, meaning your sensitive documents are never uploaded to our servers.</li>
-                            <li><strong>Fast & Efficient:</strong> No need to wait for uploads or downloads. The merging process leverages your browser's speed for near-instant results.</li>
-                            <li><strong>No File Limits:</strong> Merge as many PDFs as you need. We don't artificially restrict the number of files you can combine in a single session.</li>
+                            <li><strong>Fast & Efficient:</strong> No need to wait for uploads or downloads. The merging process leverages your browser&apos;s speed for near-instant results.</li>
+                            <li><strong>No File Limits:</strong> Merge as many PDFs as you need. We don&apos;t artificially restrict the number of files you can combine in a single session.</li>
                             <li><strong>Cross-Platform:</strong> Works perfectly on Windows, Mac, Linux, and mobile devices directly through your web browser.</li>
                         </ul>
 
                         <h3>How to Merge PDFs</h3>
                         <ol>
-                            <li><strong>Select Files:</strong> Click "Choose Files" or drag and drop the PDFs you want to combine.</li>
+                            <li><strong>Select Files:</strong> Click &quot;Choose Files&quot; or drag and drop the PDFs you want to combine.</li>
                             <li><strong>Reorder Pages:</strong> Use our visual interface to drag and drop the files into your desired order.</li>
-                            <li><strong>Merge:</strong> Click the "Merge PDF" button to combine them.</li>
+                            <li><strong>Merge:</strong> Click the &quot;Merge PDF&quot; button to combine them.</li>
                             <li><strong>Download:</strong> Your newly created single PDF file is ready for instant download.</li>
                         </ol>
 

@@ -127,7 +127,7 @@ export default function EcommercePage() {
 
                             <h3>Why Choose Our Seller Tools?</h3>
                             <ul>
-                                <li><strong>100% Free:</strong> Boost your business profit margins. We don't charge a subscription fee or take a commission.</li>
+                                <li><strong>100% Free:</strong> Boost your business profit margins. We don&apos;t charge a subscription fee or take a commission.</li>
                                 <li><strong>Secure Client-Side Processing:</strong> Your customer data and order details remain confidential. All processing happens locally on your machine.</li>
                                 <li><strong>No Installation Needed:</strong> Access our tools from any computer with a browser. Perfect for warehouse operations.</li>
                             </ul>

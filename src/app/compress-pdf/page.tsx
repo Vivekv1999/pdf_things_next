@@ -31,7 +31,7 @@ export default function Page() {
                 content={
                     <>
                         <p>
-                            Dealing with large PDF files can be frustrating, especially when you hit email attachment limits or struggle with slow upload speeds. Our <strong>Compress PDF tool</strong> is the perfect solution to significantly reduce your file size without compromising on readability. Whether you're a student submitting an assignment, a professional sharing a presentation, or simply trying to save storage space, our optimizer makes it happen instantly.
+                            Dealing with large PDF files can be frustrating, especially when you hit email attachment limits or struggle with slow upload speeds. Our <strong>Compress PDF tool</strong> is the perfect solution to significantly reduce your file size without compromising on readability. Whether you&apos;re a student submitting an assignment, a professional sharing a presentation, or simply trying to save storage space, our optimizer makes it happen instantly.
                         </p>
 
                         <h3>Why Compress Your PDF?</h3>
@@ -56,13 +56,13 @@ export default function Page() {
 
                         <h3>How to Compress a PDF</h3>
                         <ol>
-                            <li><strong>Upload PDF:</strong> Click "Select PDF" or drag and drop your file into the designated area.</li>
+                            <li><strong>Upload PDF:</strong> Click &quot;Select PDF&quot; or drag and drop your file into the designated area.</li>
                             <li><strong>Compress:</strong> The tool will automatically analyze and compress your document.</li>
-                            <li><strong>Download:</strong> Once finished, you'll see the new file size. Click "Download" to save your optimized PDF.</li>
+                            <li><strong>Download:</strong> Once finished, you&apos;ll see the new file size. Click &quot;Download&quot; to save your optimized PDF.</li>
                         </ol>
 
                         <p>
-                            Don't let large files slow you down. Try our free PDF Compressor today and experience the speed of lighter, more efficient documents.
+                            Don&apos;t let large files slow you down. Try our free PDF Compressor today and experience the speed of lighter, more efficient documents.
                         </p>
                     </>
                 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MoveRight, Calendar, User, Tag, ChevronLeft, Check, Shield, Zap, FileText } from "lucide-react";
+import { MoveRight, Calendar, User, ChevronLeft, Check, Shield, Zap, FileText } from "lucide-react";
 
 export const metadata = {
     title: "How to Merge PDFs Online for Free - Secure & Private",
@@ -99,10 +99,10 @@ export default function BlogPost() {
                 <div className="prose prose-lg dark:prose-invert max-w-none mb-16 px-2">
                     <p className="lead text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
                         Merging PDF files is a common task for students, professionals, and anyone managing digital documents.
-                        Whether you're combining invoices, organizing study notes, or putting together a project report, having a reliable tool is essential.
+                        Whether you&apos;re combining invoices, organizing study notes, or putting together a project report, having a reliable tool is essential.
                     </p>
                     <p>
-                        In this guide, we'll show you how to <strong>merge PDFs online for free</strong> using <Link href="/" className="text-indigo-600 no-underline hover:underline font-semibold">PDF Things</Link>.
+                        In this guide, we&apos;ll show you how to <strong>merge PDFs online for free</strong> using <Link href="/" className="text-indigo-600 no-underline hover:underline font-semibold">PDF Things</Link>.
                         Our platform uses local-first technology to ensure your documents never leave your computer.
                     </p>
                 </div>
@@ -115,15 +115,15 @@ export default function BlogPost() {
                     </h3>
                     <div className="prose dark:prose-invert text-gray-700 dark:text-gray-300">
                         <p className="mb-4">
-                            Before guiding you through the steps, it's crucial to understand <strong>why PDF Things is safer</strong> than standard online tools.
+                            Before guiding you through the steps, it&apos;s crucial to understand <strong>why PDF Things is safer</strong> than standard online tools.
                             Most websites require you to upload your sensitive PDFs to their servers to process them. This creates a risk where your private data (bank statements, contracts, personal IDs) could be stored or leaked.
                         </p>
                         <p className="mb-4">
                             <strong>We do things differently.</strong> Our advanced engine processes your files <span className="font-semibold text-amber-700 dark:text-amber-400">100% locally on your device</span>.
-                            This means your documents <strong>never leave your computer</strong>. It's as secure as using offline software, but with the convenience of a web browser.
+                            This means your documents <strong>never leave your computer</strong>. It&apos;s as secure as using offline software, but with the convenience of a web browser.
                         </p>
                         <p className="text-sm italic opacity-80">
-                            <strong>Note on Heavy Files:</strong> Because we prioritize your privacy by using your device's own processing power (instead of a powerful cloud server), you might notice that extremely large or complex PDF files take a moment to process.
+                            <strong>Note on Heavy Files:</strong> Because we prioritize your privacy by using your device&apos;s own processing power (instead of a powerful cloud server), you might notice that extremely large or complex PDF files take a moment to process.
                             We are actively optimizing our engine to handle heavier files in future updates, but for now, this slight trade-off guarantees you <strong>absolute data privacy</strong>.
                         </p>
                     </div>

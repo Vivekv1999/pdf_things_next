@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { blogs } from "../../data/blogs";
-import { MoveRight, Calendar, User } from "lucide-react";
+import { MoveRight, Calendar } from "lucide-react";
 import Image from "next/image";
 
 export const metadata = {

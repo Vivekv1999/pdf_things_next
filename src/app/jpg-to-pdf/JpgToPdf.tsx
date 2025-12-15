@@ -4,7 +4,6 @@ import DragAndDropInput from "@/src/components/DragAndDropInput";
 import PdfPageHeader from "@/src/layout/PdfPageHeader";
 import { ChangeEvent, useCallback, useState } from "react";
 import { SimpleToast } from "@/src/components/ui/simple-toast";
-import { downloadPdf } from "@/src/utils/downloadFile";
 import { JpgToPdfActionButton } from "./JpgToPdfActionButton";
 import { JpgToPdfList } from "./JpgToPdfList";
 

@@ -53,7 +53,7 @@ export default function Page() {
 
                         <h3>Why Crop PDF Files?</h3>
                         <p>
-                            Cropping is more than just trimming edges; it's about refining your document's presentation:
+                            Cropping is more than just trimming edges; it&apos;s about refining your document&apos;s presentation:
                         </p>
                         <ul>
                             <li><strong>Cleaner Presentation:</strong> Remove scanning artifacts, dark borders, or unnecessary white space to make your document look professional.</li>
@@ -67,15 +67,15 @@ export default function Page() {
                             <li><strong>Visual Selection:</strong> Use our interactive box to draw exactly where you want to crop. What you see is what you get.</li>
                             <li><strong>Auto-Cropping:</strong> Apply your selection to a single page or automatically apply the same crop box to all pages in the document.</li>
                             <li><strong>Privacy Guaranteed:</strong> Because we use client-side processing, your files remain on your device. We never upload your sensitive data to any server.</li>
-                            <li><strong>Precision Control:</strong> Adjust the crop box coordinates for pixel-perfect accuracy if visual dragging isn't enough.</li>
+                            <li><strong>Precision Control:</strong> Adjust the crop box coordinates for pixel-perfect accuracy if visual dragging isn&apos;t enough.</li>
                             <li><strong>Free & Unlimited:</strong> Crop as many files as you need. There are no limits on usage or file size (within browser capabilities).</li>
                         </ul>
 
                         <h3>How to Crop a PDF</h3>
                         <ol>
-                            <li><strong>Upload PDF:</strong> Click "Select PDF" or drag and drop your file to open it in the cropper.</li>
+                            <li><strong>Upload PDF:</strong> Click &quot;Select PDF&quot; or drag and drop your file to open it in the cropper.</li>
                             <li><strong>Select Area:</strong> Draw a box over the area you want to keep. Everything outside this box will be removed.</li>
-                            <li><strong>Apply Crop:</strong> Choose to crop the current page or all pages, then click "Crop PDF".</li>
+                            <li><strong>Apply Crop:</strong> Choose to crop the current page or all pages, then click &quot;Crop PDF&quot;.</li>
                             <li><strong>Download:</strong> Your newly cropped PDF will be generated instantly and ready for download.</li>
                         </ol>
 

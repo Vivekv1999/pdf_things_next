@@ -81,7 +81,7 @@ export default function BlogPost({ params }: Props) {
                         <ReactMarkdown
                             components={{
                                 // Custom link component to handle internal Next.js links if needed, or simple a tags
-                                a: ({ node, ...props }) => <Link href={props.href as string} {...props} className="text-indigo-600 hover:underline font-semibold" />,
+                                a: ({ ...props }) => <Link href={props.href as string} {...props} className="text-indigo-600 hover:underline font-semibold" />,
                             }}
                         >
                             {blog.content}

@@ -36,7 +36,7 @@ export default function Page() {
                 content={
                     <>
                         <p>
-                            Managing scattered image files can be a hassle, especially when you need to share them as a single collection. Our <strong>JPG to PDF converter</strong> offers the perfect solution by allowing you to merge multiple images into one professional, easy-to-share PDF document. Whether you're a student compiling lecture notes, a professional organizing receipts for an expense report, or an artist creating a digital portfolio, our tool streamlines the process securely in your browser.
+                            Managing scattered image files can be a hassle, especially when you need to share them as a single collection. Our <strong>JPG to PDF converter</strong> offers the perfect solution by allowing you to merge multiple images into one professional, easy-to-share PDF document. Whether you&apos;re a student compiling lecture notes, a professional organizing receipts for an expense report, or an artist creating a digital portfolio, our tool streamlines the process securely in your browser.
                         </p>
 
                         <h3>Why Convert Images to PDF?</h3>
@@ -52,7 +52,7 @@ export default function Page() {
 
                         <h3>Key Features of Our Tool</h3>
                         <ul>
-                            <li><strong>Multi-Format Support:</strong> We don't just stop at JPGs. You can upload and combine PNG, WEBP, and JPEG files seamlessly into a single PDF.</li>
+                            <li><strong>Multi-Format Support:</strong> We don&apos;t just stop at JPGs. You can upload and combine PNG, WEBP, and JPEG files seamlessly into a single PDF.</li>
                             <li><strong>Smart Ordering:</strong> Our intuitive drag-and-drop interface lets you arrange your images in the exact order you want them to appear in the final document.</li>
                             <li><strong>100% Secure & Private:</strong> Security is paramount. Our tool processes your files client-side, meaning your personal photos and sensitive documents never leave your device.</li>
                             <li><strong>High-Quality Output:</strong> We maintain the visual quality of your original images, ensuring your PDF looks crisp and clear.</li>
@@ -64,9 +64,9 @@ export default function Page() {
                             Creating a PDF from your images is a breeze with our user-friendly tool:
                         </p>
                         <ol>
-                            <li><strong>Upload Images:</strong> Click "Select Images" or drag and drop your photos directly into the tool. You can select multiple files at once.</li>
+                            <li><strong>Upload Images:</strong> Click &quot;Select Images&quot; or drag and drop your photos directly into the tool. You can select multiple files at once.</li>
                             <li><strong>Arrange Order:</strong> Drag the image thumbnails to reorder them. The first image will be page one, and so on.</li>
-                            <li><strong>Convert:</strong> Once satisfied with the arrangement, click the "Convert to PDF" button.</li>
+                            <li><strong>Convert:</strong> Once satisfied with the arrangement, click the &quot;Convert to PDF&quot; button.</li>
                             <li><strong>Download:</strong> Your new PDF file will be generated instantly and ready for download to your device.</li>
                         </ol>
 

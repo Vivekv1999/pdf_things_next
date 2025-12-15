@@ -63,15 +63,15 @@ export default function Page() {
                             <li><strong>Multiple Split Modes:</strong> Choose to extract every page as a separate file or define custom ranges (e.g., pages 1-5, 8, 11-15).</li>
                             <li><strong>100% Private & Secure:</strong> We utilize client-side technology to process your files. Your sensitive data never leaves your device and is never uploaded to any server.</li>
                             <li><strong>Instant Processing:</strong> Because there are no uploads involved, splitting even large documents happens in seconds.</li>
-                            <li><strong>Free & Unlimited:</strong> Split as many PDFs as you like at no cost. We don't limit the number of documents you can process.</li>
+                            <li><strong>Free & Unlimited:</strong> Split as many PDFs as you like at no cost. We don&apos;t limit the number of documents you can process.</li>
                         </ul>
 
                         <h3>How to Split a PDF</h3>
                         <ol>
-                            <li><strong>Upload PDF:</strong> Click "Select PDF" or drag and drop your file to get started.</li>
+                            <li><strong>Upload PDF:</strong> Click &quot;Select PDF&quot; or drag and drop your file to get started.</li>
                             <li><strong>Select Pages:</strong> multiple options are available. You can click on individual pages to select them or type in specific page ranges.</li>
-                            <li><strong>Split:</strong> Once you've defined your selection, click the "Split PDF" button.</li>
-                            <li><strong>Download:</strong> Your new file(s) will be ready for download instantly. If multiple files are created, they'll be securely zipped for convenience.</li>
+                            <li><strong>Split:</strong> Once you&apos;ve defined your selection, click the &quot;Split PDF&quot; button.</li>
+                            <li><strong>Download:</strong> Your new file(s) will be ready for download instantly. If multiple files are created, they&apos;ll be securely zipped for convenience.</li>
                         </ol>
 
                         <p>
