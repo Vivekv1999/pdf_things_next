@@ -61,10 +61,12 @@ export default function RootLayout({
     <html lang="en" dir="ltr">
       <head>
         {/* GA4 Config */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
+        {process.env.NEXT_PUBLIC_ENVIRONMENT === "production" && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_MEASUREMENT_ID}`}
+            strategy="afterInteractive"
+          />
+        )}
 
         <Script id="ga-analytics" strategy="afterInteractive">
           {`
