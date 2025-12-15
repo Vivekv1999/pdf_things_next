@@ -96,6 +96,16 @@ const Navbar: React.FC = () => {
                             );
                         })}
 
+                        <Link
+                            href="/blog"
+                            className={`text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 ${pathname?.startsWith("/blog")
+                                ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30"
+                                : "text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                }`}
+                        >
+                            Blog
+                        </Link>
+
                         {/* All Tools Mega Menu */}
                         <div
                             className="relative"
@@ -274,6 +284,17 @@ const Navbar: React.FC = () => {
                                         }`}
                                 >
                                     Home
+                                </Link>
+
+                                <Link
+                                    href="/blog"
+                                    onClick={() => setMobileOpen(false)}
+                                    className={`block py-2 px-3 rounded-lg text-sm font-medium transition mb-2 ${pathname?.startsWith("/blog")
+                                        ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30"
+                                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                        }`}
+                                >
+                                    Blog
                                 </Link>
 
                                 {/* Conversion Tools */}
