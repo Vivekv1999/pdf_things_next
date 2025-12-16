@@ -96,15 +96,17 @@ const CropPdf = () => {
                             </div>
                         ) : (
                             <>
-                                <PdfPageHeader
-                                    title="Crop PDF"
-                                    description="Trim or remove unwanted areas from your PDF pages easily and quickly."
-                                />
+                                <div className="h-screen">
+                                    <PdfPageHeader
+                                        title="Crop PDF"
+                                        description="Trim or remove unwanted areas from your PDF pages easily and quickly."
+                                    />
 
-                                <DragAndDropInput
-                                    multiFile={false}
-                                    handleFileChange={handleFiles}
-                                />
+                                    <DragAndDropInput
+                                        multiFile={false}
+                                        handleFileChange={handleFiles}
+                                    />
+                                </div>
                             </>
                         )}
                     </>

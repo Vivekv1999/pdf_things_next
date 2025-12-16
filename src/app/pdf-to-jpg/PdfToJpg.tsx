@@ -40,16 +40,17 @@ const PdfToJpg = () => {
                 onClose={() => setShowToast(false)}
             />
 
-            <PdfPageHeader
-                title="PDF to JPG"
-                description="Convert PDF pages to high-quality JPG images."
-            />
-
             {!file ? (
-                <DragAndDropInput
-                    handleFileChange={handleFileChange}
-                    multiFile={false}
-                />
+                <div className="h-screen">
+                    <PdfPageHeader
+                        title="PDF to JPG"
+                        description="Convert PDF pages to high-quality JPG images."
+                    />
+                    <DragAndDropInput
+                        handleFileChange={handleFileChange}
+                        multiFile={false}
+                    />
+                </div>
             ) : (
                 <>
                     {convertedImages.length === 0 && (

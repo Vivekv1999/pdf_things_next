@@ -38,13 +38,13 @@ const MergePdf = () => {
                             <ProcessPdf progress={progress} />
                         </div>
                     ) : (
-                        <>
+                        <div className="h-screen">
                             <PdfPageHeader
                                 title="Merge PDFs"
                                 description="Combine multiple PDFs into a single file."
                             />
                             <DragAndDropInput handleFileChange={handleFiles} />
-                        </>
+                        </div>
                     )}
                 </>
             ) : (

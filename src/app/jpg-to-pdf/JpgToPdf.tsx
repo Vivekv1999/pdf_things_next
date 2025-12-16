@@ -30,17 +30,18 @@ const JpgToPdf = () => {
                 onClose={() => setShowToast(false)}
             />
 
-            <PdfPageHeader
-                title="JPG to PDF"
-                description="Convert your images to a single PDF document in seconds."
-            />
-
             {images.length === 0 ? (
-                <DragAndDropInput
-                    handleFileChange={handleFileChange}
-                    multiFile={true}
-                    accept="image/jpeg, image/png, image/jpg"
-                />
+                <div className="h-screen">
+                    <PdfPageHeader
+                        title="JPG to PDF"
+                        description="Convert your images to a single PDF document in seconds."
+                    />
+                    <DragAndDropInput
+                        handleFileChange={handleFileChange}
+                        multiFile={true}
+                        accept="image/jpeg, image/png, image/jpg"
+                    />
+                </div>
             ) : (
                 <>
                     {convertedPdf && (

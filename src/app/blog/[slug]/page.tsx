@@ -5,9 +5,9 @@ import ReactMarkdown from "react-markdown";
 import { ChevronLeft, Calendar, User, Tag } from "lucide-react";
 
 interface Props {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
 // Generate static params for all blogs
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+    const params = await props.params;
     const blog = blogs.find((b) => b.slug === params.slug);
     if (!blog) return { title: "Blog Not Found" };
 
@@ -28,7 +29,8 @@ export async function generateMetadata({ params }: Props) {
     };
 }
 
-export default function BlogPost({ params }: Props) {
+export default async function BlogPost(props: Props) {
+    const params = await props.params;
     const blog = blogs.find((b) => b.slug === params.slug) as any;
 
     if (!blog) {

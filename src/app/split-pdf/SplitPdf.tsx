@@ -48,7 +48,7 @@ const SplitPdf = () => {
                                 <ProcessPdf progress={progress} />
                             </div>
                         ) : (
-                            <>
+                            <div className="h-screen">
                                 <PdfPageHeader
                                     title="Split PDF"
                                     description="Extract single pages or separate your PDF into multiple files."
@@ -57,7 +57,7 @@ const SplitPdf = () => {
                                     multiFile={false}
                                     handleFileChange={handleFiles}
                                 />
-                            </>
+                            </div>
                         )}
                     </>
                 ) : (
