@@ -47,7 +47,7 @@ const CropPdfView = ({
         handleMouseDown,
         handleMouseMove,
         handleMouseUp
-    } = useDragSelectCrop();
+    } = useDragSelectCrop(canvasSize);
 
     const dispatch = useAppDispatch();
     const { cropPdf } = useCropPdf();
@@ -64,7 +64,29 @@ const CropPdfView = ({
 
         try {
             const page: PDFPageProxy = await pdfDoc.getPage(num);
-            const viewport = page.getViewport({ scale: 1 });
+
+            // Get viewport at scale 1 to get original dimensions
+            const originalViewport = page.getViewport({ scale: 1 });
+
+            // Calculate scale to ensure good UI appearance
+            // Minimum display width: 250px, Maximum display width: 300px
+            const minWidth = 350;
+            const maxWidth = 400;
+
+            let scale;
+            if (originalViewport.width < minWidth) {
+                // Scale up small PDFs to minimum width
+                scale = minWidth / originalViewport.width;
+            } else if (originalViewport.width > maxWidth) {
+                // Scale down large PDFs to maximum width
+                scale = maxWidth / originalViewport.width;
+            } else {
+                // Keep original size for PDFs in the ideal range
+                scale = 1;
+            }
+
+            // Get scaled viewport
+            const viewport = page.getViewport({ scale });
 
             const canvas = canvasRef.current;
             canvas.width = viewport.width;
@@ -87,6 +109,10 @@ const CropPdfView = ({
 
     const handleCrop = async () => {
         if (!pdfDoc || !cropBox) return;
+        if (alredyMergePdf) {
+            downloadPdf(alredyMergePdf, "Crop pdf")
+            return
+        }
 
         setLoading(true);
         setProgress(0);
@@ -112,132 +138,178 @@ const CropPdfView = ({
             <div className={`flex flex-col lg:flex-row items-center gap-6 lg:gap-8 w-full ${alredyMergePdf ? "justify-center" : "lg:justify-between"}`}>
 
                 {!alredyMergePdf && (
-                    <div
-                        ref={containerRef}
-                        className="inline-block relative select-none w-full max-w-3xl"
-                        onMouseDown={(e) => handleMouseDown(e)}
-                        onMouseMove={handleMouseMove}
-                        onMouseUp={handleMouseUp}
-                    >
-                        <canvas ref={canvasRef} className="max-w-full h-auto" />
+                    <div className="flex-1">
+                        <div
+                            ref={containerRef}
+                            className="inline-block relative select-none w-full max-w-3xl"
+                            onMouseDown={(e) => handleMouseDown(e)}
+                            onMouseMove={handleMouseMove}
+                            onMouseUp={handleMouseUp}
+                        >
+                            <canvas ref={canvasRef} className="max-w-full h-auto" />
 
-                        {cropBox && (
-                            <>
-                                {/* Crop area border */}
-                                <div
-                                    className="absolute border-2 border-blue-500"
-                                    style={{
-                                        left: cropBox.x,
-                                        top: cropBox.y,
-                                        width: cropBox.width,
-                                        height: cropBox.height,
-                                    }}
-                                />
+                            {cropBox && (
+                                <>
+                                    {/* Backdrop overlays - darken areas outside crop box */}
+                                    {/* Top overlay */}
+                                    <div
+                                        className="absolute bg-black/50 pointer-events-none"
+                                        style={{
+                                            left: 0,
+                                            top: 0,
+                                            width: canvasSize.width,
+                                            height: cropBox.y,
+                                        }}
+                                    />
 
-                                {/* Resize handles */}
-                                {[
-                                    "top-left",
-                                    "top-right",
-                                    "bottom-left",
-                                    "bottom-right",
-                                    "left",
-                                    "right",
-                                    "top",
-                                    "bottom",
-                                ].map((handle) => {
-                                    const size = 10;
-                                    const style: React.CSSProperties = {
-                                        position: "absolute",
-                                        width: size,
-                                        height: size,
-                                        background: "white",
-                                        border: "2px solid #2563eb",
-                                        cursor:
-                                            handle.includes("left") || handle.includes("right")
-                                                ? "ew-resize"
-                                                : handle.includes("top") || handle.includes("bottom")
-                                                    ? "ns-resize"
-                                                    : "nwse-resize",
-                                    };
+                                    {/* Bottom overlay */}
+                                    <div
+                                        className="absolute bg-black/50 pointer-events-none"
+                                        style={{
+                                            left: 0,
+                                            top: cropBox.y + cropBox.height,
+                                            width: canvasSize.width,
+                                            height: canvasSize.height - (cropBox.y + cropBox.height),
+                                        }}
+                                    />
 
-                                    // Position handles
-                                    switch (handle) {
-                                        case "top-left":
-                                            style.left = cropBox.x - size / 2;
-                                            style.top = cropBox.y - size / 2;
-                                            break;
-                                        case "top-right":
-                                            style.left = cropBox.x + cropBox.width - size / 2;
-                                            style.top = cropBox.y - size / 2;
-                                            break;
-                                        case "bottom-left":
-                                            style.left = cropBox.x - size / 2;
-                                            style.top = cropBox.y + cropBox.height - size / 2;
-                                            break;
-                                        case "bottom-right":
-                                            style.left = cropBox.x + cropBox.width - size / 2;
-                                            style.top = cropBox.y + cropBox.height - size / 2;
-                                            break;
-                                        case "left":
-                                            style.left = cropBox.x - size / 2;
-                                            style.top = cropBox.y + cropBox.height / 2 - size / 2;
-                                            break;
-                                        case "right":
-                                            style.left = cropBox.x + cropBox.width - size / 2;
-                                            style.top = cropBox.y + cropBox.height / 2 - size / 2;
-                                            break;
-                                        case "top":
-                                            style.left = cropBox.x + cropBox.width / 2 - size / 2;
-                                            style.top = cropBox.y - size / 2;
-                                            break;
-                                        case "bottom":
-                                            style.left = cropBox.x + cropBox.width / 2 - size / 2;
-                                            style.top = cropBox.y + cropBox.height - size / 2;
-                                            break;
-                                    }
+                                    {/* Left overlay */}
+                                    <div
+                                        className="absolute bg-black/50 pointer-events-none"
+                                        style={{
+                                            left: 0,
+                                            top: cropBox.y,
+                                            width: cropBox.x,
+                                            height: cropBox.height,
+                                        }}
+                                    />
 
-                                    return (
-                                        <div
-                                            key={handle}
-                                            style={style}
-                                            onMouseDown={(e) =>
-                                                handleMouseDown(e, handle as any)
-                                            }
-                                        />
-                                    );
-                                })}
-                            </>
-                        )}
+                                    {/* Right overlay */}
+                                    <div
+                                        className="absolute bg-black/50 pointer-events-none"
+                                        style={{
+                                            left: cropBox.x + cropBox.width,
+                                            top: cropBox.y,
+                                            width: canvasSize.width - (cropBox.x + cropBox.width),
+                                            height: cropBox.height,
+                                        }}
+                                    />
 
-                        <div className="flex justify-center mt-4 md:mt-6">
-                            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3 w-full">
-                                <Button
-                                    variant="outline"
-                                    onClick={goToPrevPage}
-                                    disabled={pageNum <= 1}
-                                    className="hover:bg-gray-100 disabled:opacity-50 px-3 sm:px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-xs sm:text-sm transition-all disabled:cursor-not-allowed w-full sm:w-auto"
-                                >
-                                    ← Previous
-                                </Button>
+                                    {/* Crop area border */}
+                                    <div
+                                        className="absolute border-2 border-blue-500"
+                                        style={{
+                                            left: cropBox.x,
+                                            top: cropBox.y,
+                                            width: cropBox.width,
+                                            height: cropBox.height,
+                                        }}
+                                    />
 
-                                <div className="text-sm sm:text-base font-medium text-gray-700 px-3 py-1">
-                                    Page {pageNum} of {totalPages}
+                                    {/* Resize handles */}
+                                    {[
+                                        "top-left",
+                                        "top-right",
+                                        "bottom-left",
+                                        "bottom-right",
+                                        "left",
+                                        "right",
+                                        "top",
+                                        "bottom",
+                                    ].map((handle) => {
+                                        const size = 10;
+                                        const style: React.CSSProperties = {
+                                            position: "absolute",
+                                            width: size,
+                                            height: size,
+                                            background: "white",
+                                            border: "2px solid #2563eb",
+                                            cursor:
+                                                handle.includes("left") || handle.includes("right")
+                                                    ? "ew-resize"
+                                                    : handle.includes("top") || handle.includes("bottom")
+                                                        ? "ns-resize"
+                                                        : "nwse-resize",
+                                        };
+
+                                        // Position handles
+                                        switch (handle) {
+                                            case "top-left":
+                                                style.left = cropBox.x - size / 2;
+                                                style.top = cropBox.y - size / 2;
+                                                break;
+                                            case "top-right":
+                                                style.left = cropBox.x + cropBox.width - size / 2;
+                                                style.top = cropBox.y - size / 2;
+                                                break;
+                                            case "bottom-left":
+                                                style.left = cropBox.x - size / 2;
+                                                style.top = cropBox.y + cropBox.height - size / 2;
+                                                break;
+                                            case "bottom-right":
+                                                style.left = cropBox.x + cropBox.width - size / 2;
+                                                style.top = cropBox.y + cropBox.height - size / 2;
+                                                break;
+                                            case "left":
+                                                style.left = cropBox.x - size / 2;
+                                                style.top = cropBox.y + cropBox.height / 2 - size / 2;
+                                                break;
+                                            case "right":
+                                                style.left = cropBox.x + cropBox.width - size / 2;
+                                                style.top = cropBox.y + cropBox.height / 2 - size / 2;
+                                                break;
+                                            case "top":
+                                                style.left = cropBox.x + cropBox.width / 2 - size / 2;
+                                                style.top = cropBox.y - size / 2;
+                                                break;
+                                            case "bottom":
+                                                style.left = cropBox.x + cropBox.width / 2 - size / 2;
+                                                style.top = cropBox.y + cropBox.height - size / 2;
+                                                break;
+                                        }
+
+                                        return (
+                                            <div
+                                                key={handle}
+                                                style={style}
+                                                onMouseDown={(e) =>
+                                                    handleMouseDown(e, handle as any)
+                                                }
+                                            />
+                                        );
+                                    })}
+                                </>
+                            )}
+                        </div>
+                        <div className="flex justify-center mt-2 md:mt-3">
+                            <div className="bg-white rounded-lg shadow-md px-4 py-3 border border-gray-200">
+                                <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3">
+                                    <Button
+                                        variant="outline"
+                                        onClick={goToPrevPage}
+                                        disabled={pageNum <= 1}
+                                        className="hover:bg-gray-100 disabled:opacity-50 px-3 sm:px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-xs sm:text-sm transition-all disabled:cursor-not-allowed w-full sm:w-auto"
+                                    >
+                                        ← Previous
+                                    </Button>
+
+                                    <div className="text-sm sm:text-base font-medium text-gray-700 px-3 py-1">
+                                        Page {pageNum} of {totalPages}
+                                    </div>
+
+                                    <Button
+                                        variant="outline"
+                                        onClick={goToNextPage}
+                                        disabled={pageNum >= totalPages}
+                                        className="hover:bg-gray-100 disabled:opacity-50 px-3 sm:px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-xs sm:text-sm transition-all w-full sm:w-auto"
+                                    >
+                                        Next →
+                                    </Button>
                                 </div>
-
-                                <Button
-                                    variant="outline"
-                                    onClick={goToNextPage}
-                                    disabled={pageNum >= totalPages}
-                                    className="hover:bg-gray-100 disabled:opacity-50 px-3 sm:px-5 py-2 border-gray-300 font-medium text-gray-700 hover:text-gray-900 text-xs sm:text-sm transition-all w-full sm:w-auto"
-                                >
-                                    Next →
-                                </Button>
                             </div>
-
                         </div>
                     </div>
-                )
-                }
+                )}
 
                 <div className="w-full lg:w-auto">
                     <PdfActionButton

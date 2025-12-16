@@ -18,7 +18,7 @@ type ResizeHandle =
     | "bottom"
     | null;
 
-export default function useDragSelectCrop() {
+export default function useDragSelectCrop(canvasSize?: { width: number; height: number }) {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [cropBox, setCropBox] = useState<CropBox | null>(null);
     const [isSelecting, setIsSelecting] = useState(false);
@@ -106,6 +106,14 @@ export default function useDragSelectCrop() {
                 y -= height;
             }
 
+            // Clamp to canvas boundaries
+            if (canvasSize) {
+                x = Math.max(0, Math.min(x, canvasSize.width - width));
+                y = Math.max(0, Math.min(y, canvasSize.height - height));
+                width = Math.min(width, canvasSize.width - x);
+                height = Math.min(height, canvasSize.height - y);
+            }
+
             setCropBox({ x, y, width, height });
             setStart({ x: currentX, y: currentY });
             return;
@@ -114,10 +122,18 @@ export default function useDragSelectCrop() {
         // ---- Drawing new selection ----
         if (!isSelecting || !start) return;
 
-        const x = Math.min(start.x, currentX);
-        const y = Math.min(start.y, currentY);
-        const width = Math.abs(currentX - start.x);
-        const height = Math.abs(currentY - start.y);
+        let x = Math.min(start.x, currentX);
+        let y = Math.min(start.y, currentY);
+        let width = Math.abs(currentX - start.x);
+        let height = Math.abs(currentY - start.y);
+
+        // Clamp to canvas boundaries
+        if (canvasSize) {
+            x = Math.max(0, Math.min(x, canvasSize.width));
+            y = Math.max(0, Math.min(y, canvasSize.height));
+            width = Math.min(width, canvasSize.width - x);
+            height = Math.min(height, canvasSize.height - y);
+        }
 
         setCropBox({ x, y, width, height });
     };
