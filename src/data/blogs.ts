@@ -10,6 +10,15 @@ export interface BlogPost {
 
 export const blogs: BlogPost[] = [
     {
+        slug: "meesho-multi-account-label-sorting-by-sku",
+        title: "Meesho Multi-Account Label Sorting by SKU - Save Hours Daily",
+        description: "Manage multiple Meesho seller accounts effortlessly! Automatically sort shipping labels by SKU across all accounts. Free tool with local processing.",
+        publishedAt: "2024-12-16",
+        author: "PDF Things Team",
+        tags: ["Meesho", "SKU Sorting", "Multi-Account", "Ecommerce"],
+        image: "/blog/meesho-hero.png"
+    },
+    {
         slug: "how-to-crop-pdf-pages-without-losing-quality",
         title: "How to Crop PDF Pages Without Losing Quality",
         description: "Learn how to crop PDF pages perfectly without losing quality using our free, secure online tool. Local processing ensures your documents stay private.",
