@@ -183,7 +183,7 @@ export default function BlogPost() {
                                         </span>
                                         <span className="flex items-center">
                                             <Calendar className="w-4 h-4 mr-2 text-indigo-500" />
-                                            December 16, 2024
+                                            December 13, 2025
                                         </span>
                                     </div>
                                 </div>
