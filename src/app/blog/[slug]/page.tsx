@@ -1,8 +1,8 @@
+import { Calendar, ChevronLeft, Tag, User } from "lucide-react";
 import Link from "next/link";
-import { blogs } from "../../../data/blogs";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { ChevronLeft, Calendar, User, Tag } from "lucide-react";
+import { blogs } from "../../../data/blogs";
 
 interface Props {
     params: Promise<{
@@ -12,9 +12,11 @@ interface Props {
 
 // Generate static params for all blogs
 export async function generateStaticParams() {
-    return blogs.map((blog) => ({
-        slug: blog.slug,
-    }));
+    return blogs
+        .filter((blog) => !blog.hasCustomPage)
+        .map((blog) => ({
+            slug: blog.slug,
+        }));
 }
 
 // Generate metadata for the page

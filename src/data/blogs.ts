@@ -6,6 +6,7 @@ export interface BlogPost {
     author: string;
     tags: string[];
     image?: string;
+    hasCustomPage?: boolean;
 }
 
 export const blogs: BlogPost[] = [
@@ -16,7 +17,8 @@ export const blogs: BlogPost[] = [
         publishedAt: "2025-12-17",
         author: "PDF Things Team",
         tags: ["Flipkart", "Auto-Crop", "SKU Sort", "Ecommerce"],
-        image: "/blog/flipkart-hero.png"
+        image: "/blog/flipkart-hero.png",
+        hasCustomPage: true
     },
     {
         slug: "meesho-multi-account-label-sorting-by-sku",
@@ -25,7 +27,8 @@ export const blogs: BlogPost[] = [
         publishedAt: "2025-12-16",
         author: "PDF Things Team",
         tags: ["Meesho", "SKU Sorting", "Multi-Account", "Ecommerce"],
-        image: "/blog/meesho-hero.png"
+        image: "/blog/meesho-hero.png",
+        hasCustomPage: true
     },
     {
         slug: "how-to-crop-pdf-pages-without-losing-quality",
@@ -34,7 +37,8 @@ export const blogs: BlogPost[] = [
         publishedAt: "2025-12-13",
         author: "PDF Things Team",
         tags: ["Crop PDF", "PDF Editing", "Quality", "Privacy"],
-        image: "/blog/how-to-crop-pdf-hero.png"
+        image: "/blog/how-to-crop-pdf-hero.png",
+        hasCustomPage: true
     },
     {
         slug: "how-to-merge-pdfs-online-free",
@@ -43,6 +47,7 @@ export const blogs: BlogPost[] = [
         publishedAt: "2025-12-10",
         author: "PDF Things",
         tags: ["Merge PDF", "PDF Tools", "Productivity", "Security"],
-        image: "/blog/how-to-merge-pdfs-hero.png"
+        image: "/blog/how-to-merge-pdfs-hero.png",
+        hasCustomPage: true
     }
 ];
