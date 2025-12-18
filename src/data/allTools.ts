@@ -1,4 +1,4 @@
-import { Crop, FileStack, FileText, Image as ImageIcon, Scissors, ShoppingCart, Store } from "lucide-react";
+import { Crop, FileStack, FileText, Image as ImageIcon, Scissors, ShoppingCart, Store, Trash2 } from "lucide-react";
 
 export interface Tool {
     path: string;
@@ -91,6 +91,16 @@ export const allTools: Tool[] = [
         icon: Crop,
         category: "manipulation",
         showOnHomepage: true,
+    },
+    {
+        path: "/remove-pages",
+        name: "Remove PDF Pages",
+        description: "Remove unwanted pages from your PDF documents.",
+        color: "bg-red-600",
+        icon: Trash2,
+        category: "manipulation",
+        showOnHomepage: true,
+        isNew: true,
     },
     {
         path: "/pdf-to-jpg",

@@ -40,6 +40,7 @@ const Footer = () => {
                                 { name: "Merge PDF", href: "/merge-pdf" },
                                 { name: "Split PDF", href: "/split-pdf" },
                                 { name: "Crop PDF", href: "/crop-pdf" },
+                                { name: "Remove PDF Pages", href: "/remove-pages" },
                                 { name: "PDF to JPG", href: "/pdf-to-jpg" },
                                 { name: "JPG to PDF", href: "/jpg-to-pdf" },
                                 // { name: "Compress PDF", href: "/compress-pdf" },

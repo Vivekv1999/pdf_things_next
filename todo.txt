@@ -7,7 +7,9 @@ pdf to excel
 pdf to jpg
 jpg to pdf
 crop pdf page name wise (perticular name wise)
+Delete PDF Pages
 
+Rotate PDF Pages
 
 
 
@@ -15,3 +17,11 @@ crop pdf page name wise (perticular name wise)
 
 -------
 rmoeve pdf if all page delete then last splitt and downlaod button check condition--->if 0 page then error no page selection for split pdf
+
+-----
+want to add new pdf page del;ete dunctionality
+1 fllow my UI like in split pdf,crop pdf
+2.Make all contence SEO friednly
+3. add new route in sitemap
+4. add this route in navbar / footer and all place wher all other ar added
+4make lal cotne SEO full drffi driven
