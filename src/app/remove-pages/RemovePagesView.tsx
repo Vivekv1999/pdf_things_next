@@ -1,7 +1,6 @@
 "use client"
 
 import { PdfActionButton } from "@/src/components/pdf/PdfActionButton";
-import PdfPagePreview from "@/src/components/PdfPagePreview";
 import { Button } from "@/src/components/ui/button";
 import useRemovePages from "@/src/hooks/useRemovePages";
 import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
@@ -9,7 +8,9 @@ import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta } from "@/src/types/pdf";
 import { downloadPdf } from "@/src/utils/downloadFile";
 import { Trash2 } from "lucide-react";
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState } from "react";
+import LazyPdfPage from "@/src/components/LazyPdfPage";
+import { PdfCacheProvider } from "@/src/contexts/PdfCacheContext";
 
 interface RemovePagesViewProps {
     pdfs: PdfMeta[] | any;
@@ -30,46 +31,10 @@ const RemovePagesView = ({
     const [removedIndexes, setRemovedIndexes] = useState<number[]>([]);
     const [customPages, setCustomPages] = useState("");
     const [progress, setProgress] = useState(0);
-    const [visiblePages, setVisiblePages] = useState(50); // Start with 50 pages
     const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
     const dispatch = useAppDispatch();
     const totalPages = pdfs?.[0]?.pageCount;
-
-    // Transform PDF data to show all pages individually
-    const allPagesData = useMemo(() => {
-        if (!pdfs?.[0]) return [];
-        const pdf = pdfs[0];
-        return pdf.previews?.map((preview: string, index: number) => ({
-            id: `${pdf.id}-page-${index}`,
-            file: pdf.file,
-            pageCount: pdf.pageCount,
-            previews: [preview], // Single preview for this page
-        })) || [];
-    }, [pdfs]);
-
-    // Get only visible pages for rendering
-    const visiblePagesData = useMemo(() => {
-        return allPagesData.slice(0, visiblePages);
-    }, [allPagesData, visiblePages]);
-
-    // Infinite scroll handler
-    const handleScroll = useCallback(() => {
-        if (visiblePages >= totalPages) return; // All pages already loaded
-
-        const scrollPosition = window.innerHeight + window.scrollY;
-        const documentHeight = document.documentElement.scrollHeight;
-
-        // Load more when user is 200px from bottom
-        if (documentHeight - scrollPosition < 200) {
-            setVisiblePages(prev => Math.min(prev + 50, totalPages));
-        }
-    }, [visiblePages, totalPages]);
-
-    // Set up scroll listener
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [handleScroll]);
+    const pdfFile = pdfs?.[0]?.file;
 
     const { removePages, loading } = useRemovePages(pdfs?.[0], removedIndexes, setProgress);
 
@@ -82,12 +47,13 @@ const RemovePagesView = ({
 
         const resultBytes = await removePages();
         if (resultBytes) {
+            // Auto-download the PDF
+            downloadPdf(resultBytes, "Removed");
             dispatch(setAlredyMergePdf([resultBytes]));
         }
     };
 
-    const togglePage = (idx: string) => {
-        const pageIndex = parseInt(idx);
+    const togglePage = (pageIndex: number) => {
         setRemovedIndexes(prev => {
             if (prev.includes(pageIndex)) {
                 return prev.filter(i => i !== pageIndex);
@@ -138,33 +104,87 @@ const RemovePagesView = ({
         }
     };
 
+    const selectOddPages = () => {
+        const oddPages = Array.from({ length: totalPages }, (_, i) => i).filter(i => (i + 1) % 2 === 1);
+        setRemovedIndexes(oddPages);
+    };
+
+    const selectEvenPages = () => {
+        const evenPages = Array.from({ length: totalPages }, (_, i) => i).filter(i => (i + 1) % 2 === 0);
+        setRemovedIndexes(evenPages);
+    };
+
     return (
         <div className="mb-40">
             {!alredyMergePdf && (
                 <>
+                    {/* Sticky action bar */}
+                    <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-md mb-6">
+                        <div className="max-w-7xl mx-auto px-4 py-4">
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                <div className="flex flex-wrap gap-2">
+                                    <Button
+                                        variant="outline"
+                                        onClick={selectAll}
+                                        className="text-sm"
+                                    >
+                                        Select All ({totalPages})
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        onClick={selectOddPages}
+                                        className="text-sm"
+                                    >
+                                        Select Odd Pages
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        onClick={selectEvenPages}
+                                        className="text-sm"
+                                    >
+                                        Select Even Pages
+                                    </Button>
+                                </div>
+
+                                <div className="flex gap-2">
+                                    <Button
+                                        variant="outline"
+                                        onClick={deselectAll}
+                                        className="text-sm"
+                                    >
+                                        Reset Selection
+                                    </Button>
+                                    <Button
+                                        onClick={handleRemove}
+                                        disabled={loading || removedIndexes.length === 0}
+                                        className="bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
+                                    >
+                                        <Trash2 className="w-4 h-4 mr-2" />
+                                        Remove {removedIndexes.length > 0 ? `${removedIndexes.length} Page${removedIndexes.length !== 1 ? 's' : ''}` : 'Pages'}
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {removedIndexes.length > 0 && (
+                                <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                                    <div className="flex items-center gap-2 text-red-700 dark:text-red-400 text-sm">
+                                        <Trash2 className="w-4 h-4" />
+                                        <span className="font-medium">
+                                            {removedIndexes.length} page{removedIndexes.length !== 1 ? 's' : ''} selected for removal
+                                        </span>
+                                        <span className="text-red-600 dark:text-red-500">•</span>
+                                        <span>
+                                            {totalPages - removedIndexes.length} page{totalPages - removedIndexes.length !== 1 ? 's' : ''} will remain
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     <div className="my-6 space-y-4">
                         <div>
-                            <label className="block mb-2 font-medium">Select Pages to Remove</label>
-                            <div className="flex flex-wrap gap-3">
-                                <Button
-                                    variant="outline"
-                                    onClick={selectAll}
-                                    className="text-sm"
-                                >
-                                    Select All ({totalPages})
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    onClick={deselectAll}
-                                    className="text-sm"
-                                >
-                                    Deselect All
-                                </Button>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block mb-2 font-medium text-sm">Or Enter Page Ranges</label>
+                            <label className="block mb-2 font-medium text-sm">Enter Page Ranges (Optional)</label>
                             <div className="flex gap-2">
                                 <input
                                     type="text"
@@ -188,37 +208,22 @@ const RemovePagesView = ({
                                 Enter page numbers separated by commas. Use hyphens for ranges.
                             </p>
                         </div>
-
-                        {removedIndexes.length > 0 && (
-                            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                                <div className="flex items-center gap-2 text-red-700">
-                                    <Trash2 className="w-5 h-5" />
-                                    <span className="font-medium">
-                                        {removedIndexes.length} page{removedIndexes.length !== 1 ? 's' : ''} selected for removal
-                                    </span>
-                                </div>
-                                <p className="text-sm text-red-600 mt-1">
-                                    {totalPages - removedIndexes.length} page{totalPages - removedIndexes.length !== 1 ? 's' : ''} will remain in the final PDF
-                                </p>
-                            </div>
-                        )}
                     </div>
 
-                    <PdfPagePreview
-                        pdfPage={visiblePagesData}
-                        handleRemove={togglePage}
-                        removedIndexes={removedIndexes}
-                        showRemovedIcon={true}
-                    />
-
-                    {/* Loading indicator when more pages are available */}
-                    {visiblePages < totalPages && (
-                        <div className="text-center py-8">
-                            <p className="text-gray-500 text-sm">
-                                Showing {visiblePages} of {totalPages} pages. Scroll down to load more...
-                            </p>
+                    {/* Grid of lazy-loaded pages */}
+                    <PdfCacheProvider>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-10">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <LazyPdfPage
+                                    key={index}
+                                    file={pdfFile}
+                                    pageIndex={index}
+                                    isSelected={removedIndexes.includes(index)}
+                                    onToggle={togglePage}
+                                />
+                            ))}
                         </div>
-                    )}
+                    </PdfCacheProvider>
                 </>
             )}
 

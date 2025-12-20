@@ -34,7 +34,7 @@ const RemovePages = () => {
             setPdfs((prev) => [...prev, ...files]);
         },
         (update: ProgressUpdate | null) => setProgress(update),
-        true // Generate previews for ALL pages
+        false // Only generate first page preview for faster loading
     );
 
     return (

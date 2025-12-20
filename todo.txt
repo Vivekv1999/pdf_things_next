@@ -24,4 +24,7 @@ want to add new pdf page del;ete dunctionality
 2.Make all contence SEO friednly
 3. add new route in sitemap
 4. add this route in navbar / footer and all place wher all other ar added
+5. add conical url for SEO(alternates: {canonical: }...)
+
+
 4make lal cotne SEO full drffi driven
