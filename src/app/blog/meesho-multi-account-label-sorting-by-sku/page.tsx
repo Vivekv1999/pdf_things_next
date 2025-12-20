@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import MeeshoBlogClient from './MeeshoBlogClient'
+import { siteConfig } from '@/src/constants/appConstants'
 
 export const metadata: Metadata = {
     title: 'Meesho Multi-Account Label Sorting by SKU - Save Hours Daily | PDF Things',
@@ -26,6 +27,9 @@ export const metadata: Metadata = {
         title: 'Meesho Multi-Account Label Sorting by SKU - Save Hours Daily',
         description: 'Learn how to manage multiple Meesho seller accounts and automatically sort shipping labels by SKU.',
         images: ['/blog/meesho-hero.png'],
+    },
+    alternates: {
+        canonical: `${siteConfig.url}/blog/meesho-multi-account-label-sorting-by-sku`,
     }
 }
 

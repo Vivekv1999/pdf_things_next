@@ -29,6 +29,9 @@ export const metadata: Metadata = {
         description:
             "Split PDF into multiple smaller files by page ranges. Free, secure, and instant.",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/split-pdf`,
+    },
 };
 
 export default function Page() {

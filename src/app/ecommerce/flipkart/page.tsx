@@ -34,6 +34,9 @@ export const metadata: Metadata = {
         description:
             "Crop and sort Flipkart shipping labels by SKU, manage your invoices, and organize PDFs easily — free tools made for Flipkart sellers.",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/ecommerce/flipkart`,
+    },
 };
 
 const page = () => {

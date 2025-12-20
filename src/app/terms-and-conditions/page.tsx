@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+import { siteConfig } from "@/src/constants/appConstants";
+
+export const metadata: Metadata = {
+    title: "Terms & Conditions | PDF Things",
+    description: "Read the terms and conditions for using PDF Things. All services are currently free with browser-based processing.",
+    alternates: {
+        canonical: `${siteConfig.url}/terms-and-conditions`,
+    },
+};
+
 const TermsAndConditions = () => {
     return (
         <div className="mx-auto p-6 max-w-4xl">

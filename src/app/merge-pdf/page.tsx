@@ -23,6 +23,9 @@ export const metadata: Metadata = {
         siteName: siteConfig.name,
         type: "website",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/merge-pdf`,
+    },
 };
 
 export default function Page() {

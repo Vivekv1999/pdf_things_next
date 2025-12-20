@@ -34,6 +34,9 @@ export const metadata: Metadata = {
         description:
             "Remove unwanted pages from your PDF documents. Free, secure, and instant page deletion tool.",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/remove-pages`,
+    },
 };
 
 export default function Page() {

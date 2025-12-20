@@ -22,6 +22,9 @@ export const metadata: Metadata = {
         siteName: siteConfig.name,
         type: "website",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/pdf-to-jpg`,
+    },
 };
 
 export default function Page() {

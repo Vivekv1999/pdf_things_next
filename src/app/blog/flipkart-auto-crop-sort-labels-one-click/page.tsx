@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import FlipkartBlogClient from './FlipkartBlogClient'
+import { siteConfig } from '@/src/constants/appConstants'
 
 export const metadata: Metadata = {
     title: 'Flipkart Label Auto-Crop & SKU Sort - One-Click Solution for Sellers | PDF Things',
@@ -26,6 +27,9 @@ export const metadata: Metadata = {
         title: 'Flipkart Label Auto-Crop & SKU Sort - One-Click Solution',
         description: 'Automatically crop, merge, and sort Flipkart shipping labels from multiple accounts in one click.',
         images: ['/blog/flipkart-hero.png'],
+    },
+    alternates: {
+        canonical: `${siteConfig.url}/blog/flipkart-auto-crop-sort-labels-one-click`,
     }
 }
 

@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+import { siteConfig } from "@/src/constants/appConstants";
+
+export const metadata: Metadata = {
+    title: "Privacy Policy | PDF Things",
+    description: "Learn how PDF Things protects your privacy. All PDF processing happens in your browser - we never upload or store your files.",
+    alternates: {
+        canonical: `${siteConfig.url}/privacy-policy`,
+    },
+};
+
 const PrivacyPolicy = () => {
     return (
         <div className="mx-auto p-6 max-w-4xl">

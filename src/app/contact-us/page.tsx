@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+import { siteConfig } from "@/src/constants/appConstants";
+
+export const metadata: Metadata = {
+    title: "Contact Us | PDF Things",
+    description: "Get in touch with the PDF Things team. We'd love to hear from you!",
+    alternates: {
+        canonical: `${siteConfig.url}/contact-us`,
+    },
+};
+
 const page = () => {
     return (
         <div className="mx-auto p-6 max-w-3xl">

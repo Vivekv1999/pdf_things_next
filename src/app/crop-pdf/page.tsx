@@ -34,6 +34,9 @@ export const metadata: Metadata = {
         description:
             "Crop PDF pages to remove unwanted areas. Free, secure, and instant.",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/crop-pdf`,
+    },
 };
 
 export default function Page() {

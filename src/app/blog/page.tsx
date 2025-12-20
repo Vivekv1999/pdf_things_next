@@ -2,11 +2,15 @@ import Link from "next/link";
 import { blogs } from "../../data/blogs";
 import { MoveRight, Calendar } from "lucide-react";
 import Image from "next/image";
+import { siteConfig } from "@/src/constants/appConstants";
 
 export const metadata = {
     title: "PDF Things Blog - Tips, Tutorials & Updates",
     description:
         "Read our latest guides on using PDF tools, improving productivity, and managing digital documents securely.",
+    alternates: {
+        canonical: `${siteConfig.url}/blog`,
+    },
 };
 
 export default function BlogIndex() {

@@ -33,6 +33,9 @@ export const metadata: Metadata = {
         description:
             "Merge and sort Meesho invoices by SKU or label, generate account labels, and organize your PDF files easily — all free and online.",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/ecommerce/meesho`,
+    },
 };
 
 const page = () => {

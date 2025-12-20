@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MoveRight, Calendar, User, ChevronLeft, Check, Shield, Zap, Crop, Scissors } from "lucide-react";
 import type { Metadata } from "next";
+import { siteConfig } from "@/src/constants/appConstants";
 
 export const metadata: Metadata = {
     title: "How to Crop PDF Pages Without Losing Quality - Free Online Tool",
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
         images: ["/blog/how-to-crop-pdf-hero.png"],
     },
     alternates: {
-        canonical: "https://pdfthings.com/blog/how-to-crop-pdf-pages-without-losing-quality",
+        canonical: `${siteConfig.url}/blog/how-to-crop-pdf-pages-without-losing-quality`,
     },
 };
 

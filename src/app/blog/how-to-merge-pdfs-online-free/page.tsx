@@ -1,11 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MoveRight, Calendar, User, ChevronLeft, Check, Shield, Zap, FileText } from "lucide-react";
+import { siteConfig } from "@/src/constants/appConstants";
 
 export const metadata = {
     title: "How to Merge PDFs Online for Free - Secure & Private",
     description:
         "Learn how to combine multiple PDF files into one document instantly using our free, secure, and private online tool. No uploads required!",
+    alternates: {
+        canonical: `${siteConfig.url}/blog/how-to-merge-pdfs-online-free`,
+    },
 };
 
 function Step({ number, title, text }: { number: number; title: string; text: React.ReactNode }) {

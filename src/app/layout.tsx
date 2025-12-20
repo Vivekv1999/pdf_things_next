@@ -4,6 +4,7 @@ import Script from "next/script";
 import Applayout from "../layout/Applayout";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
+import { siteConfig } from "../constants/appConstants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,9 @@ export const metadata: Metadata = {
         alt: "PDF Things - Free Online PDF Tools",
       },
     ],
+  },
+  alternates: {
+    canonical: siteConfig.url,
   },
 
 };

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
         siteName: siteConfig.name,
         type: "website",
     },
+    alternates: {
+        canonical: `${siteConfig.url}/compress-pdf`,
+    },
 };
 
 export default function Page() {
