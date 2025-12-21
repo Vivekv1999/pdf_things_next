@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/src/lib/hooks";
 import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta } from "@/src/types/pdf";
 import { downloadPdf } from "@/src/utils/downloadFile";
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
 import LazyPdfPage from "@/src/components/LazyPdfPage";
 import { PdfCacheProvider } from "@/src/contexts/PdfCacheContext";
@@ -159,8 +159,17 @@ const RemovePagesView = ({
                                         disabled={loading || removedIndexes.length === 0}
                                         className="bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
                                     >
-                                        <Trash2 className="w-4 h-4 mr-2" />
-                                        Remove {removedIndexes.length > 0 ? `${removedIndexes.length} Page${removedIndexes.length !== 1 ? 's' : ''}` : 'Pages'}
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                                Removing...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Trash2 className="w-4 h-4 mr-2" />
+                                                Remove {removedIndexes.length > 0 ? `${removedIndexes.length} Page${removedIndexes.length !== 1 ? 's' : ''}` : 'Pages'}
+                                            </>
+                                        )}
                                     </Button>
                                 </div>
                             </div>
