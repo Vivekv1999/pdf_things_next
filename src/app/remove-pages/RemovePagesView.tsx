@@ -8,13 +8,16 @@ import { setAlredyMergePdf } from "@/src/lib/redux/generalSlice";
 import { PdfMeta } from "@/src/types/pdf";
 import { downloadPdf } from "@/src/utils/downloadFile";
 import { Trash2, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LazyPdfPage from "@/src/components/LazyPdfPage";
 import { PdfCacheProvider } from "@/src/contexts/PdfCacheContext";
+import { WarningToast } from "@/src/components/ui/warning-toast";
 
 interface RemovePagesViewProps {
     pdfs: PdfMeta[] | any;
     setPdfs: React.Dispatch<React.SetStateAction<PdfMeta[]>>;
+    pageCountWarningThreshold?: number; // Customizable threshold, default 100
+    warningDuration?: number; // Toast duration in ms, default 5000
 }
 
 const messages = [
@@ -26,17 +29,27 @@ const messages = [
 
 const RemovePagesView = ({
     pdfs,
-    setPdfs
+    setPdfs,
+    pageCountWarningThreshold = 300,
+    warningDuration = 5000
 }: RemovePagesViewProps) => {
     const [removedIndexes, setRemovedIndexes] = useState<number[]>([]);
     const [customPages, setCustomPages] = useState("");
     const [progress, setProgress] = useState(0);
+    const [showWarning, setShowWarning] = useState(false);
     const alredyMergePdf = useAppSelector((state) => state.general.alredyMergePdf);
     const dispatch = useAppDispatch();
     const totalPages = pdfs?.[0]?.pageCount;
     const pdfFile = pdfs?.[0]?.file;
 
     const { removePages, loading } = useRemovePages(pdfs?.[0], removedIndexes, setProgress);
+
+    useEffect(() => {
+        // Show warning toast if PDF has high page count on initial load
+        if (totalPages > pageCountWarningThreshold) {
+            setShowWarning(true);
+        }
+    }, [totalPages]);
 
     const handleRemove = async () => {
         if (alredyMergePdf?.length) {
@@ -247,6 +260,13 @@ const RemovePagesView = ({
                 completeTitle={`Successfully removed ${removedIndexes.length} page${removedIndexes.length !== 1 ? 's' : ''} from your PDF`}
                 completeButtonLable={"Download PDF"}
                 completedMessage={"Pages Removed"}
+            />
+
+            <WarningToast
+                isVisible={showWarning}
+                onClose={() => setShowWarning(false)}
+                message={`This PDF has ${totalPages} pages. For your security and privacy, all processing happens in your browser - your files never leave your PC. If your PC is not powerful enough, you may experience slowness or lag when processing large PDFs.`}
+                duration={warningDuration}
             />
         </div>
     );
