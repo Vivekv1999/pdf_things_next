@@ -25,6 +25,8 @@ want to add new pdf page del;ete dunctionality
 3. add new route in sitemap
 4. add this route in navbar / footer and all place wher all other ar added
 5. add conical url for SEO(alternates: {canonical: }...)
+6.My website focuses on providing unique content. If a site does not have unique content, Google may take more time to rank it for SEO.
+The main feature of my site is that everything works directly in the browser. We do not store user data on our servers. for user privlay add somthing like this in for is ot good foe my prson site and and unique content
 
 
 4make lal cotne SEO full drffi driven

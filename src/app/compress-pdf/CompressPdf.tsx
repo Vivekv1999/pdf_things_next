@@ -36,7 +36,7 @@ const CompressPdf = () => {
                             <ProcessPdf progress={{ ...progress, percent: 50 }} />
                         </div>
                     ) : (
-                        <>
+                        <div className="h-screen">
                             <PdfPageHeader
                                 title="Compress PDF"
                                 description="Upload a single PDF file to reduce its size."
@@ -45,7 +45,7 @@ const CompressPdf = () => {
                                 handleFileChange={handleFiles}
                                 multiFile={false}
                             />
-                        </>
+                        </div>
                     )}
                 </>
             ) : (

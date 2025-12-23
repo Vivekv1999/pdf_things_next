@@ -1,4 +1,4 @@
-import { Crop, FileStack, FileText, Image as ImageIcon, Scissors, ShoppingCart, Store, Trash2 } from "lucide-react";
+import { Crop, FileStack, FileText, Image as ImageIcon, Minimize2, Scissors, ShoppingCart, Store, Trash2 } from "lucide-react";
 
 export interface Tool {
     path: string;
@@ -74,15 +74,15 @@ export const allTools: Tool[] = [
         category: "manipulation",
         showOnHomepage: true,
     },
-    // {
-    //     path: "/compress-pdf",
-    //     name: "Compress PDF",
-    //     description: "Reduce file size without quality loss.",
-    //     color: "bg-cyan-600",
-    //     icon: FileMinus2,
-    //     category: "manipulation",
-    //     showOnHomepage: true,
-    // },
+    {
+        path: "/compress-pdf",
+        name: "Compress PDF",
+        description: "Reduce file size without quality loss.",
+        color: "bg-cyan-600",
+        icon: Minimize2,
+        category: "manipulation",
+        showOnHomepage: true,
+    },
     {
         path: "/crop-pdf",
         name: "Crop PDF",

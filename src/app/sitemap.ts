@@ -66,6 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "merge-pdf",
     "split-pdf",
     "crop-pdf",
+    "compress-pdf",
     "remove-pages",
     "pdf-to-jpg",
     "jpg-to-pdf",

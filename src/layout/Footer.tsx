@@ -43,7 +43,7 @@ const Footer = () => {
                                 { name: "Remove PDF Pages", href: "/remove-pages" },
                                 { name: "PDF to JPG", href: "/pdf-to-jpg" },
                                 { name: "JPG to PDF", href: "/jpg-to-pdf" },
-                                // { name: "Compress PDF", href: "/compress-pdf" },
+                                { name: "Compress PDF", href: "/compress-pdf" },
                             ].map((item) => (
                                 <li key={item.name}>
                                     <Link href={item.href} className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
