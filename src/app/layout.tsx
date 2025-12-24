@@ -65,7 +65,7 @@ export default function RootLayout({
     <html lang="en" dir="ltr">
       <head>
         {/* GA4 Config */}
-        {process.env.NEXT_PUBLIC_ENVIRONMENT === "production" && (
+        {process.env.NEXT_PUBLIC_ENVIRONMENT === "Production" && (
           <Script
             id="gtm-script"
             strategy="afterInteractive"
@@ -87,7 +87,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* <!-- Google Tag Manager (noscript) --> */}
-        {process.env.NEXT_PUBLIC_ENVIRONMENT === "production" && (
+        {process.env.NEXT_PUBLIC_ENVIRONMENT === "Production" && (
           <noscript>
             <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
