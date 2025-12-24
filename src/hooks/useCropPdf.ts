@@ -12,13 +12,18 @@ export default function useCropPdf() {
         pdfBytes: Uint8Array,
         cropBox: CropBox,
         canvasSize: { width: number; height: number },
-        onProgress?: (percent: number) => void
+        onProgress?: (percent: number) => void,
+        pageIndex?: number // Optional: if provided, crop only this page (0-based index)
     ) => {
         const pdfDoc = await PDFDocument.load(pdfBytes);
         const pages = pdfDoc.getPages();
         const total = pages.length;
 
-        for (let i = 0; i < total; i++) {
+        // Determine which pages to crop
+        const pagesToCrop = pageIndex !== undefined ? [pageIndex] : Array.from({ length: total }, (_, i) => i);
+
+        for (let idx = 0; idx < pagesToCrop.length; idx++) {
+            const i = pagesToCrop[idx];
             const page = pages[i];
             const { width: pdfWidth, height: pdfHeight } = page.getSize();
 
@@ -35,7 +40,7 @@ export default function useCropPdf() {
 
             // 💡 Update progress
             if (onProgress) {
-                const percent = Math.round(((i + 1) / total) * 100);
+                const percent = Math.round(((idx + 1) / pagesToCrop.length) * 100);
                 onProgress(percent);
             }
 

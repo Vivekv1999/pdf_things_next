@@ -81,10 +81,6 @@ const CropPdf = () => {
         }
     };
 
-
-    console.log(progress, "pppppppp");
-
-
     return (
         <>
             {

@@ -40,10 +40,29 @@ const CropPdfView = ({
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
 
+    const [manualLeft, setManualLeft] = useState<string>("");
+    const [manualRight, setManualRight] = useState<string>("");
+    const [manualTop, setManualTop] = useState<string>("");
+    const [manualBottom, setManualBottom] = useState<string>("");
+
+    // Crop mode: 'all' or 'single'
+    const [cropMode, setCropMode] = useState<'all' | 'single'>('all');
+
+    // Jump to page input
+    const [jumpToPageInput, setJumpToPageInput] = useState<string>("");
+
+    // Load saved crop mode preference from localStorage
+    useEffect(() => {
+        const savedMode = localStorage.getItem('pdfCropMode');
+        if (savedMode === 'all' || savedMode === 'single') {
+            setCropMode(savedMode);
+        }
+    }, []);
 
     const {
         containerRef,
         cropBox,
+        setCropBox,
         handleMouseDown,
         handleMouseMove,
         handleMouseUp
@@ -57,6 +76,16 @@ const CropPdfView = ({
         renderPage(pageNum);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pdfDoc, pageNum]);
+
+    // Sync manual inputs with cropBox changes (from visual dragging)
+    useEffect(() => {
+        if (cropBox && canvasSize.width > 0) {
+            setManualLeft(Math.round(cropBox.x).toString());
+            setManualTop(Math.round(cropBox.y).toString());
+            setManualRight(Math.round(cropBox.x + cropBox.width).toString());
+            setManualBottom(Math.round(cropBox.y + cropBox.height).toString());
+        }
+    }, [cropBox, canvasSize]);
 
     // Render PDF page
     const renderPage = async (num: number) => {
@@ -107,6 +136,70 @@ const CropPdfView = ({
     const goToPrevPage = () => setPageNum((prev) => Math.max(prev - 1, 1));
     const goToNextPage = () => setPageNum((prev) => Math.min(prev + 1, totalPages));
 
+    // Jump to specific page
+    const handleJumpToPage = () => {
+        const targetPage = parseInt(jumpToPageInput);
+        if (!isNaN(targetPage) && targetPage >= 1 && targetPage <= totalPages) {
+            setPageNum(targetPage);
+            setJumpToPageInput(""); // Clear input after jump
+        }
+    };
+
+    const handleJumpInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleJumpToPage();
+        }
+    };
+
+    // Apply manual crop values automatically
+    const handleManualInputChange = (field: 'left' | 'right' | 'top' | 'bottom', value: string) => {
+        // Update the state first
+        switch (field) {
+            case 'left':
+                setManualLeft(value);
+                break;
+            case 'right':
+                setManualRight(value);
+                break;
+            case 'top':
+                setManualTop(value);
+                break;
+            case 'bottom':
+                setManualBottom(value);
+                break;
+        }
+
+        // Calculate new crop box
+        const left = field === 'left' ? (parseInt(value) || 0) : (parseInt(manualLeft) || 0);
+        const top = field === 'top' ? (parseInt(value) || 0) : (parseInt(manualTop) || 0);
+        const right = field === 'right' ? (parseInt(value) || canvasSize.width) : (parseInt(manualRight) || canvasSize.width);
+        const bottom = field === 'bottom' ? (parseInt(value) || canvasSize.height) : (parseInt(manualBottom) || canvasSize.height);
+
+        // Validate and clamp values
+        const clampedLeft = Math.max(0, Math.min(left, canvasSize.width));
+        const clampedTop = Math.max(0, Math.min(top, canvasSize.height));
+        const clampedRight = Math.max(clampedLeft, Math.min(right, canvasSize.width));
+        const clampedBottom = Math.max(clampedTop, Math.min(bottom, canvasSize.height));
+
+        const width = clampedRight - clampedLeft;
+        const height = clampedBottom - clampedTop;
+
+        if (width > 0 && height > 0) {
+            setCropBox({
+                x: clampedLeft,
+                y: clampedTop,
+                width,
+                height
+            });
+        }
+    };
+
+    // Handle crop mode change and save to localStorage
+    const handleCropModeChange = (mode: 'all' | 'single') => {
+        setCropMode(mode);
+        localStorage.setItem('pdfCropMode', mode);
+    };
+
     const handleCrop = async () => {
         if (!pdfDoc || !cropBox) return;
         if (alredyMergePdf) {
@@ -118,9 +211,12 @@ const CropPdfView = ({
         setProgress(0);
 
         try {
+            // Pass pageIndex only if cropMode is 'single'
+            const pageIndex = cropMode === 'single' ? pageNum - 1 : undefined;
+
             const croppedBytes = await cropPdf(pdfBytes, cropBox, canvasSize, (p) => {
                 setProgress(p);
-            }) as Uint8Array<ArrayBuffer>;
+            }, pageIndex) as Uint8Array<ArrayBuffer>;
 
             setProgress(100);
             dispatch(setAlredyMergePdf(croppedBytes))
@@ -138,7 +234,7 @@ const CropPdfView = ({
             <div className={`flex flex-col lg:flex-row items-center gap-6 lg:gap-8 w-full ${alredyMergePdf ? "justify-center" : "lg:justify-between"}`}>
 
                 {!alredyMergePdf && (
-                    <div className="flex-1">
+                    <div className="flex-1 lg:sticky lg:top-4 lg:self-start">
                         <div
                             ref={containerRef}
                             className="inline-block relative select-none w-full max-w-3xl"
@@ -281,7 +377,8 @@ const CropPdfView = ({
                                 </>
                             )}
                         </div>
-                        <div className="flex justify-center mt-2 md:mt-3">
+
+                        <div className="flex justify-start mt-2 md:mt-3">
                             <div className="bg-white rounded-lg shadow-md px-4 py-3 border border-gray-200">
                                 <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3">
                                     <Button
@@ -311,7 +408,135 @@ const CropPdfView = ({
                     </div>
                 )}
 
-                <div className="w-full lg:w-auto">
+                <div className="w-full lg:w-auto flex flex-col gap-4">
+                    {/* Jump to Page */}
+                    {!alredyMergePdf && (
+                        <div className="bg-white rounded-lg shadow-md p-4 border border-gray-200">
+                            <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                Jump to Page
+                            </h3>
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max={totalPages}
+                                    value={jumpToPageInput}
+                                    onChange={(e) => setJumpToPageInput(e.target.value)}
+                                    onKeyPress={handleJumpInputKeyPress}
+                                    placeholder="Enter page number"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                />
+                                <Button
+                                    variant="outline"
+                                    onClick={handleJumpToPage}
+                                    disabled={!jumpToPageInput || parseInt(jumpToPageInput) < 1 || parseInt(jumpToPageInput) > totalPages}
+                                    className="px-4 py-2 text-sm font-medium hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Go
+                                </Button>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-2">Page {pageNum} of {totalPages}</p>
+                        </div>
+                    )}
+
+                    {/* Crop Mode Selection */}
+                    {!alredyMergePdf && (
+                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md p-4 border border-blue-200">
+                            <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                                <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Crop Mode
+                            </h3>
+                            <div className="flex flex-col gap-2.5">
+                                <label className="flex items-center gap-3 p-2.5 rounded-md hover:bg-white/60 transition-colors cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="cropMode"
+                                        value="all"
+                                        checked={cropMode === 'all'}
+                                        onChange={() => handleCropModeChange('all')}
+                                        className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                    />
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-medium text-gray-800 group-hover:text-blue-700">Crop all pages</span>
+                                        <span className="text-xs text-gray-500">Apply to entire PDF</span>
+                                    </div>
+                                </label>
+                                <label className="flex items-center gap-3 p-2.5 rounded-md hover:bg-white/60 transition-colors cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="cropMode"
+                                        value="single"
+                                        checked={cropMode === 'single'}
+                                        onChange={() => handleCropModeChange('single')}
+                                        className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                    />
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-medium text-gray-800 group-hover:text-blue-700">Current page only</span>
+                                        <span className="text-xs text-gray-500">Page {pageNum} of {totalPages}</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Manual Crop Input Section */}
+                    {!alredyMergePdf && (
+                        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg shadow-md p-4 border border-indigo-200">
+                            <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                                <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                </svg>
+                                Manual Crop Area (pixels)
+                            </h3>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-600 mb-1">Left (L)</label>
+                                    <input
+                                        type="number"
+                                        value={manualLeft}
+                                        onChange={(e) => handleManualInputChange('left', e.target.value)}
+                                        placeholder="0"
+                                        className="w-full px-3 py-2 border border-indigo-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-600 mb-1">Right (R)</label>
+                                    <input
+                                        type="number"
+                                        value={manualRight}
+                                        onChange={(e) => handleManualInputChange('right', e.target.value)}
+                                        placeholder={canvasSize.width.toString()}
+                                        className="w-full px-3 py-2 border border-indigo-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-600 mb-1">Top (T)</label>
+                                    <input
+                                        type="number"
+                                        value={manualTop}
+                                        onChange={(e) => handleManualInputChange('top', e.target.value)}
+                                        placeholder="0"
+                                        className="w-full px-3 py-2 border border-indigo-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-600 mb-1">Bottom (B)</label>
+                                    <input
+                                        type="number"
+                                        value={manualBottom}
+                                        onChange={(e) => handleManualInputChange('bottom', e.target.value)}
+                                        placeholder={canvasSize.height.toString()}
+                                        className="w-full px-3 py-2 border border-indigo-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <PdfActionButton
                         setPdfs={setPdfs}
                         setProgress={setProgress}
