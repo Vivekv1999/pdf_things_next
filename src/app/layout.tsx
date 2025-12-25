@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import Applayout from "../layout/Applayout";
@@ -190,7 +191,11 @@ export default function RootLayout({
         />
 
         <StoreProvider>
-          {process.env.NEXT_PUBLIC_ENVIRONMENT === "Production" && <GoogleTagManager />}
+          {process.env.NEXT_PUBLIC_ENVIRONMENT === "Production" && (
+            <Suspense fallback={null}>
+              <GoogleTagManager />
+            </Suspense>
+          )}
           <Applayout>
             {children}
           </Applayout>
