@@ -5,6 +5,7 @@ import Applayout from "../layout/Applayout";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { siteConfig } from "../constants/appConstants";
+import GoogleTagManager from "../components/GoogleTagManager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -189,6 +190,7 @@ export default function RootLayout({
         />
 
         <StoreProvider>
+          {process.env.NEXT_PUBLIC_ENVIRONMENT === "Production" && <GoogleTagManager />}
           <Applayout>
             {children}
           </Applayout>
