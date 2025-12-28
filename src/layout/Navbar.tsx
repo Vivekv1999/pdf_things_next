@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, Search, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { siteConfig } from "../constants/appConstants";
@@ -60,9 +61,19 @@ const Navbar: React.FC = () => {
                     {/* Logo */}
                     <Link
                         href="/"
-                        className="font-bold text-xl lg:text-2xl tracking-tight bg-gradient-to-r from-indigo-600 to-fuchsia-600 dark:from-indigo-400 dark:to-fuchsia-400 bg-clip-text text-transparent hover:scale-105 transition-transform flex-shrink-0"
+                        className="flex items-center gap-2 font-bold text-xl lg:text-2xl tracking-tight hover:scale-105 transition-transform flex-shrink-0"
                     >
-                        {siteConfig.name}
+                        <div className="relative w-9 h-9 lg:w-10 lg:h-10">
+                            <Image
+                                src="/app/PDF_things.png"
+                                alt="PDF Things Logo"
+                                fill
+                                className="object-contain"
+                            />
+                        </div>
+                        <span className="bg-gradient-to-r from-indigo-600 to-fuchsia-600 dark:from-indigo-400 dark:to-fuchsia-400 bg-clip-text text-transparent">
+                            {siteConfig.name}
+                        </span>
                     </Link>
 
                     {/* Desktop menu */}

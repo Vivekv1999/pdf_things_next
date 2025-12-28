@@ -45,12 +45,14 @@ export const metadata: Metadata = {
     url: "https://pdfthings.com",
     images: [
       {
-        url: "https://pdfthings.com/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/app/PDF_things.png",
         alt: "PDF Things - Free Online PDF Tools",
       },
     ],
+  },
+  icons: {
+    icon: "/app/PDF_things.png",
+    apple: "/app/PDF_things.png",
   },
   alternates: {
     canonical: siteConfig.url,
@@ -128,7 +130,7 @@ export default function RootLayout({
                   "url": "https://pdfthings.com",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://pdfthings.com/og-image.png"
+                    "url": "https://pdfthings.com/app/PDF_things.png"
                   },
                   "sameAs": []
                 },
@@ -153,7 +155,7 @@ export default function RootLayout({
                     "SKU-based label sorting",
                     "Multi-account label processing"
                   ],
-                  "screenshot": "https://pdfthings.com/og-image.png"
+                  "screenshot": "https://pdfthings.com/app/PDF_things.png"
                 },
                 {
                   "@type": "SiteNavigationElement",

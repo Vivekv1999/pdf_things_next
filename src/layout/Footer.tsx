@@ -1,4 +1,5 @@
 import { FileText } from "lucide-react";
+import Image from "next/image";
 import moment from "moment";
 import Link from "next/link";
 import { siteConfig } from "../constants/appConstants";
@@ -16,8 +17,13 @@ const Footer = () => {
                     {/* Brand Section - Takes up 4 columns on large screens */}
                     <div className="col-span-2 md:col-span-4 lg:col-span-4 space-y-6">
                         <div className="flex items-center space-x-3">
-                            <div className="p-2 bg-gradient-to-tr from-indigo-500 to-fuchsia-500 rounded-xl shadow-lg shadow-indigo-500/20">
-                                <FileText className="w-6 h-6 text-white" />
+                            <div className="relative w-13 h-13">
+                                <Image
+                                    src="/app/PDF_things.png"
+                                    alt="PDF Things Logo"
+                                    fill
+                                    className="object-contain"
+                                />
                             </div>
                             <span className="font-bold text-2xl text-white tracking-tight">
                                 {siteConfig.name}
