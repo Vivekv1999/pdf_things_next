@@ -68,6 +68,7 @@ const Navbar: React.FC = () => {
                                 src="/app/PDF_things.png"
                                 alt="PDF Things Logo"
                                 fill
+                                priority
                                 className="object-contain"
                             />
                         </div>
