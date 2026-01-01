@@ -10,12 +10,43 @@ interface PageText {
 
 type sortFor = "MEESHO" | "FLIPKART";
 
-function useSort(sortFor: sortFor) {
+/**
+ * SKU Replacement Rule
+ * Defines how to replace SKU patterns from different accounts with the main account pattern
+ * @example
+ * { from: "zz-", to: "hh-" } // Replace "zz-ABC123" with "hh-ABC123"
+ * { from: "gg-", to: "hh-" } // Replace "gg-ABC123" with "hh-ABC123"
+ */
+export interface SKUReplacementRule {
+  /** The pattern to search for (can be prefix, suffix, or any string) */
+  from: string;
+  /** The pattern to replace with (main account pattern) */
+  to: string;
+  /** Optional: Whether to use regex matching (default: false for simple string replacement) */
+  useRegex?: boolean;
+  /** Optional: Case sensitive matching (default: true) */
+  caseSensitive?: boolean;
+}
+
+/**
+ * Hook configuration options
+ */
+export interface UseSortOptions {
+  /** Enable SKU normalization (default: true for MEESHO, false for others) */
+  enableNormalization?: boolean;
+  /** Custom SKU replacement rules for multi-account normalization */
+  replacementRules?: SKUReplacementRule[];
+}
+
+function useSort(sortFor: sortFor, options?: UseSortOptions) {
   const [sortedPages, setSortedPages] = useState<PageText[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [progress, setProgress] = useState<number>(0);
-  const isPersonal =true && sortFor === "MEESHO";
+  
+  // Normalization settings - no defaults, users must provide their own rules
+  const enableNormalization = options?.enableNormalization ?? false;
+  const replacementRules = options?.replacementRules ?? [];
 
   const reorderPdf = async (
     pdfBytes: ArrayBuffer | null, 
@@ -85,6 +116,7 @@ function useSort(sortFor: sortFor) {
       switch (sortFor) {
         case "MEESHO":
           sku = extractSKUFromTextMeesho(pageText);          
+          console.log("skueeee",sku);
           break;
         case "FLIPKART":
           sku = extractSKUFromTextFlipkart(pageText);
@@ -136,13 +168,40 @@ function useSort(sortFor: sortFor) {
     return sku;
   };
 
+  /**
+   * Normalize SKU by applying all replacement rules
+   * Supports multiple account patterns (e.g., "zz-", "gg-", "abc-" all become "hh-")
+   */
   const normalizeSKU = (sku: string): string => {
-    return sku.replace(/^zz-/, "hh-").replace(/^gg-/, "hh-");
+    let normalized = sku;
+    
+    // Apply each replacement rule in sequence
+    for (const rule of replacementRules) {
+      const caseSensitive = rule.caseSensitive ?? true;
+      
+      if (rule.useRegex) {
+        // Regex-based replacement for complex patterns
+        const flags = caseSensitive ? 'g' : 'gi';
+        const regex = new RegExp(rule.from, flags);
+        normalized = normalized.replace(regex, rule.to);
+      } else {
+        // Simple string replacement for prefixes/suffixes
+        if (caseSensitive) {
+          normalized = normalized.split(rule.from).join(rule.to);
+        } else {
+          // Case-insensitive simple replacement
+          const regex = new RegExp(rule.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+          normalized = normalized.replace(regex, rule.to);
+        }
+      }
+    }
+    
+    return normalized;
   };
 
   const sortPagesBySKU = (pageTexts: PageText[]) =>
     pageTexts.sort((a, b) =>
-      isPersonal
+      enableNormalization
         ? normalizeSKU(a.sku).localeCompare(normalizeSKU(b.sku))
         : a.sku.localeCompare(b.sku)
     );
