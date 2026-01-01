@@ -1,339 +1,393 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle, Globe, Lock, Shield, Users, Zap, ZapIcon } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, CheckCircle, Globe, LayoutGrid, Lock, Search, Shield, ShoppingBag, Users, Zap, ZapIcon } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
-import { allTools } from "../data/allTools";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { allTools, Tool } from "../data/allTools";
 
-function SearchResults() {
+// Tab definitions
+const TABS = [
+  { id: "all", label: "All Tools", icon: LayoutGrid },
+  { id: "pdf", label: "PDF Tools", icon: Zap },
+  { id: "ecommerce", label: "Ecommerce", icon: ShoppingBag },
+] as const;
+
+function HomeContent() {
   const searchParams = useSearchParams();
-  const query = searchParams.get("s")?.toLowerCase() || "";
+  const urlQuery = searchParams.get("s")?.toLowerCase() || "";
 
-  const filteredTools = allTools.filter((tool) => {
-    if (!query) return tool.showOnHomepage !== false;
-    return (
-      tool.name.toLowerCase().includes(query) ||
-      tool.description.toLowerCase().includes(query) ||
-      tool.category?.toLowerCase().includes(query)
-    );
-  });
+  const [activeTab, setActiveTab] = useState<typeof TABS[number]["id"]>("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [isIndia, setIsIndia] = useState(false);
+
+  // Sync URL search param with local state
+  useEffect(() => {
+    if (urlQuery) {
+      setSearchTerm(urlQuery);
+      setActiveTab("all");
+    }
+
+    // Simple Client-Side Location Check via Timezone
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz === "Asia/Kolkata" || tz === "Asia/Calcutta") {
+        setIsIndia(true);
+        // Optional: Set default tab to ecommerce for Indian users if specific search isn't present
+      }
+    } catch (e) {
+      console.log("Could not detect timezone", e);
+    }
+  }, [urlQuery]);
+
+  // Filter tools based on Tab AND Search
+  const filteredTools = useMemo(() => {
+    const query = searchTerm.toLowerCase().trim();
+
+    return allTools.filter((tool) => {
+      // 1. Tab Filtering
+      let matchesTab = true;
+      if (activeTab === "pdf") {
+        matchesTab = tool.category === "conversion" || tool.category === "manipulation";
+      } else if (activeTab === "ecommerce") {
+        matchesTab = tool.path.includes("ecommerce") || tool.category === "other";
+      }
+
+      // 2. Search Filtering
+      if (!matchesTab) return false;
+      if (!query) return tool.showOnHomepage !== false;
+
+      return (
+        tool.name.toLowerCase().includes(query) ||
+        tool.description.toLowerCase().includes(query) ||
+        tool.category?.toLowerCase().includes(query)
+      );
+    });
+  }, [activeTab, searchTerm]);
+
+  const displayedTools = filteredTools.slice(0, visibleCount);
+  const hasMore = filteredTools.length > visibleCount;
+
+  const handleTabChange = (id: typeof activeTab) => {
+    setActiveTab(id);
+    setVisibleCount(6);
+    setSearchTerm("");
+  };
 
   return (
-    <>
-      <section className="relative flex justify-center items-center px-4 min-h-[40vh] overflow-hidden text-center">
-        <div className="-z-10 absolute inset-0 bg-gradient-to-br from-indigo-600/20 via-fuchsia-500/10 to-transparent" />
-        <div className="mx-auto max-w-4xl">
-          <motion.h1
+    <div className="min-h-screen bg-white">
+
+      {/* --- HERO SECTION (KEPT AS IS) --- */}
+      <section className="relative pt-20 pb-8 px-4 overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-fuchsia-50">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-[20%] -left-[10%] w-[700px] h-[700px] bg-purple-200/40 rounded-full blur-[120px] mix-blend-multiply"></div>
+          <div className="absolute top-[20%] -right-[10%] w-[600px] h-[600px] bg-indigo-200/40 rounded-full blur-[100px] mix-blend-multiply"></div>
+          <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[500px] bg-fuchsia-200/40 rounded-full blur-[100px] mix-blend-multiply"></div>
+        </div>
+
+        <div className="mx-auto max-w-5xl text-center relative z-10">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600 font-extrabold text-transparent text-3xl sm:text-4xl lg:text-5xl tracking-tight"
+            transition={{ duration: 0.5 }}
           >
-            {query
-              ? `Search Results for "${query}"`
-              : "Free Online PDF Tools - Merge, Split & Crop PDF"}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.6 }}
-            className="mx-auto mt-6 max-w-2xl text-gray-600 text-base sm:text-lg"
-          >
-            {query
-              ? `Found ${filteredTools.length} tool${filteredTools.length === 1 ? "" : "s"} matching your search.`
-              : "Fast, secure PDF tools for merging, splitting, cropping & more. Includes specialized tools for Flipkart & Meesho sellers. 100% free, no sign-up required."}
-          </motion.p>
+
+
+            <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3 leading-tight drop-shadow-sm">
+              {isIndia ? (
+                <>
+                  The Ultimate Toolkit for <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">Ecommerce & PDF</span>
+                </>
+              ) : (
+                <>
+                  Your Complete <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">PDF Toolkit</span>
+                </>
+              )}
+            </h1>
+
+            <p className="text-base text-slate-600 max-w-2xl mx-auto leading-relaxed mb-6 font-medium">
+              {isIndia ? (
+                "Specialized tools for Flipkart & Meesho sellers, plus free PDF Merge, Split, and Crop tools. All in one place."
+              ) : (
+                <>
+                  Join thousands of users who trust <strong>PDF Things</strong> for secure, client-side document processing.
+                  No limits. No uploads. No sign-ups.
+                </>
+              )}
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg className="w-full h-12 fill-slate-50" viewBox="0 0 1440 48" preserveAspectRatio="none">
+            <path d="M0,48 L1440,48 L1440,0 C1440,0 1100,48 720,48 C340,48 0,0 0,0 L0,48 Z"></path>
+          </svg>
         </div>
       </section>
 
-      <section className="mx-auto mt-5 md:mt-4 px-4 pb-20 max-w-7xl">
-        {filteredTools.length > 0 ? (
-          <div className="gap-6 grid sm:grid-cols-2 lg:grid-cols-3">
-            {filteredTools.map(({ path, name, description, color, icon: Icon }) => (
-              <motion.div
-                key={path}
-                whileHover={{ y: -4 }}
-                className="group bg-white/70 shadow-sm hover:shadow-lg p-6 border border-gray-200 rounded-2xl transition-all cursor-pointer"
-              >
-                <Link href={path}>
-                  <div
-                    className={`w-12 h-12 flex items-center justify-center rounded-xl ${color} text-white mb-4 shadow-lg`}
+      {/* --- TOOLS SECTION (UPDATED BACKGROUND) --- */}
+      <section id="tools-section" className="relative pb-24 -mt-12 z-20">
+        {/* Subtle Grid Pattern - Full Width */}
+        <div className="absolute inset-0 -z-10 h-full w-full bg-slate-50">
+          <div className="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        </div>
+
+        {/* Content Container - Centered */}
+        <div className="max-w-[1800px] mx-auto px-8 md:px-48">
+
+          {/* Controls Container */}
+          <div className="bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-3 mb-8 flex flex-col md:flex-row items-center justify-center gap-6">
+            <div className="flex flex-wrap bg-slate-100 p-1.5 rounded-2xl w-full md:w-auto justify-center">
+              {TABS.map((tab) => {
+                const isActive = activeTab === tab.id;
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`relative flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap min-w-[120px] justify-center ${isActive
+                      ? "text-indigo-600 bg-white shadow-md ring-1 ring-black/5 scale-[1.02]"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-slate-200"
+                      }`}
                   >
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h2 className="font-semibold text-gray-900 text-xl group-hover:underline">
-                    {name}
-                  </h2>
-                  <p className="mt-1 text-gray-600 text-sm line-clamp-2">
-                    {description}
-                  </p>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No tools found</h3>
-            <p className="text-gray-600">Try searching for something else, like &quot;merge&quot; or &quot;split&quot;.</p>
-            <Link href="/" className="inline-block mt-4 text-indigo-600 font-medium hover:underline">
-              View all tools
-            </Link>
-          </div>
-        )}
-      </section>
-
-      {/* SEO Content Section - Hidden from users but visible to search engines */}
-      <section className="sr-only" aria-hidden="true">
-        <div>
-          <h2>Your Complete PDF Toolkit - Fast, Free & Secure</h2>
-
-          <div>
-            <p>
-              <strong>PDF Things</strong> offers a comprehensive suite of <strong>free PDF tools</strong> designed to make document management effortless. Whether you need to <strong>merge PDF</strong> files into one document, <strong>split PDF</strong> pages, or <strong>crop PDF</strong> to remove unwanted margins, our browser-based tools deliver professional results instantly.
-            </p>
-
-            <h3>Professional PDF Tools for Everyone</h3>
-            <p>
-              Our platform serves students, professionals, and businesses with powerful features like <strong>PDF compression</strong> to reduce file sizes and <strong>convert PDF online</strong> without downloads. Everything runs directly in your browser using advanced web technologies, ensuring your sensitive documents never leave your device.
-            </p>
-
-            <h3>Specialized Ecommerce PDF Tools</h3>
-            <p>
-              For online sellers, we provide dedicated <strong>ecommerce PDF tools</strong> specifically built for marketplace platforms. Our <strong>Flipkart label sorter</strong> automatically organizes shipping labels by SKU and account, while the <strong>Meesho label tool</strong> streamlines your order fulfillment process. These time-saving features help ecommerce sellers process hundreds of orders efficiently.
-            </p>
-
-            <div>
-              <h3>Why Choose PDF Things?</h3>
-              <ul>
-                <li>✓ <strong>100% Free:</strong> No hidden costs or premium features — everything is completely free</li>
-                <li>✓ <strong>Privacy First:</strong> All processing happens in your browser; we never store your files</li>
-                <li>✓ <strong>No Registration:</strong> Start using tools immediately without creating an account</li>
-                <li>✓ <strong>Lightning Fast:</strong> Instant processing with no upload delays or queue waiting</li>
-                <li>✓ <strong>Unlimited Usage:</strong> Process as many PDFs as you need, anytime</li>
-              </ul>
+                    <Icon className={`w-4 h-4 ${isActive ? "text-indigo-600" : "text-gray-400"}`} />
+                    {tab.label}
+                  </button>
+                );
+              })}
             </div>
-
-            <p>
-              Join thousands of users who trust PDF Things for their daily document needs. From simple tasks like merging a few pages to complex ecommerce workflows, our tools are built to handle it all with speed, security, and simplicity.
-            </p>
           </div>
+
+          {/* Tools Grid */}
+          <AnimatePresence mode="popLayout">
+            {displayedTools.length > 0 ? (
+              <motion.div
+                layout
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+              >
+                {displayedTools.map((tool) => (
+                  <ToolCard key={tool.path} tool={tool} />
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-center py-24 bg-white/40 rounded-3xl border border-dashed border-slate-300"
+              >
+                <div className="inline-flex p-4 rounded-full bg-slate-100 mb-4">
+                  <Search className="w-8 h-8 text-slate-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No tools found</h3>
+                <p className="text-gray-500">
+                  We couldn&apos;t find any tools matching &quot;{searchTerm}&quot; in this category.
+                </p>
+                <button
+                  onClick={() => { setSearchTerm(""); setActiveTab("all"); }}
+                  className="mt-4 text-fuchsia-600 font-medium hover:underline"
+                >
+                  View all tools
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {hasMore && (
+            <div className="mt-16 flex justify-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setVisibleCount((prev) => prev + 6)}
+                className="group flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-gray-900 to-slate-800 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+              >
+                Explore More Tools
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+            </div>
+          )}
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-6 font-bold text-gray-900 text-3xl sm:text-4xl">
-              Everything Happens in Your Browser
+      {/* --- WHY CHOOSE US SECTION (UPDATED BACKGROUND) --- */}
+      <section id="why-choose-section" className="px-4 py-24 relative overflow-hidden bg-gradient-to-b from-indigo-50/50 to-white">
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent"></div>
+
+        <div className="mx-auto max-w-6xl relative z-10">
+          <div className="mb-20 text-center">
+            <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase mb-3 block">Why Choose Us</span>
+            <h2 className="mb-6 font-extrabold text-gray-900 text-3xl sm:text-5xl">
+              Professional Tools, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">Zero Cost</span>
             </h2>
-            <p className="mb-8 text-gray-600 text-lg leading-relaxed">
-              Our advanced client-side technology means your sensitive documents never leave your computer. No servers,
-              no cloud storage, no privacy concerns. Just pure, secure PDF processing powered by modern web
-              technologies.
+            <p className="mx-auto max-w-2xl text-gray-600 text-lg leading-relaxed">
+              We&apos;ve built a complete document ecosystem that runs entirely in your browser. Fast, secure, and always available.
             </p>
+          </div>
 
-            <div className="gap-6 grid sm:grid-cols-2 mt-12">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                viewport={{ once: true }}
-                className="bg-white shadow-sm p-6 rounded-xl"
-              >
-                <h3 className="mb-3 font-semibold text-gray-900 text-xl">🔒 Maximum Security</h3>
-                <p className="text-gray-600">
-                  Your files are processed entirely within your browser using WebAssembly and JavaScript. No data
-                  transmission, no server storage.
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                viewport={{ once: true }}
-                className="bg-white shadow-sm p-6 rounded-xl"
-              >
-                <h3 className="mb-3 font-semibold text-gray-900 text-xl">⚡ Instant Processing</h3>
-                <p className="text-gray-600">
-                  No upload delays or queue waiting. Start processing immediately and get results in seconds, not
-                  minutes.
-                </p>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center"
-          >
-            <h2 className="mb-4 font-bold text-gray-900 text-3xl sm:text-4xl">
-              Why Choose Our PDF Tools?
-            </h2>
-            <p className="mx-auto max-w-2xl text-gray-600 text-lg">
-              Built for professionals, students, and anyone who works with PDFs regularly.
-            </p>
-          </motion.div>
-
-          <div className="gap-6 grid md:grid-cols-2 lg:grid-cols-4">
+          <div className="gap-8 grid md:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: Users,
                 title: "For Everyone",
-                description: "Perfect for students, professionals, and businesses of all sizes.",
+                description: "Perfect for students, freelance professionals, and businesses of all sizes.",
+                color: "text-blue-600",
+                bg: "bg-blue-50"
               },
               {
                 icon: Globe,
                 title: "Works Everywhere",
-                description: "Compatible with all modern browsers on desktop and mobile devices.",
+                description: "Compatible with all modern browsers on desktop, tablet, and mobile devices.",
+                color: "text-purple-600",
+                bg: "bg-purple-50"
               },
               {
                 icon: CheckCircle,
                 title: "Always Free",
                 description: "No hidden costs, no premium features. Everything is completely free.",
+                color: "text-emerald-600",
+                bg: "bg-emerald-50"
               },
               {
                 icon: Zap,
                 title: "No Limits",
-                description: "Process as many PDFs as you want, whenever you want.",
+                description: "Process as many PDFs as you want, whenever you want. No daily caps.",
+                color: "text-amber-600",
+                bg: "bg-amber-50"
               },
             ].map((feature, index) => (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 viewport={{ once: true }}
-                className="bg-white shadow-sm hover:shadow-md p-6 border border-gray-200 rounded-xl transition-shadow"
+                className="bg-white p-8 rounded-[2rem] shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-200/50 hover:-translate-y-2 border border-slate-100 transition-all duration-300 group"
               >
-                <feature.icon className="mb-4 w-10 h-10 text-indigo-600" />
-                <h3 className="mb-2 font-semibold text-gray-900 text-lg">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                <div className={`w-16 h-16 ${feature.bg} ${feature.color} rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300`}>
+                  <feature.icon className="w-8 h-8" />
+                </div>
+                <h3 className="mb-3 font-bold text-gray-900 text-xl group-hover:text-indigo-700 transition-colors">{feature.title}</h3>
+                <p className="text-gray-500 leading-relaxed group-hover:text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center"
-          >
-            <h2 className="mb-4 font-bold text-gray-900 text-3xl sm:text-4xl">
-              Your Privacy is Our Priority
-            </h2>
-            <p className="mx-auto max-w-2xl text-gray-600 text-lg">
-              Everything happens in your browser. No uploads, no servers, no data collection.
-            </p>
-          </motion.div>
+      {/* --- PRIVACY SECTION (UPDATED BACKGROUND) --- */}
+      <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
+        {/* Background Glows */}
+        <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 opacity-20">
+          <div className="w-96 h-96 rounded-full bg-indigo-500 blur-3xl"></div>
+        </div>
+        <div className="absolute bottom-0 left-0 translate-y-12 -translate-x-12 opacity-20">
+          <div className="w-96 h-96 rounded-full bg-fuchsia-500 blur-3xl"></div>
+        </div>
 
-          <div className="gap-8 grid md:grid-cols-3">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <div className="flex justify-center items-center bg-green-500 shadow-lg mx-auto mb-4 rounded-full w-16 h-16">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="mb-2 font-semibold text-gray-900 text-xl">100% Secure</h3>
-              <p className="text-gray-600">
-                All processing happens locally in your browser. Your files never leave your device.
-              </p>
-            </motion.div>
+        <div className="mx-auto max-w-5xl px-4 text-center relative z-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl shadow-2xl mb-10 text-emerald-400">
+            <Lock className="w-10 h-10" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-8 tracking-tight">Your Files Never Leave Your Browser</h2>
+          <p className="text-xl text-slate-300 leading-relaxed mb-16 max-w-3xl mx-auto">
+            We believe privacy is a fundamental right. Unlike other online tools, we don&apos;t upload your files to a server.
+            Everything happens <strong>locally on your device</strong> via WebAssembly.
+          </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <div className="flex justify-center items-center bg-blue-500 shadow-lg mx-auto mb-4 rounded-full w-16 h-16">
-                <Lock className="w-8 h-8 text-white" />
+          <div className="grid sm:grid-cols-3 gap-6 text-left">
+            {[
+              { title: "No Uploads", desc: "Files process directly in your browser memory.", icon: Shield },
+              { title: "No Data Storage", desc: "We don't view, store, or share your content.", icon: Globe },
+              { title: "Works Offline", desc: "Many tools work even without internet once loaded.", icon: ZapIcon },
+            ].map((item) => (
+              <div key={item.title} className="bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-colors">
+                <div className="text-indigo-400 mb-6"><item.icon className="w-8 h-8" /></div>
+                <h4 className="font-bold text-white text-xl mb-3">{item.title}</h4>
+                <p className="text-slate-400 text-base leading-relaxed">{item.desc}</p>
               </div>
-              <h3 className="mb-2 font-semibold text-gray-900 text-xl">No Registration</h3>
-              <p className="text-gray-600">
-                Start using our tools immediately. No accounts, no passwords, no hassle.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <div className="flex justify-center items-center bg-purple-500 shadow-lg mx-auto mb-4 rounded-full w-16 h-16">
-                <ZapIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="mb-2 font-semibold text-gray-900 text-xl">Lightning Fast</h3>
-              <p className="text-gray-600">
-                No waiting for uploads or downloads. Process your PDFs instantly.
-              </p>
-            </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-6 font-bold text-white text-3xl sm:text-4xl">Ready to Get Started?</h2>
-            <p className="mb-8 text-indigo-100 text-xl leading-relaxed">
-              Choose any tool above and start processing your PDFs instantly. No registration required, completely free
-              forever.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white shadow-lg hover:shadow-xl px-8 py-4 rounded-xl font-semibold text-indigo-600 text-lg transition-all"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      {/* --- CTA SECTION (UPDATED BACKGROUND) --- */}
+      <section className="py-24 px-4 bg-gradient-to-r from-fuchsia-100 to-indigo-100 text-center relative overflow-hidden">
+        <div className="mx-auto max-w-4xl relative z-10">
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">Ready to get started?</h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button
+              onClick={() => {
+                setActiveTab("all");
+                document.getElementById("tools-section")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-10 py-4 bg-gray-900 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl hover:bg-gray-800 transition-all"
             >
-              Explore Tools
-            </motion.button>
-          </motion.div>
+              Browse Tools
+            </button>
+          </div>
         </div>
       </section>
-    </>
+
+      {/* SEO Hidden Content */}
+      <div className="sr-only">
+        <h3>Advanced PDF & Ecommerce Tools</h3>
+        <p>
+          From specialized Flipkart label cropping to Meesho invoice management, our tools cater to Indian ecommerce sellers.
+          Standard PDF functions like merge, split, and compress are also available for free.
+        </p>
+      </div>
+
+    </div>
+  );
+}
+
+function ToolCard({ tool }: { tool: Tool }) {
+  const Icon = tool.icon;
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Link href={tool.path} className="block h-full">
+        <div className="group h-full bg-white border border-slate-100 rounded-2xl p-6 shadow-lg shadow-slate-100 hover:shadow-2xl hover:shadow-indigo-100/50 hover:border-indigo-100 transition-all duration-300 relative overflow-hidden">
+          {/* Hover Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/0 to-indigo-50/0 opacity-0 group-hover:opacity-100 group-hover:from-indigo-50/30 group-hover:to-fuchsia-50/10 transition-all duration-500 pointer-events-none" />
+
+          <div className="relative z-10 flex items-start justify-between mb-4">
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${tool.color}`}>
+              <Icon className="w-6 h-6" />
+            </div>
+          </div>
+
+          <div className="relative z-10">
+            <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+              {tool.name}
+            </h3>
+            <p className="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2">
+              {tool.description}
+            </p>
+
+            <div className={`inline-flex items-center text-sm font-bold transition-all duration-300 ${tool.path.includes('ecommerce') ? 'text-fuchsia-600' : 'text-indigo-600'} opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0`}>
+              Start Now <ArrowRight className="w-4 h-4 ml-1" />
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
 
 export default function Home() {
-  console.log(process.env.TEST_PRIVATE, "test_private");
-  console.log(process.env.NEXT_PUBLIC_SITE_URL, "Url");
-  console.log(process.env.NEXT_PUBLIC_ENVIRONMENT, "environment");
-
   return (
     <Suspense fallback={<div className="min-h-screen"></div>}>
-      <SearchResults />
+      <HomeContent />
     </Suspense>
   );
 }
